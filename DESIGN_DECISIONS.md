@@ -169,3 +169,18 @@ This document captures key architectural and design choices made during Lontar's
 **Rationale:** `rust_xlsxwriter` is mature, actively maintained, and built by the same author who created the Python and C equivalents over a decade. Reimplementing it would duplicate years of work for no practical benefit. However, excluding XLSX breaks Lontar's "one document, every format" promise. A thin wrapper that maps `Block::Table` to worksheets and `Block::Chart` to chart objects gives users the convenience of the unified API for common cases while respecting the existing library's quality.
 
 **Trade-off accepted:** The mapping from document AST to spreadsheet grid is inherently lossy — paragraphs, headings, and flow-based content don't map cleanly to cells. The wrapper handles common cases (tables, charts, images) and gracefully degrades the rest. Users with advanced spreadsheet needs should use `rust_xlsxwriter` directly.
+
+---
+
+## DD-015: Native Diagram Engine Instead of External Tool Dependency
+
+**Decision:** Lontar includes a built-in diagram engine that defines, lays out, and renders diagrams using each format's native primitives.
+
+**Alternatives considered:**
+- Embed Mermaid/Graphviz output as rasterized images
+- Generate Mermaid code only and rely on external renderers
+- Exclude diagrams entirely and tell users to insert images
+
+**Rationale:** Every technical document needs diagrams, yet no document generation library in any language renders diagrams natively across output formats. Embedding rasterized images produces non-editable, resolution-dependent output. Generating Mermaid code only works for Markdown viewers. By computing layout internally and rendering to each format's native primitives (DrawingML shapes in Office, SVG paths in HTML/PDF, Mermaid in Markdown, ASCII in plain text), we produce output that is editable, scalable, and format-appropriate everywhere.
+
+**Trade-off accepted:** Automatic graph layout is a complex problem. We start with layered (Sugiyama) layout for flowcharts and tree layout for hierarchies — these cover the majority of documentation diagrams. Force-directed layout for arbitrary graphs is Phase 2 of the diagram engine. Manual coordinate mode is the escape hatch for layouts the algorithms can't handle.

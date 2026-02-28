@@ -53,3 +53,7 @@ optional = true
 [dependencies.lontar-template]
 path = "../crates/lontar-template"
 optional = true
+
+[dependencies.lontar-diagram]
+path = "../crates/lontar-diagram"
+optional = true

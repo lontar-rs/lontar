@@ -144,11 +144,85 @@ pub enum Block {
         notes: Option<Vec<Block>>,
     },
 
+    /// Structured diagram with automatic layout
+    Diagram {
+        kind: DiagramKind,
+        nodes: Vec<DiagramNode>,
+        edges: Vec<DiagramEdge>,
+        layout: DiagramLayout,
+        style: DiagramStyle,
+    },
+
     /// Raw format-specific passthrough (escape hatch)
     Raw {
         format: String,
         content: String,
     },
+}
+```
+
+### Diagram Types
+
+```rust
+pub enum DiagramKind {
+    /// Directed flow with process/decision nodes
+    Flowchart,
+    /// Message passing between participants over time
+    Sequence,
+    /// Hierarchical parent-child layout
+    Tree,
+    /// Undirected or directed graph with flexible layout
+    Network,
+    /// Radial hierarchical layout
+    MindMap,
+    /// User-defined layout with explicit coordinates
+    Custom,
+}
+
+pub struct DiagramNode {
+    pub id: String,
+    pub label: Vec<Inline>,
+    pub shape: NodeShape,
+    pub style: DiagramNodeStyle,
+}
+
+pub struct DiagramEdge {
+    pub from: String,
+    pub to: String,
+    pub label: Option<Vec<Inline>>,
+    pub kind: EdgeKind,
+    pub style: DiagramEdgeStyle,
+}
+
+pub enum NodeShape {
+    Rectangle,
+    RoundedRect,
+    Circle,
+    Diamond,
+    Parallelogram,
+    Cylinder,
+    Stadium,
+}
+
+pub enum EdgeKind {
+    Solid,
+    Dashed,
+    Dotted,
+    Arrow,
+    BiDirectional,
+}
+
+pub enum DiagramLayout {
+    /// Automatic layout using graph algorithms
+    Auto,
+    /// Left-to-right hierarchical
+    LeftToRight,
+    /// Top-to-bottom hierarchical
+    TopToBottom,
+    /// Force-directed (spring model)
+    ForceDirected,
+    /// Manual coordinates (user-specified positions)
+    Manual,
 }
 ```
 
@@ -418,6 +492,75 @@ lontar-aksara/
 │   └── lang.rs           # Language tagging (BCP 47)
 ```
 
+## Diagram Engine (`lontar-diagram`)
+
+Lontar includes a native diagramming engine that defines diagrams as structured data (nodes + edges), computes layout automatically, and renders using each format's native primitives.
+
+### Pipeline
+
+```
+Diagram DSL (nodes + edges + kind)
+        │
+        ▼
+┌──────────────────┐
+│  Layout Engine   │  ← Graph layout algorithms
+│  (petgraph +     │     Computes positions for nodes
+│   layered/force) │     and path points for edges
+└────────┬─────────┘
+         │
+         ▼
+   PositionedDiagram
+   (nodes with x, y, width, height;
+    edges with path control points)
+         │
+    ┌────┼────┬────┬────┬────┐
+    ▼    ▼    ▼    ▼    ▼    ▼
+  DOCX  PPTX  PDF  HTML  MD  TXT
+```
+
+### Format-Native Rendering
+
+| Backend | Renderer | Output |
+|---|---|---|
+| **DOCX** | DrawingML shapes | `<wsp:wsp>` with flowchart presets, connectors. Native vector, editable in Word. |
+| **PPTX** | DrawingML shapes | Same primitives, positioned in EMU. Editable in PowerPoint. |
+| **PDF** | Vector paths | Bezier curves, fills, strokes. Scalable, resolution-independent. |
+| **HTML** | Inline SVG | `<svg>` with `<rect>`, `<path>`, `<text>`. Scalable, potentially interactive. |
+| **SVG** | Direct SVG | Standalone `.svg` file output (future backend). |
+| **MD** | Mermaid code block | ` ```mermaid ` fenced block. Renders on GitHub, GitLab, and Mermaid-aware viewers. |
+| **TXT** | ASCII art | Box-drawing characters and arrows via layout algorithm. |
+
+### Layout Algorithms
+
+| Algorithm | Best For | Approach |
+|---|---|---|
+| **Layered/Sugiyama** | Flowcharts, DAGs | Assigns nodes to layers, minimizes edge crossings |
+| **Force-directed** | Network graphs | Simulates physical forces (spring model) until equilibrium |
+| **Tree layout** | Hierarchies, org charts | Tidier tree drawing (Reingold-Tilford) |
+| **Manual** | Precise control | User provides explicit coordinates |
+
+Dependencies (to be evaluated in Phase 0): `petgraph` for graph data structures, layout algorithms TBD (custom implementation, `layout-rs`, or port of Graphviz subset).
+
+### Module Structure
+
+```
+lontar-diagram/
+├── src/
+│   ├── lib.rs
+│   ├── model.rs          # DiagramKind, Node, Edge, Style types
+│   ├── layout/
+│   │   ├── mod.rs
+│   │   ├── layered.rs    # Sugiyama algorithm for flowcharts/DAGs
+│   │   ├── force.rs      # Force-directed layout
+│   │   └── tree.rs       # Tree layout (Reingold-Tilford)
+│   └── render/
+│       ├── mod.rs
+│       ├── drawingml.rs  # DOCX/PPTX DrawingML shapes
+│       ├── svg.rs        # PDF/HTML/standalone SVG
+│       ├── mermaid.rs    # Markdown Mermaid code blocks
+│       └── ascii.rs      # Plain text ASCII art
+```
+
 ## Format Backends
 
 ### Backend Trait
@@ -642,7 +785,7 @@ pub enum LontarError {
 Not all AST features map to all formats. The strategy:
 
 1. **Lossless:** Feature is fully supported (e.g., bold text in all formats)
-2. **Degraded:** Feature is approximated (e.g., chart → table in Markdown)
+2. **Degraded:** Feature is approximated (e.g., chart → table in Markdown, diagram → Mermaid in Markdown, diagram → ASCII in plain text)
 3. **Skipped:** Feature is omitted with a warning (e.g., slide transitions in PDF)
 
 Backends report degradation through a `WriteReport`:
@@ -692,6 +835,7 @@ lontar-core          (zero external deps beyond std)
     │       ├── lontar-pptx  (zip, quick-xml)
     │       └── lontar-pdf   (typst or printpdf — TBD)
     │
+    ├── lontar-diagram (petgraph — optional, consumed by all backends)
     ├── lontar-xlsx  (rust_xlsxwriter)
     ├── lontar-md    (zero external deps)
     ├── lontar-txt   (zero external deps)

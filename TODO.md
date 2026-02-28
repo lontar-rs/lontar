@@ -410,11 +410,15 @@ Detailed task breakdown by phase. Check the box when complete.
 
 ## Stretch Goals
 
+- [ ] Force-directed layout for arbitrary network graphs
+- [ ] Sequence diagram support (message passing between participants)
+- [ ] Diagram reading/parsing (Mermaid → AST, Graphviz DOT → AST)
+- [ ] Interactive diagrams in HTML (hover tooltips, click navigation)
+- [ ] SVG standalone backend (lontar-svg)
 - [ ] ODT (OpenDocument Text) backend
 - [ ] EPUB backend
 - [ ] RTF backend
 - [ ] LaTeX backend
-- [ ] XLSX backend (or deep integration with rust_xlsxwriter)
 - [ ] Document diffing (compare two Documents)
 - [ ] Document merging (combine multiple Documents)
 - [ ] Document reading/parsing (docx → AST, not just AST → docx)
@@ -438,3 +442,5 @@ Detailed task breakdown by phase. Check the box when complete.
 | Phase 4 | 🔴 Not Started | — | — |
 | Phase 5 | 🔴 Not Started | — | — |
 | Phase 6 | 🔴 Not Started | — | — |
+| Phase 7 | 🔴 Not Started | — | — |
+| Phase 8 | 🔴 Not Started | — | — |

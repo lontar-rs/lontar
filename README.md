@@ -61,6 +61,7 @@ Lontar is a workspace of focused crates. Use only what you need:
 | `lontar-pptx` | OOXML PresentationML (.pptx) output | 🔴 Design |
 | `lontar-pdf` | PDF output | 🔴 Design |
 | `lontar-xlsx` | XLSX output (wraps rust_xlsxwriter) | 🔴 Design |
+| `lontar-diagram` | Native diagramming with auto-layout | 🔴 Design |
 | `lontar-md` | Markdown output | 🔴 Design |
 | `lontar-html` | HTML output | 🔴 Design |
 | `lontar-txt` | Plain text output | 🔴 Design |
@@ -109,6 +110,8 @@ See [TODO.md](./TODO.md) for the detailed task breakdown.
 | 3 | PPTX | Presentations with charts and tables |
 | 4 | PDF + HTML + XLSX | Complete the format matrix |
 | 5 | Templates + CLI | Production tooling |
+| 6 | Diagrams | Native diagramming with auto-layout |
+| 7 | Polish & Ecosystem | Stabilization and ecosystem integration |
 
 ## Architecture
 

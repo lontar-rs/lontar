@@ -138,7 +138,7 @@ type(scope): brief description
 Longer explanation if needed.
 
 Types: feat, fix, docs, test, refactor, perf, chore
-Scopes: core, docx, pptx, pdf, md, html, txt, template, cli, ci
+Scopes: core, docx, pptx, pdf, md, html, txt, template, diagram, cli, ci
 ```
 
 Examples:

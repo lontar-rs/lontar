@@ -18,3 +18,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Text shaping pipeline design: rustybuzz, unicode-bidi, unicode-linebreak
 - Font management with fallback chains and subsetting
 - Support for 159+ Unicode scripts including Aksara Bali, Arabic, Devanagari, CJK
+- Native diagram engine architecture (lontar-diagram crate)
+- Diagram AST types: DiagramKind, DiagramNode, DiagramEdge, NodeShape, EdgeKind
+- Format-native rendering design: DrawingML for Office, SVG for PDF/HTML, Mermaid for Markdown, ASCII for plain text

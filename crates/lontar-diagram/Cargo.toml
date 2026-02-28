@@ -1,0 +1,11 @@
+[package]
+name = "lontar-diagram"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Native diagramming engine for Lontar — automatic layout with format-native rendering"
+
+[dependencies]
+lontar-core = { path = "../lontar-core" }

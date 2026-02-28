@@ -11,6 +11,7 @@ members = [
     "crates/lontar-xlsx",
     "crates/lontar-pdf",
     "crates/lontar-template",
+    "crates/lontar-diagram",
     "crates/lontar-cli",
     "lontar",
 ]
