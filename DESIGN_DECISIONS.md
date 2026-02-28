@@ -70,7 +70,7 @@ This document captures key architectural and design choices made during Lontar's
 **Decision:** Use `zip` and `quick-xml` crates directly for OOXML output, rather than building on existing Rust Office libraries.
 
 **Rationale:**
-- Existing Rust OOXML libraries (docx-rs, etc.) have incomplete APIs and different design philosophies
+- Existing Rust OOXML libraries have different design philosophies and coverage priorities
 - We need full control over XML output to match our AST model
 - `zip` and `quick-xml` are mature, well-maintained, and minimal
 - This approach is exactly what rust_xlsxwriter does successfully

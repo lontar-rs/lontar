@@ -396,7 +396,7 @@ output.pptx (ZIP archive)
 |---|---|---|
 | **typst** integration | Beautiful output, Rust-native, actively developed | Heavy dependency, layout differences from docx |
 | **printpdf** | Lightweight, direct PDF primitives | Very low-level, must build our own layout engine |
-| **HTML → PDF** via headless browser | Leverage CSS layout | Requires browser runtime, defeats "no sidecar" goal |
+| **HTML → PDF** via headless browser | Leverage CSS layout | Requires browser runtime, adds external dependency |
 | **genpdf** | Higher-level than printpdf | Less maintained, limited features |
 
 **Recommended:** Start with typst integration. It's Rust-native, produces excellent output, and its markup language could even serve as an intermediate representation.
@@ -545,7 +545,7 @@ For a typical 20-page report with tables and images:
 | HTML | < 10ms | String concatenation + CSS |
 | TXT | < 5ms | Simplest possible output |
 
-These targets are 10-50x faster than Python equivalents due to no interpreter overhead and zero-copy where possible.
+These targets reflect native compilation and zero-copy where possible.
 
 ## Future Architecture Considerations
 

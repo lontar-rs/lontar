@@ -309,7 +309,7 @@ Detailed task breakdown by phase. Check the box when complete.
 - [ ] C FFI bindings (lontar-ffi)
 - [ ] Integration example: Actix-web document generation endpoint
 - [ ] Integration example: Axum document generation endpoint
-- [ ] Integration example: Replace Python doc-generator in CONSILAR
+- [ ] Integration example: Native doc-generator in CONSILAR
 
 ---
 

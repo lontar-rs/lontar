@@ -41,10 +41,10 @@ doc.write_md("report.md")?;
 
 | Problem | Lontar's Answer |
 |---|---|
-| Python microservice for doc generation in Rust projects | Native Rust — no sidecar, no HTTP overhead, no Python runtime |
+| Multi-service architecture for doc generation | Single-binary solution — no additional services or runtimes |
 | Each format has its own isolated library and API | Unified document model with pluggable format backends |
 | OOXML spec is massive and intimidating | Progressive coverage — common use cases first, full spec over time |
-| Existing Rust doc libraries are incomplete or abandoned | Actively maintained, community-driven, spec-compliant |
+| Rust doc libraries cover individual formats | Unified, actively maintained, spec-compliant |
 
 ## Crate Structure
 
@@ -140,4 +140,4 @@ This library carries that spirit: carefully crafted components, bound together i
 
 ---
 
-*Built with 🦀 and ☕ — because documents shouldn't require a Python sidecar.*
+*Built with 🦀 and ☕ — documents, natively.*
