@@ -131,3 +131,26 @@ This document captures key architectural and design choices made during Lontar's
 ---
 
 *Add new decisions using the format: DD-NNN: Title, Decision, Alternatives, Rationale, Trade-offs.*
+
+---
+
+## DD-012: Universal Script Support via Text Shaping Pipeline
+
+**Decision:** Integrate a full text shaping pipeline (`rustybuzz`, `unicode-bidi`, `unicode-linebreak`) as a foundational layer rather than handling scripts individually or deferring to rendering applications.
+
+**Alternatives considered:**
+- Defer all shaping to the consuming application (Word, LibreOffice, PDF viewer)
+- Handle only Latin + a few additional scripts with custom code
+- Integrate HarfBuzz via C FFI instead of rustybuzz
+
+**Rationale:** Deferring to applications works for DOCX/PPTX but fails for PDF, where the generator must produce correctly positioned glyphs. Handling scripts individually doesn't scale — there are 159+ Unicode scripts, each with their own shaping rules. By integrating `rustybuzz` (a proven, pure-Rust port of HarfBuzz), we get correct shaping for all scripts at once. This is also central to Lontar's identity — a library named after Balinese palm leaf manuscripts should be able to render Aksara Bali correctly.
+
+**Trade-off accepted:** `rustybuzz` and font handling add to binary size and compile time. This is mitigated by making `lontar-aksara` an optional dependency — backends that don't need shaping (MD, TXT) don't pull it in. The `lontar-aksara` crate is required for DOCX (font embedding), PPTX (font embedding), and PDF (glyph positioning).
+
+---
+
+## DD-013: Separate lontar-aksara Crate
+
+**Decision:** Text shaping lives in its own crate (`lontar-aksara`) rather than inside `lontar-core`.
+
+**Rationale:** Not all backends need text shaping. Markdown and plain text output work with raw Unicode strings — they don't need `rustybuzz` or font management. Keeping `lontar-core` dependency-free means simple use cases stay lightweight. Backends that generate binary formats (DOCX, PPTX, PDF) depend on `lontar-aksara`; text-based backends depend only on `lontar-core`.

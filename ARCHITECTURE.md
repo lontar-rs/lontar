@@ -2,7 +2,7 @@
 
 ## Overview
 
-Lontar follows a **compiler-like architecture**: parse intent → build AST → lower to format-specific IR → serialize to bytes. This separation allows the core document model to remain format-agnostic while each backend handles the specifics of its target format.
+Lontar follows a **compiler-like architecture**: parse intent → build AST → shape text → lower to format-specific IR → serialize to bytes. This separation allows the core document model to remain format-agnostic while each backend handles the specifics of its target format.
 
 ```
                         ┌─────────────┐
@@ -15,6 +15,14 @@ Lontar follows a **compiler-like architecture**: parse intent → build AST → 
                      │    lontar-core    │
                      │   Document AST    │
                      │  Styles, Layout   │
+                     └────────┬──────────┘
+                              │
+                              ▼
+                     ┌───────────────────┐
+                     │   lontar-aksara   │
+                     │  Text Shaping     │
+                     │  BiDi, Linebreak  │
+                     │  Font Management  │
                      └────────┬──────────┘
                               │
               ┌───────┬───────┼───────┬───────┬───────┐
@@ -275,6 +283,141 @@ pub enum ImageSource {
 }
 ```
 
+## Text Shaping Pipeline (`lontar-aksara`)
+
+The text shaping pipeline is what makes Lontar's universal script support possible. Rather than handling individual scripts with custom code, Lontar integrates proven, standards-compliant components that handle all 159+ Unicode scripts correctly.
+
+### Why This Matters
+
+Document generation libraries typically store text as plain Unicode strings and rely on the rendering application (Word, LibreOffice, a PDF viewer) to handle shaping. This works for DOCX and PPTX where the application does the heavy lifting, but breaks for PDF where the generator is responsible for glyph selection and positioning. By building a shaping pipeline into the foundation, Lontar produces correct output across all formats and all scripts.
+
+### Pipeline Components
+
+```
+Unicode Text + Font
+        │
+        ▼
+┌──────────────────┐
+│   Script Detection │  ← Identify script runs (Latin, Arabic, Balinese, etc.)
+│   (unicode-script) │
+└────────┬───────────┘
+         │
+         ▼
+┌──────────────────┐
+│  BiDi Resolution  │  ← Resolve bidirectional text (LTR/RTL mixing)
+│  (unicode-bidi)   │
+└────────┬──────────┘
+         │
+         ▼
+┌──────────────────┐
+│   Text Shaping    │  ← Map characters → glyphs with positioning
+│   (rustybuzz)     │     Handles: conjuncts, ligatures, reordering,
+└────────┬──────────┘     contextual forms, mark positioning
+         │
+         ▼
+┌──────────────────┐
+│  Line Breaking    │  ← Script-aware line break opportunities
+│ (unicode-linebreak)│
+└────────┬──────────┘
+         │
+         ▼
+┌──────────────────┐
+│  Font Management  │  ← Font loading, fallback chains, subsetting
+│  (subsetting TBD) │
+└────────┬──────────┘
+         │
+         ▼
+   Shaped Glyphs + Positions
+   (consumed by format backends)
+```
+
+### Shaping Detail
+
+`rustybuzz` (Rust port of HarfBuzz) is the core of the pipeline. It handles:
+
+- **Conjunct formation** — e.g., Aksara Bali consonant clusters where ᬦ + ᭄ + ᬢ forms a stacked conjunct
+- **Vowel sign reordering** — e.g., Balinese TALING (ᬾ) visually precedes the consonant it logically follows
+- **Contextual shaping** — e.g., Arabic letters taking initial/medial/final/isolated forms
+- **Ligatures** — e.g., Latin fi/fl ligatures, Arabic lam-alef
+- **Mark positioning** — e.g., combining diacritics, vowel signs above/below consonants
+
+### Backend Integration
+
+Each backend uses the text pipeline differently:
+
+| Backend | Shaping Role |
+|---|---|
+| **DOCX/PPTX** | Font embedding and run-level language tagging. The application handles shaping, but correct font embedding ensures glyphs are available. |
+| **PDF** | Full shaping required. The pipeline produces positioned glyphs that are written directly into the PDF content stream. |
+| **HTML** | Font-face declarations with proper unicode-range. Browser handles shaping. |
+| **MD/TXT** | Pass-through. Plain Unicode text; the viewer handles rendering. |
+
+### Font Management
+
+```rust
+pub struct FontManager {
+    /// Registered font families with style variants
+    families: HashMap<String, FontFamily>,
+    /// Fallback chain for script coverage
+    fallback_chain: Vec<FontFamily>,
+    /// System font discovery (optional)
+    system_fonts: Option<SystemFontIndex>,
+}
+
+pub struct FontFamily {
+    pub name: String,
+    pub regular: Option<FontData>,
+    pub bold: Option<FontData>,
+    pub italic: Option<FontData>,
+    pub bold_italic: Option<FontData>,
+    /// Scripts this font covers (auto-detected from cmap table)
+    pub script_coverage: HashSet<Script>,
+}
+
+pub struct FontData {
+    pub data: Vec<u8>,
+    /// Parsed face for shaping queries
+    pub face: rustybuzz::Face,
+}
+```
+
+**Font fallback strategy:** When a text run contains characters not covered by the specified font, the font manager walks the fallback chain to find a font that covers the required script. This ensures mixed-script documents (e.g., Latin + Balinese + Arabic in the same paragraph) render correctly.
+
+**Font subsetting:** For PDF and DOCX embedding, only the glyphs actually used in the document are included, reducing file size. This is particularly important for CJK fonts which can be 10MB+ for a full set.
+
+### Supported Script Categories
+
+With `rustybuzz` + `unicode-bidi` + `unicode-linebreak`, Lontar supports:
+
+| Category | Scripts | Key Challenges |
+|---|---|---|
+| **Simple LTR** | Latin, Cyrillic, Greek, Georgian, Armenian... | Ligatures, kerning |
+| **Complex Indic** | Devanagari, Bengali, Tamil, Telugu, Kannada, Malayalam, Gujarati, Gurmukhi, Oriya, Sinhala... | Conjuncts, vowel reordering, split matras |
+| **Southeast Asian** | Thai, Lao, Khmer, Myanmar, Balinese, Javanese, Sundanese, Batak, Bugis, Cham... | Conjuncts, above/below marks, no word spaces |
+| **RTL** | Arabic, Hebrew, Syriac, Thaana, N'Ko... | Bidirectional layout, contextual joining |
+| **CJK** | Han, Hiragana, Katakana, Hangul, Bopomofo | Large glyph sets, vertical text (future) |
+| **Tibetan** | Tibetan, Phags-Pa | Complex stacking |
+| **African** | Ethiopic, Tifinagh, Vai, Bamum... | Syllabic systems |
+| **Historic** | Kawi, Old Uyghur, Mongolian, Brahmi... | Rare fonts, limited shaping data |
+
+### Module Structure
+
+```
+lontar-aksara/
+├── src/
+│   ├── lib.rs
+│   ├── shaping.rs       # rustybuzz integration, shaped run output
+│   ├── bidi.rs           # Bidirectional text resolution
+│   ├── linebreak.rs      # Script-aware line breaking
+│   ├── script.rs         # Script detection and run segmentation
+│   ├── font/
+│   │   ├── mod.rs
+│   │   ├── manager.rs    # Font loading, fallback chains
+│   │   ├── subset.rs     # Glyph subsetting for embedding
+│   │   └── system.rs     # System font discovery (optional)
+│   └── lang.rs           # Language tagging (BCP 47)
+```
+
 ## Format Backends
 
 ### Backend Trait
@@ -520,12 +663,15 @@ tests/
 ```
 lontar-core          (zero external deps beyond std)
     │
+    ├── lontar-aksara (rustybuzz, unicode-bidi, unicode-linebreak, unicode-script)
+    │       │
+    │       ├── lontar-docx  (zip, quick-xml)
+    │       ├── lontar-pptx  (zip, quick-xml)
+    │       └── lontar-pdf   (typst or printpdf — TBD)
+    │
     ├── lontar-md    (zero external deps)
     ├── lontar-txt   (zero external deps)
     ├── lontar-html  (zero external deps)
-    ├── lontar-docx  (zip, quick-xml)
-    ├── lontar-pptx  (zip, quick-xml)
-    ├── lontar-pdf   (typst or printpdf — TBD)
     └── lontar-template (tera or custom)
 
 lontar (umbrella)    re-exports all backends via feature flags
@@ -545,11 +691,13 @@ For a typical 20-page report with tables and images:
 | HTML | < 10ms | String concatenation + CSS |
 | TXT | < 5ms | Simplest possible output |
 
-These targets reflect native compilation and zero-copy where possible.
+These targets reflect native compilation and zero-copy where possible. Text shaping adds minimal overhead — rustybuzz shapes thousands of glyphs per millisecond.
 
 ## Future Architecture Considerations
 
-- **WASM target:** Core + MD/HTML backends should compile to WASM for browser-side document generation
+- **WASM target:** Core + text shaping + MD/HTML backends should compile to WASM for browser-side document generation with full script support
+- **Vertical text layout:** CJK vertical text for PDF and PPTX backends
 - **Streaming writes:** For very large documents, write pages/slides incrementally instead of buffering the entire ZIP
 - **Async support:** Optional async file I/O for server use cases
 - **Plugin system:** Allow third-party format backends (e.g., ODT, RTF, EPUB)
+- **Font auto-discovery:** Detect and use system-installed fonts with script coverage analysis

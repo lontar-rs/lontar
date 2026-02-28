@@ -51,6 +51,18 @@ Detailed task breakdown by phase. Check the box when complete.
 - [ ] Create issue templates for bug reports and feature requests
 - [ ] Set up dependabot for dependency updates
 
+### Text Shaping Research
+- [ ] Evaluate `rustybuzz` API and capabilities
+- [ ] Evaluate `unicode-bidi` for bidirectional text
+- [ ] Evaluate `unicode-linebreak` for line break opportunities
+- [ ] Evaluate `unicode-script` for script run detection
+- [ ] Research font subsetting approaches in Rust
+- [ ] Collect test fonts: Noto Sans Balinese, Noto Sans Devanagari, Noto Sans Arabic, Noto Sans CJK
+- [ ] Create test strings for each script category (simple LTR, complex Indic, SE Asian, RTL, CJK)
+- [ ] Document how DOCX/PPTX handle font embedding and language tagging
+- [ ] Document how PDF embeds fonts and stores positioned glyphs
+- [ ] Prototype: shape "ᬮᭀᬦ᭄ᬢᬭ᭄" (lontar in Aksara Bali) with rustybuzz → verify conjunct formation
+
 ---
 
 ## Phase 1 — Core Document Model + Simple Backends
@@ -101,6 +113,50 @@ Detailed task breakdown by phase. Check the box when complete.
 - [ ] Handle: tables (ASCII art)
 - [ ] Handle: lists (with indentation)
 - [ ] Write snapshot tests
+
+---
+
+## Phase 1.5 — Text Shaping Pipeline
+
+**Goal:** Build the universal text shaping infrastructure that enables correct rendering of all Unicode scripts.
+
+### lontar-aksara — Core Pipeline
+- [ ] Create `lontar-aksara` crate with module structure
+- [ ] Integrate `rustybuzz` for OpenType text shaping
+- [ ] Integrate `unicode-bidi` for bidirectional text resolution
+- [ ] Integrate `unicode-linebreak` for script-aware line breaking
+- [ ] Integrate `unicode-script` for script run segmentation
+- [ ] Define `ShapedRun` output type (glyph IDs, positions, advances)
+- [ ] Define `TextPipeline` API: text + font → shaped runs
+
+### Font Management
+- [ ] Implement `FontManager` with family registration
+- [ ] Implement font fallback chain (per-script coverage detection)
+- [ ] Parse font cmap tables to detect script coverage
+- [ ] Implement font subsetting (extract only used glyphs)
+- [ ] Support loading fonts from file paths and embedded bytes
+- [ ] Optional: system font discovery
+
+### Language & Script Support
+- [ ] Implement script run segmentation (split mixed-script text into runs)
+- [ ] Implement BCP 47 language tagging
+- [ ] Handle mixed-direction paragraphs (e.g., Latin + Arabic in one line)
+
+### Testing — Script Categories
+- [ ] Simple LTR: Latin, Cyrillic, Greek
+- [ ] Complex Indic: Devanagari conjuncts, split matras
+- [ ] Southeast Asian: Balinese (ᬮᭀᬦ᭄ᬢᬭ᭄), Javanese, Thai
+- [ ] RTL: Arabic contextual joining, Hebrew
+- [ ] RTL + LTR mixed: Arabic paragraph with English words
+- [ ] CJK: Han characters, Hiragana, Katakana, Hangul
+- [ ] Tibetan: stacking behavior
+- [ ] African: Ethiopic syllabary
+- [ ] Edge cases: zero-width joiners, combining marks, emoji with skin tones
+
+### Benchmarks
+- [ ] Shaping throughput: glyphs/second for each script category
+- [ ] Font subsetting time for various font sizes
+- [ ] Memory usage for loaded fonts
 
 ---
 
@@ -176,12 +232,23 @@ Detailed task breakdown by phase. Check the box when complete.
 - [ ] Code blocks (monospaced styled paragraphs)
 - [ ] Horizontal rules
 
+### Font & Script Integration
+- [ ] Font embedding in docx ZIP (`word/fonts/`)
+- [ ] Font subsetting for embedded fonts
+- [ ] Language tagging on text runs (`w:lang` attribute)
+- [ ] Complex script run properties (`w:cs`, `w:rtl`)
+- [ ] Bidirectional paragraph handling
+
 ### Testing & Validation
 - [ ] Open generated docs in LibreOffice — visual verification
 - [ ] Open generated docs in MS Office Online — visual verification
 - [ ] Compare XML structure against python-docx reference docs
 - [ ] Test with complex documents (20+ pages, mixed content)
-- [ ] Test with CJK characters and RTL text
+- [ ] Test with Aksara Bali text (ᬮᭀᬦ᭄ᬢᬭ᭄) — verify conjuncts render
+- [ ] Test with Arabic text — verify RTL and contextual joining
+- [ ] Test with Devanagari text — verify conjuncts and matras
+- [ ] Test with CJK characters
+- [ ] Test with mixed-script paragraphs (Latin + Balinese + Arabic)
 - [ ] Test with large images (>5MB)
 - [ ] Performance benchmarks (criterion)
 
@@ -337,6 +404,7 @@ Detailed task breakdown by phase. Check the box when complete.
 |---|---|---|---|
 | Phase 0 | 🔴 Not Started | — | — |
 | Phase 1 | 🔴 Not Started | — | — |
+| Phase 1.5 | 🔴 Not Started | — | — |
 | Phase 2 | 🔴 Not Started | — | — |
 | Phase 3 | 🔴 Not Started | — | — |
 | Phase 4 | 🔴 Not Started | — | — |

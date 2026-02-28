@@ -2,6 +2,7 @@
 resolver = "2"
 members = [
     "crates/lontar-core",
+    "crates/lontar-aksara",
     "crates/lontar-md",
     "crates/lontar-txt",
     "crates/lontar-html",
@@ -18,7 +19,7 @@ version = "0.1.0"
 edition = "2021"
 rust-version = "1.75"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/lontar-rs/lontar"
+repository = "https://github.com/YOUR_ORG/lontar"
 description = "A comprehensive document generation library for Rust"
 keywords = ["document", "docx", "pptx", "pdf", "office"]
 categories = ["text-processing", "encoding"]

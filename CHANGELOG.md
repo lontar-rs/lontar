@@ -13,3 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ARCHITECTURE.md with technical design
 - TODO.md with phased roadmap
 - CONTRIBUTING.md with development guidelines
+- LICENSE-APACHE and LICENSE-MIT (dual license)
+- Universal script support architecture (lontar-aksara crate)
+- Text shaping pipeline design: rustybuzz, unicode-bidi, unicode-linebreak
+- Font management with fallback chains and subsetting
+- Support for 159+ Unicode scripts including Aksara Bali, Arabic, Devanagari, CJK

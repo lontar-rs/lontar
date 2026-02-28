@@ -1,0 +1,50 @@
+[package]
+name = "lontar"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "A comprehensive document generation library for Rust"
+
+[dependencies]
+lontar-core = { path = "../crates/lontar-core" }
+
+[features]
+default = ["md", "txt"]
+md = ["dep:lontar-md"]
+txt = ["dep:lontar-txt"]
+html = ["dep:lontar-html"]
+docx = ["dep:lontar-docx"]
+pptx = ["dep:lontar-pptx"]
+pdf = ["dep:lontar-pdf"]
+template = ["dep:lontar-template"]
+full = ["md", "txt", "html", "docx", "pptx", "pdf", "template"]
+
+[dependencies.lontar-md]
+path = "../crates/lontar-md"
+optional = true
+
+[dependencies.lontar-txt]
+path = "../crates/lontar-txt"
+optional = true
+
+[dependencies.lontar-html]
+path = "../crates/lontar-html"
+optional = true
+
+[dependencies.lontar-docx]
+path = "../crates/lontar-docx"
+optional = true
+
+[dependencies.lontar-pptx]
+path = "../crates/lontar-pptx"
+optional = true
+
+[dependencies.lontar-pdf]
+path = "../crates/lontar-pdf"
+optional = true
+
+[dependencies.lontar-template]
+path = "../crates/lontar-template"
+optional = true

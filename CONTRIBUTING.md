@@ -11,7 +11,7 @@
 ### Getting Started
 
 ```bash
-git clone https://github.com/lontar-rs/lontar.git
+git clone https://github.com/YOUR_ORG/lontar.git
 cd lontar
 cargo build
 cargo test
@@ -24,6 +24,7 @@ lontar/
 ├── Cargo.toml              # Workspace definition
 ├── crates/
 │   ├── lontar-core/        # Document AST, styles, traits
+│   ├── lontar-aksara/      # Text shaping, BiDi, line breaking, fonts
 │   ├── lontar-docx/        # DOCX backend
 │   ├── lontar-pptx/        # PPTX backend
 │   ├── lontar-pdf/         # PDF backend
