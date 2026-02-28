@@ -33,12 +33,12 @@ Detailed task breakdown by phase. Check the box when complete.
   - [x] Block quotes
 - [ ] Write Python script to generate reference documents using python-pptx:
   - [x] Title slide
-  - [ ] Content slide with bullets
-  - [ ] Table slide
-  - [ ] Chart slide (bar, line, pie)
-  - [ ] Image slide
-  - [ ] Two-column layout
-  - [ ] Slide with speaker notes
+  - [x] Content slide with bullets
+  - [x] Table slide
+  - [x] Chart slide (bar, line, pie)
+  - [x] Image slide
+  - [x] Two-column layout
+  - [x] Slide with speaker notes
 - [ ] Unzip all generated docs, organize XML for reference
 - [ ] Create `tests/fixtures/reference_docs/` with all samples
 - [ ] Create `tests/fixtures/expected_xml/` with extracted XML fragments
