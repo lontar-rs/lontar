@@ -42,6 +42,34 @@ Detailed task breakdown by phase. Check the box when complete.
 - [ ] Unzip all generated docs, organize XML for reference
 - [ ] Create `tests/fixtures/reference_docs/` with all samples
 - [ ] Create `tests/fixtures/expected_xml/` with extracted XML fragments
+- [ ] For each reference doc, manually create expected output in MD, HTML, and TXT formats
+- [ ] Verify reference docs open correctly in LibreOffice and MS Office Online
+
+### Reference Output Fixtures
+- [ ] Create `tests/fixtures/expected_md/` with expected Markdown output for each test document
+- [ ] Create `tests/fixtures/expected_html/` with expected HTML output for each test document
+- [ ] Create `tests/fixtures/expected_txt/` with expected plain text output for each test document
+- [ ] Create `tests/fixtures/expected_pdf/` with reference PDF output (via typst or LaTeX) for visual comparison
+- [ ] Define expected Markdown for: headings, styled text, tables, lists, images, code blocks, block quotes, links, horizontal rules
+- [ ] Define expected HTML for: headings, styled text, tables, lists, images, code blocks, block quotes, links (self-contained with inline CSS)
+- [ ] Define expected TXT for: headings (underline style), tables (ASCII art), lists (indented), word-wrapped paragraphs
+- [ ] Define expected PDF for: basic report, styled text, tables, images (visual reference only)
+
+### Multi-Script Test Corpus
+- [ ] Create `tests/fixtures/scripts/` directory for script-specific test data
+- [ ] Create test strings file with representative text for each script category:
+  - [ ] Simple LTR: Latin, Cyrillic, Greek, Georgian
+  - [ ] Complex Indic: Devanagari (conjuncts, split matras), Bengali, Tamil, Telugu, Kannada, Malayalam
+  - [ ] Southeast Asian: Balinese (ᬮᭀᬦ᭄ᬢᬭ᭄), Javanese, Sundanese, Batak, Thai, Lao, Khmer, Myanmar
+  - [ ] RTL: Arabic (contextual joining), Hebrew, Syriac, Thaana, N'Ko
+  - [ ] CJK: Simplified Chinese, Traditional Chinese, Japanese (Kanji + Hiragana + Katakana), Korean (Hangul)
+  - [ ] Tibetan: stacking consonants
+  - [ ] African: Ethiopic, Tifinagh
+  - [ ] Mixed-script paragraphs: Latin + Balinese, Arabic + English, CJK + Latin
+- [ ] Collect test fonts: Noto Sans families for each script category
+- [ ] Generate reference documents (via python-docx) containing multi-script text — verify they open correctly
+- [ ] Generate reference presentations (via python-pptx) containing multi-script text — verify they open correctly
+- [ ] Document expected shaping behavior for each script (which conjuncts should form, which reorderings should occur)
 
 ### Tooling Setup
 - [ ] Initialize Cargo workspace
