@@ -9,14 +9,14 @@ Detailed task breakdown by phase. Check the box when complete.
 **Goal:** Understand exactly what XML we need to generate. Kill the unknown unknowns.
 
 ### OOXML Spec Analysis
-- [ ] Download ECMA-376 5th Edition (Office Open XML)
-- [ ] Document the minimum viable XML for a "hello world" .docx
-- [ ] Document the minimum viable XML for a "hello world" .pptx
-- [ ] Map docx XML elements to our AST nodes (create mapping table)
-- [ ] Map pptx XML elements to our AST nodes (create mapping table)
-- [ ] Identify shared OOXML components (DrawingML, Chart markup, relationships)
-- [ ] Document the relationship/content_types system (.rels files)
-- [ ] Catalog EMU (English Metric Units) coordinate system for pptx
+- [x] Download ECMA-376 5th Edition (Office Open XML)
+- [x] Document the minimum viable XML for a "hello world" .docx
+- [x] Document the minimum viable XML for a "hello world" .pptx
+- [x] Map docx XML elements to our AST nodes (create mapping table)
+- [x] Map pptx XML elements to our AST nodes (create mapping table)
+- [x] Identify shared OOXML components (DrawingML, Chart markup, relationships)
+- [x] Document the relationship/content_types system (.rels files)
+- [x] Catalog EMU (English Metric Units) coordinate system for pptx
 
 ### Test Corpus Generation
 - [ ] Write Python script to generate reference documents using python-docx:

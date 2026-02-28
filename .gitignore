@@ -20,6 +20,15 @@ tests/fixtures/output/
 *.pptx
 *.xlsx
 *.pdf
+*.odt
+*.odp
+*.ods
+
+# But keep reference docs for analysis
+!tests/fixtures/reference_docs/*.docx
+!tests/fixtures/reference_docs/*.pptx
+!tests/fixtures/reference_docs/*.xlsx
+!tests/fixtures/reference_docs/*.pdf
 
 # Python (for reference doc generation tools)
 __pycache__/
