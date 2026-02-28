@@ -1,0 +1,33 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/lontar-core",
+    "crates/lontar-md",
+    "crates/lontar-txt",
+    "crates/lontar-html",
+    "crates/lontar-docx",
+    "crates/lontar-pptx",
+    "crates/lontar-pdf",
+    "crates/lontar-template",
+    "crates/lontar-cli",
+    "lontar",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.75"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/lontar-rs/lontar"
+description = "A comprehensive document generation library for Rust"
+keywords = ["document", "docx", "pptx", "pdf", "office"]
+categories = ["text-processing", "encoding"]
+
+[workspace.dependencies]
+# Shared dependencies — pin versions here, reference in member crates
+thiserror = "2"
+zip = "2"
+quick-xml = "0.37"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+chrono = { version = "0.4", features = ["serde"] }

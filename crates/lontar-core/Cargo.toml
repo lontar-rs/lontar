@@ -1,0 +1,12 @@
+[package]
+name = "lontar-core"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Core document model and traits for the Lontar document generation library"
+
+[dependencies]
+thiserror.workspace = true
+chrono.workspace = true

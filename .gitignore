@@ -1,0 +1,32 @@
+# Rust
+/target/
+**/*.rs.bk
+Cargo.lock
+
+# IDE
+.idea/
+.vscode/
+.windsurf/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test outputs
+tests/fixtures/output/
+*.docx
+*.pptx
+*.xlsx
+*.pdf
+
+# Python (for reference doc generation tools)
+__pycache__/
+*.pyc
+.venv/
+
+# Coverage
+lcov.info
+coverage/
