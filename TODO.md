@@ -31,7 +31,7 @@ Detailed task breakdown by phase. Check the box when complete.
   - [x] Table of contents
   - [x] Hyperlinks
   - [x] Block quotes
-- [ ] Write Python script to generate reference documents using python-pptx:
+- [x] Write Python script to generate reference documents using python-pptx:
   - [x] Title slide
   - [x] Content slide with bullets
   - [x] Table slide
@@ -39,9 +39,9 @@ Detailed task breakdown by phase. Check the box when complete.
   - [x] Image slide
   - [x] Two-column layout
   - [x] Slide with speaker notes
-- [ ] Unzip all generated docs, organize XML for reference
-- [ ] Create `tests/fixtures/reference_docs/` with all samples
-- [ ] Create `tests/fixtures/expected_xml/` with extracted XML fragments
+- [x] Unzip all generated docs, organize XML for reference
+- [x] Create `tests/fixtures/reference_docs/` with all samples
+- [x] Create `tests/fixtures/expected_xml/` with extracted XML fragments
 - [ ] For each reference doc, manually create expected output in MD, HTML, and TXT formats
 - [ ] Verify reference docs open correctly in LibreOffice and MS Office Online
 

@@ -208,6 +208,130 @@ def create_images_docx():
     print(f"Created: {output_path}")
     return output_path
 
+
+def create_tables_docx():
+    """Create a DOCX with various table configurations including merged cells."""
+    doc = Document()
+
+    doc.add_heading("Simple Table", level=2)
+    table = doc.add_table(rows=3, cols=3)
+    table.style = "Table Grid"
+    for i, text in enumerate(["Col A", "Col B", "Col C"]):
+        table.rows[0].cells[i].text = text
+    for r in range(1, 3):
+        for c in range(3):
+            table.rows[r].cells[c].text = f"Row {r} Col {c}"
+
+    doc.add_heading("Horizontal Merge", level=2)
+    table2 = doc.add_table(rows=3, cols=3)
+    table2.style = "Table Grid"
+    table2.rows[0].cells[0].merge(table2.rows[0].cells[2])
+    table2.rows[0].cells[0].text = "Merged Header (spans 3 columns)"
+    for r in range(1, 3):
+        for c in range(3):
+            table2.rows[r].cells[c].text = f"R{r}C{c}"
+
+    doc.add_heading("Vertical Merge", level=2)
+    table3 = doc.add_table(rows=4, cols=3)
+    table3.style = "Table Grid"
+    for c in range(3):
+        table3.rows[0].cells[c].text = f"Header {c}"
+    table3.rows[1].cells[0].merge(table3.rows[3].cells[0])
+    table3.rows[1].cells[0].text = "Spans 3 rows"
+    for r in range(1, 4):
+        table3.rows[r].cells[1].text = f"R{r}C1"
+        table3.rows[r].cells[2].text = f"R{r}C2"
+
+    doc.add_heading("Styled Table", level=2)
+    table4 = doc.add_table(rows=3, cols=3)
+    table4.style = "Light Grid Accent 1"
+    for c, h in enumerate(["Name", "Value", "Status"]):
+        table4.rows[0].cells[c].text = h
+    table4.rows[1].cells[0].text = "Alpha"
+    table4.rows[1].cells[1].text = "100"
+    table4.rows[1].cells[2].text = "Active"
+    table4.rows[2].cells[0].text = "Beta"
+    table4.rows[2].cells[1].text = "200"
+    table4.rows[2].cells[2].text = "Inactive"
+
+    output_path = os.path.join(os.path.dirname(__file__),
+                               "../../tests/fixtures/reference_docs/tables.docx")
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    doc.save(output_path)
+    print(f"Created: {output_path}")
+    return output_path
+
+
+def create_lists_docx():
+    """Create a DOCX with various list configurations including nested lists."""
+    doc = Document()
+
+    doc.add_heading("Bullet List", level=2)
+    doc.add_paragraph("Apple", style="List Bullet")
+    doc.add_paragraph("Banana", style="List Bullet")
+    doc.add_paragraph("Cherry", style="List Bullet")
+
+    doc.add_heading("Numbered List", level=2)
+    doc.add_paragraph("First", style="List Number")
+    doc.add_paragraph("Second", style="List Number")
+    doc.add_paragraph("Third", style="List Number")
+
+    doc.add_heading("Nested Bullet List", level=2)
+    doc.add_paragraph("Parent item 1", style="List Bullet")
+    doc.add_paragraph("Child item 1a", style="List Bullet 2")
+    doc.add_paragraph("Child item 1b", style="List Bullet 2")
+    doc.add_paragraph("Parent item 2", style="List Bullet")
+    doc.add_paragraph("Child item 2a", style="List Bullet 2")
+
+    doc.add_heading("Nested Numbered List", level=2)
+    doc.add_paragraph("First", style="List Number")
+    doc.add_paragraph("First-A", style="List Number 2")
+    doc.add_paragraph("First-B", style="List Number 2")
+    doc.add_paragraph("Second", style="List Number")
+    doc.add_paragraph("Second-A", style="List Number 2")
+
+    doc.add_heading("Mixed Nested List", level=2)
+    doc.add_paragraph("Parent One", style="List Number")
+    doc.add_paragraph("Child bullet", style="List Bullet 2")
+    doc.add_paragraph("Child bullet two", style="List Bullet 2")
+
+    output_path = os.path.join(os.path.dirname(__file__),
+                               "../../tests/fixtures/reference_docs/lists.docx")
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    doc.save(output_path)
+    print(f"Created: {output_path}")
+    return output_path
+
+
+def create_code_blocks_docx():
+    """Create a DOCX with code block styling."""
+    doc = Document()
+
+    doc.add_heading("Code Block Example", level=2)
+    doc.add_paragraph("Here is some inline code and a code block:")
+
+    code = doc.add_paragraph()
+    code.paragraph_format.left_indent = Inches(0.5)
+    code.paragraph_format.space_before = Pt(6)
+    code.paragraph_format.space_after = Pt(6)
+    run = code.add_run('fn main() {\n    println!("Hello, Lontar!");\n}')
+    run.font.name = "Courier New"
+    run.font.size = Pt(10)
+
+    code2 = doc.add_paragraph()
+    code2.paragraph_format.left_indent = Inches(0.5)
+    run2 = code2.add_run("SELECT * FROM users WHERE active = true;")
+    run2.font.name = "Courier New"
+    run2.font.size = Pt(10)
+
+    output_path = os.path.join(os.path.dirname(__file__),
+                               "../../tests/fixtures/reference_docs/code_blocks.docx")
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    doc.save(output_path)
+    print(f"Created: {output_path}")
+    return output_path
+
+
 def create_styled_docx():
     """Create a DOCX with various text styles."""
     doc = Document()
