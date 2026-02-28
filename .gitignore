@@ -25,6 +25,7 @@ tests/fixtures/output/
 __pycache__/
 *.pyc
 .venv/
+venv/
 
 # Coverage
 lcov.info
