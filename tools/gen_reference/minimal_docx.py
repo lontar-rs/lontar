@@ -14,6 +14,90 @@ from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 import os
 
+
+def generate_test_images():
+    """Generate simple test PNG images for reference docs (optional)."""
+    try:
+        from PIL import Image, ImageDraw
+    except ImportError:
+        print("Pillow not installed — skipping test image generation")
+        print("Install with: pip install Pillow")
+        return False
+
+    assets_dir = os.path.join(os.path.dirname(__file__),
+                              "../../tests/fixtures/reference_docs/assets")
+    os.makedirs(assets_dir, exist_ok=True)
+
+    # Inline test image (200x150, blue with text)
+    img = Image.new("RGB", (200, 150), color=(70, 130, 180))
+    draw = ImageDraw.Draw(img)
+    draw.text((50, 65), "inline.png", fill="white")
+    img.save(os.path.join(assets_dir, "inline.png"))
+
+    # Floating test image (300x200, green with text)
+    img2 = Image.new("RGB", (300, 200), color=(60, 150, 60))
+    draw2 = ImageDraw.Draw(img2)
+    draw2.text((80, 90), "floating.png", fill="white")
+    img2.save(os.path.join(assets_dir, "floating.png"))
+
+    print(f"Created test images in: {assets_dir}")
+    return True
+
+
+def add_page_number_field(paragraph):
+    """Add a PAGE field code to a paragraph (renders as page number in Word)."""
+    run = paragraph.add_run()
+
+    fld_begin = OxmlElement("w:fldChar")
+    fld_begin.set(qn("w:fldCharType"), "begin")
+    run._r.append(fld_begin)
+
+    instr = OxmlElement("w:instrText")
+    instr.set(qn("xml:space"), "preserve")
+    instr.text = " PAGE "
+    run._r.append(instr)
+
+    fld_sep = OxmlElement("w:fldChar")
+    fld_sep.set(qn("w:fldCharType"), "separate")
+    run._r.append(fld_sep)
+
+    placeholder = OxmlElement("w:t")
+    placeholder.text = "1"
+    run._r.append(placeholder)
+
+    fld_end = OxmlElement("w:fldChar")
+    fld_end.set(qn("w:fldCharType"), "end")
+    run._r.append(fld_end)
+
+
+def add_hyperlink(paragraph, url, text):
+    """Add a real w:hyperlink element to a paragraph."""
+    part = paragraph.part
+    r_id = part.relate_to(url,
+                          "http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink",
+                          is_external=True)
+
+    hyperlink = OxmlElement("w:hyperlink")
+    hyperlink.set(qn("r:id"), r_id)
+
+    new_run = OxmlElement("w:r")
+    rPr = OxmlElement("w:rPr")
+
+    c = OxmlElement("w:color")
+    c.set(qn("w:val"), "0563C1")
+    rPr.append(c)
+
+    u = OxmlElement("w:u")
+    u.set(qn("w:val"), "single")
+    rPr.append(u)
+
+    new_run.append(rPr)
+    t = OxmlElement("w:t")
+    t.text = text
+    new_run.append(t)
+    hyperlink.append(new_run)
+    paragraph._p.append(hyperlink)
+
 def create_minimal_docx():
     """Create a minimal DOCX with basic content."""
     doc = Document()
@@ -60,8 +144,7 @@ def create_layout_docx():
     section = doc.sections[0]
     section.header.paragraphs[0].text = "Header: Reference Document"
     section.footer.paragraphs[0].text = "Footer: Page "
-    footer_run = section.footer.paragraphs[0].add_run()
-    footer_run.add_field("PAGE")  # requires python-docx >= 0.8.11 field support; if unavailable, text remains
+    add_page_number_field(section.footer.paragraphs[0])
 
     # Page break
     doc.add_paragraph("Page 1 content before page break.")
@@ -74,7 +157,13 @@ def create_layout_docx():
 
     # Block quote
     block_quote = doc.add_paragraph("This is a block quote sample.")
-    block_quote.style = "Intense Quote" if "Intense Quote" in [s.name for s in doc.styles] else block_quote.style
+    try:
+        block_quote.style = doc.styles["Intense Quote"]
+    except KeyError:
+        block_quote.paragraph_format.left_indent = Inches(0.5)
+        block_quote.paragraph_format.right_indent = Inches(0.5)
+        for run in block_quote.runs:
+            run.italic = True
 
     # Table of contents field (levels 1-3)
     doc.add_paragraph("Table of Contents (update field in Word):")
@@ -187,9 +276,40 @@ def create_styled_docx():
     table.rows[2].cells[1].text = 'Data 5'
     table.rows[2].cells[2].text = 'Data 6'
     
-    # Hyperlink
+    # Strikethrough
     p = doc.add_paragraph()
-    p.add_run("Click here").font.color.rgb = RGBColor(0, 0, 255)
+    run = p.add_run("Strikethrough text")
+    run.font.strike = True
+
+    # Superscript
+    p = doc.add_paragraph()
+    p.add_run("E = mc")
+    run = p.add_run("2")
+    run.font.superscript = True
+
+    # Subscript
+    p = doc.add_paragraph()
+    p.add_run("H")
+    run = p.add_run("2")
+    run.font.subscript = True
+    p.add_run("O")
+
+    # Different font families
+    p = doc.add_paragraph()
+    run = p.add_run("Arial font")
+    run.font.name = "Arial"
+
+    p = doc.add_paragraph()
+    run = p.add_run("Times New Roman font")
+    run.font.name = "Times New Roman"
+
+    p = doc.add_paragraph()
+    run = p.add_run("Courier New font")
+    run.font.name = "Courier New"
+
+    # Hyperlink
+    p = doc.add_paragraph("Visit: ")
+    add_hyperlink(p, "https://example.com", "Example Website")
     
     # Save the document
     output_path = os.path.join(os.path.dirname(__file__), 
@@ -231,9 +351,13 @@ def create_headings_docx():
 
 if __name__ == "__main__":
     print("Generating DOCX reference documents...")
+    generate_test_images()
     create_minimal_docx()
     create_styled_docx()
     create_headings_docx()
+    create_tables_docx()
+    create_lists_docx()
+    create_code_blocks_docx()
     create_images_docx()
     create_layout_docx()
-    print("Done!")
+    print("Done! Generated 8 reference DOCX files.")
