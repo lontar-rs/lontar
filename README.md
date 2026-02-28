@@ -60,6 +60,7 @@ Lontar is a workspace of focused crates. Use only what you need:
 | `lontar-docx` | OOXML WordprocessingML (.docx) output | 🔴 Design |
 | `lontar-pptx` | OOXML PresentationML (.pptx) output | 🔴 Design |
 | `lontar-pdf` | PDF output | 🔴 Design |
+| `lontar-xlsx` | XLSX output (wraps rust_xlsxwriter) | 🔴 Design |
 | `lontar-md` | Markdown output | 🔴 Design |
 | `lontar-html` | HTML output | 🔴 Design |
 | `lontar-txt` | Plain text output | 🔴 Design |
@@ -78,7 +79,7 @@ lontar-core = "0.1"
 lontar-docx = "0.1"     # if you need .docx
 lontar-pptx = "0.1"     # if you need .pptx
 # ... or use the umbrella crate:
-lontar = { version = "0.1", features = ["docx", "pptx", "pdf"] }
+lontar = { version = "0.1", features = ["docx", "pptx", "pdf", "xlsx"] }
 ```
 
 ## Design Principles
@@ -106,7 +107,7 @@ See [TODO.md](./TODO.md) for the detailed task breakdown.
 | 1.5 | Text Shaping | Universal script support pipeline |
 | 2 | DOCX | The primary deliverable |
 | 3 | PPTX | Presentations with charts and tables |
-| 4 | PDF + HTML | Complete the format matrix |
+| 4 | PDF + HTML + XLSX | Complete the format matrix |
 | 5 | Templates + CLI | Production tooling |
 
 ## Architecture
@@ -128,6 +129,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for development setup and guidelines.
 | DOCX | 🔴 Planned | ✅ Mature | ❌ | 🟡 Basic |
 | PPTX | 🔴 Planned | ❌ | ❌ | ❌ |
 | PDF | 🔴 Planned | ❌ | ❌ | ❌ |
+| XLSX | 🔴 Planned (wraps rust_xlsxwriter) | ❌ | ✅ Mature | ❌ |
 | Charts | 🔴 Planned | ❌ | ✅ | ❌ |
 | Templates | 🔴 Planned | ❌ | ❌ | ❌ |
 

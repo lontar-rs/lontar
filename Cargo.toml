@@ -8,6 +8,7 @@ members = [
     "crates/lontar-html",
     "crates/lontar-docx",
     "crates/lontar-pptx",
+    "crates/lontar-xlsx",
     "crates/lontar-pdf",
     "crates/lontar-template",
     "crates/lontar-cli",
@@ -32,3 +33,4 @@ quick-xml = "0.37"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 chrono = { version = "0.4", features = ["serde"] }
+rust_xlsxwriter = "0.79"

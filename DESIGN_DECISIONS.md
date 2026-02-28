@@ -154,3 +154,18 @@ This document captures key architectural and design choices made during Lontar's
 **Decision:** Text shaping lives in its own crate (`lontar-aksara`) rather than inside `lontar-core`.
 
 **Rationale:** Not all backends need text shaping. Markdown and plain text output work with raw Unicode strings — they don't need `rustybuzz` or font management. Keeping `lontar-core` dependency-free means simple use cases stay lightweight. Backends that generate binary formats (DOCX, PPTX, PDF) depend on `lontar-aksara`; text-based backends depend only on `lontar-core`.
+
+---
+
+## DD-014: Wrap rust_xlsxwriter Instead of Building Native XLSX
+
+**Decision:** The `lontar-xlsx` crate is a thin integration wrapper around `rust_xlsxwriter`, not a native XLSX implementation.
+
+**Alternatives considered:**
+- Build native XLSX generation from OOXML SpreadsheetML spec
+- Exclude XLSX entirely and tell users to use rust_xlsxwriter directly
+- Fork rust_xlsxwriter and integrate it into the workspace
+
+**Rationale:** `rust_xlsxwriter` is mature, actively maintained, and built by the same author who created the Python and C equivalents over a decade. Reimplementing it would duplicate years of work for no practical benefit. However, excluding XLSX breaks Lontar's "one document, every format" promise. A thin wrapper that maps `Block::Table` to worksheets and `Block::Chart` to chart objects gives users the convenience of the unified API for common cases while respecting the existing library's quality.
+
+**Trade-off accepted:** The mapping from document AST to spreadsheet grid is inherently lossy — paragraphs, headings, and flow-based content don't map cleanly to cells. The wrapper handles common cases (tables, charts, images) and gracefully degrades the rest. Users with advanced spreadsheet needs should use `rust_xlsxwriter` directly.

@@ -18,8 +18,9 @@ html = ["dep:lontar-html"]
 docx = ["dep:lontar-docx"]
 pptx = ["dep:lontar-pptx"]
 pdf = ["dep:lontar-pdf"]
+xlsx = ["dep:lontar-xlsx"]
 template = ["dep:lontar-template"]
-full = ["md", "txt", "html", "docx", "pptx", "pdf", "template"]
+full = ["md", "txt", "html", "docx", "pptx", "pdf", "xlsx", "template"]
 
 [dependencies.lontar-md]
 path = "../crates/lontar-md"
@@ -43,6 +44,10 @@ optional = true
 
 [dependencies.lontar-pdf]
 path = "../crates/lontar-pdf"
+optional = true
+
+[dependencies.lontar-xlsx]
+path = "../crates/lontar-xlsx"
 optional = true
 
 [dependencies.lontar-template]

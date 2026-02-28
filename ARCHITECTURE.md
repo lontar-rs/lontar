@@ -25,14 +25,14 @@ Lontar follows a **compiler-like architecture**: parse intent → build AST → 
                      │  Font Management  │
                      └────────┬──────────┘
                               │
-              ┌───────┬───────┼───────┬───────┬───────┐
-              ▼       ▼       ▼       ▼       ▼       ▼
-           ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐
-           │docx │ │pptx │ │ pdf │ │ md  │ │html │ │ txt │
-           └──┬──┘ └──┬──┘ └──┬──┘ └──┬──┘ └──┬──┘ └──┬──┘
-              │       │       │       │       │       │
-              ▼       ▼       ▼       ▼       ▼       ▼
-           .docx   .pptx    .pdf    .md     .html   .txt
+              ┌───────┬───────┼───────┬───────┬───────┬───────┐
+              ▼       ▼       ▼       ▼       ▼       ▼       ▼
+           ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐
+           │docx │ │pptx │ │ pdf │ │ md  │ │html │ │ txt │ │xlsx │
+           └──┬──┘ └──┬──┘ └──┬──┘ └──┬──┘ └──┬──┘ └──┬──┘ └──┬──┘
+              │       │       │       │       │       │       │
+              ▼       ▼       ▼       ▼       ▼       ▼       ▼
+           .docx   .pptx    .pdf    .md     .html   .txt   .xlsx
 ```
 
 ## Core Document Model (`lontar-core`)
@@ -562,6 +562,25 @@ Emits self-contained HTML with inline CSS. Can optionally emit separate CSS.
 - Web preview of documents
 - Intermediate format for PDF generation
 
+### XLSX Backend (`lontar-xlsx`)
+
+Thin integration wrapper around the `rust_xlsxwriter` crate. Rather than reimplementing Excel generation, this backend maps Lontar's AST to rust_xlsxwriter API calls.
+
+**AST mapping strategy:**
+
+| AST Node | XLSX Mapping |
+|---|---|
+| `Block::Heading { level: 1 }` | Worksheet name |
+| `Block::Table { headers, rows }` | Worksheet with header row + data rows |
+| `Block::Paragraph` | Cell content (merged across columns) |
+| `Block::Chart` | rust_xlsxwriter chart object |
+| `Block::Image` | Embedded worksheet image |
+| Other blocks | Gracefully degraded or skipped |
+
+**Design rationale:** Spreadsheets are fundamentally a different data model (typed cell grid) from documents (block/inline tree). A full AST-to-XLSX mapping will always be lossy. The wrapper provides convenience for the common case — exporting tables and charts to Excel from the same document pipeline — while users needing advanced spreadsheet features should use `rust_xlsxwriter` directly.
+
+**Dependencies:** `rust_xlsxwriter`
+
 ## Template System (`lontar-template`)
 
 Templates allow declarative document creation from structured data:
@@ -673,6 +692,7 @@ lontar-core          (zero external deps beyond std)
     │       ├── lontar-pptx  (zip, quick-xml)
     │       └── lontar-pdf   (typst or printpdf — TBD)
     │
+    ├── lontar-xlsx  (rust_xlsxwriter)
     ├── lontar-md    (zero external deps)
     ├── lontar-txt   (zero external deps)
     ├── lontar-html  (zero external deps)
@@ -691,6 +711,7 @@ For a typical 20-page report with tables and images:
 | DOCX | < 50ms | XML templating + zip compression |
 | PPTX | < 100ms | More complex XML, chart rendering |
 | PDF | < 200ms | Layout computation is the bottleneck |
+| XLSX | < 50ms | Delegates to rust_xlsxwriter |
 | MD | < 5ms | String concatenation |
 | HTML | < 10ms | String concatenation + CSS |
 | TXT | < 5ms | Simplest possible output |

@@ -1,0 +1,12 @@
+[package]
+name = "lontar-xlsx"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Lontar XLSX backend — thin integration wrapper around rust_xlsxwriter"
+
+[dependencies]
+lontar-core = { path = "../lontar-core" }
+rust_xlsxwriter.workspace = true
