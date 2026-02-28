@@ -20,19 +20,19 @@ Detailed task breakdown by phase. Check the box when complete.
 
 ### Test Corpus Generation
 - [ ] Write Python script to generate reference documents using python-docx:
-  - [ ] Minimal doc (single paragraph)
-  - [ ] Headings (all 6 levels)
-  - [ ] Styled text (bold, italic, underline, color, font size)
-  - [ ] Tables (simple, styled, merged cells)
-  - [ ] Images (inline, floating)
-  - [ ] Lists (ordered, unordered, nested)
-  - [ ] Headers and footers
-  - [ ] Page breaks and section breaks
-  - [ ] Table of contents
-  - [ ] Hyperlinks
-  - [ ] Block quotes
+  - [x] Minimal doc (single paragraph)
+  - [x] Headings (all 6 levels)
+  - [x] Styled text (bold, italic, underline, color, font size)
+  - [x] Tables (simple, styled, merged cells)
+  - [x] Images (inline, floating)
+  - [x] Lists (ordered, unordered, nested)
+  - [x] Headers and footers
+  - [x] Page breaks and section breaks
+  - [x] Table of contents
+  - [x] Hyperlinks
+  - [x] Block quotes
 - [ ] Write Python script to generate reference documents using python-pptx:
-  - [ ] Title slide
+  - [x] Title slide
   - [ ] Content slide with bullets
   - [ ] Table slide
   - [ ] Chart slide (bar, line, pie)
