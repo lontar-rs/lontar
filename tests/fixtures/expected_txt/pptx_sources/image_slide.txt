@@ -1,0 +1,4 @@
+IMAGE SLIDE
+===========
+
+[Image: image.png]

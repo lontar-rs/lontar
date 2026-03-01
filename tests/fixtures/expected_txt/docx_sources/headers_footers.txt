@@ -1,0 +1,5 @@
+Header text appears at the top of each page.
+
+Document with header and footer.
+
+Footer text appears at the bottom of each page.

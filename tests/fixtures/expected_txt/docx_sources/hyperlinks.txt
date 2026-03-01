@@ -1,0 +1,3 @@
+This is a hyperlink (https://example.com) to an external website.
+
+This is a link to section within the document.

@@ -1,0 +1,9 @@
+SLIDE WITH SPEAKER NOTES
+=========================
+
+Main slide content.
+
+--- SPEAKER NOTES ---
+
+These are the speaker notes for this slide. They provide additional context
+and talking points for the presenter.
