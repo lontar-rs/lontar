@@ -1,0 +1,62 @@
+[
+  {
+    "id": "knuth1984",
+    "type": "article-journal",
+    "title": "The TeXbook",
+    "container-title": "Computers & Typesetting",
+    "author": [{"family": "Knuth", "given": "Donald E."}],
+    "issued": {"date-parts": [[1984]]},
+    "volume": "A",
+    "publisher": "Addison-Wesley"
+  },
+  {
+    "id": "lamport1994",
+    "type": "book",
+    "title": "LaTeX: A Document Preparation System",
+    "author": [{"family": "Lamport", "given": "Leslie"}],
+    "issued": {"date-parts": [[1994]]},
+    "edition": "2",
+    "publisher": "Addison-Wesley",
+    "publisher-place": "Reading, MA"
+  },
+  {
+    "id": "miller2023",
+    "type": "paper-conference",
+    "title": "Efficient Graph Layouts for Large Diagrams",
+    "container-title": "Proceedings of the Diagram Systems Conference",
+    "author": [
+      {"family": "Miller", "given": "Alice"},
+      {"family": "Chen", "given": "Bob"}
+    ],
+    "issued": {"date-parts": [[2023]]},
+    "page": "101-115",
+    "DOI": "10.1234/diag.2023.15"
+  },
+  {
+    "id": "garcia2022",
+    "type": "thesis",
+    "title": "Multi-Script Typesetting for Scientific Publishing",
+    "author": [{"family": "Garcia", "given": "Maria"}],
+    "issued": {"date-parts": [[2022]]},
+    "genre": "PhD thesis",
+    "publisher": "University of Example"
+  },
+  {
+    "id": "lee2021",
+    "type": "report",
+    "title": "Unicode Fonts for Complex Scripts",
+    "author": [{"family": "Lee", "given": "Daniel"}],
+    "issued": {"date-parts": [[2021]]},
+    "publisher": "Example Research Lab",
+    "number": "ERL-2021-05"
+  },
+  {
+    "id": "webaccess2024",
+    "type": "webpage",
+    "title": "Accessible Math on the Web: A Practical Guide",
+    "author": [{"family": "Singh", "given": "Priya"}],
+    "issued": {"date-parts": [[2024]]},
+    "URL": "https://example.com/accessible-math",
+    "accessed": {"date-parts": [[2024, 2, 1]]}
+  }
+]

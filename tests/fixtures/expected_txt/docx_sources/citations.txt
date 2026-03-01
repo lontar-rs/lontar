@@ -1,0 +1,22 @@
+CITATION MODES REFERENCE
+
+This document exercises citation modes using sample bibliography entries.
+
+PARENTHETICAL CITATIONS
+- Single: (Knuth 1984)
+- Multiple: (Knuth 1984; Lamport 1994)
+- With prefix/suffix: (see Knuth 1984, p. 42)
+
+NARRATIVE CITATIONS
+- Single: Knuth (1984) says TeX is a typesetting system.
+- Multiple: Knuth (1984) and Lamport (1994) discuss document preparation.
+
+YEAR-ONLY / SUPPRESS AUTHOR
+- Year-only: 1984
+- Suppress author: 1984
+
+MIXED TYPES
+- Conference: (Miller and Chen 2023)
+- Thesis: (Garcia 2022)
+- Report: (Lee 2021)
+- Web: (Singh 2024)

@@ -1,0 +1,36 @@
+\documentclass{article}
+\usepackage{fontspec}
+\usepackage[english]{babel}
+\usepackage[backend=biber,style=authoryear]{biblatex}
+\addbibresource{sample.bib}
+\begin{document}
+\section*{Citation Modes Reference}
+This document exercises citation modes using sample bibliography entries.
+
+\subsection*{Parenthetical citations}
+\begin{itemize}
+  \item Single: \parencite{knuth1984}
+  \item Multiple: \parencite{knuth1984,lamport1994}
+  \item With prefix/suffix: \parencite[see][p.~42]{knuth1984}
+\end{itemize}
+
+\subsection*{Narrative citations}
+\begin{itemize}
+  \item Single: \textcite{knuth1984} says TeX is a typesetting system.
+  \item Multiple: \textcite{knuth1984} and \textcite{lamport1994} discuss document preparation.
+\end{itemize}
+
+\subsection*{Year-only / suppress author}
+\begin{itemize}
+  \item Year-only: \cite*{knuth1984}
+  \item Suppress author: \parencite*{knuth1984}
+\end{itemize}
+
+\subsection*{Mixed types}
+\begin{itemize}
+  \item Conference: \parencite{miller2023}
+  \item Thesis: \parencite{garcia2022}
+  \item Report: \parencite{lee2021}
+  \item Web: \parencite{webaccess2024}
+\end{itemize}
+\end{document}

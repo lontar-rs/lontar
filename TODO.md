@@ -60,21 +60,21 @@ Detailed task breakdown by phase. Check the box when complete.
 - [x] Create `tests/fixtures/expected_html/` with expected HTML output for each test document
 - [x] Create `tests/fixtures/expected_txt/` with expected plain text output for each test document
 - [x] Create `tests/fixtures/expected_tex/` with expected LaTeX output for each test document
-- [ ] Create `tests/fixtures/expected_pdf/` with reference PDF output (via typst or LaTeX) for visual comparison
-- [ ] Define expected Markdown for: headings, styled text, tables, lists, images, code blocks, block quotes, links, horizontal rules
-- [ ] Define expected HTML for: headings, styled text, tables, lists, images, code blocks, block quotes, links (self-contained with inline CSS)
-- [ ] Define expected TXT for: headings (underline style), tables (ASCII art), lists (indented), word-wrapped paragraphs
-- [ ] Define expected LaTeX for: headings, styled text, tables (booktabs), lists, images (figure), code blocks (listings/minted), equations, citations, cross-references
-- [ ] Define expected PDF for: basic report, styled text, tables, images (visual reference only)
+- [x] Create reference PDF output (via typst or LaTeX) for visual comparison
+- [x] Define expected Markdown for: headings, styled text, tables, lists, images, code blocks, block quotes, links, horizontal rules
+- [x] Define expected HTML for: headings, styled text, tables, lists, images, code blocks, block quotes, links (self-contained with inline CSS)
+- [x] Define expected TXT for: headings (underline style), tables (ASCII art), lists (indented), word-wrapped paragraphs
+- [x] Define expected LaTeX for: headings, styled text, tables (booktabs), lists, images (figure), code blocks (listings/minted), equations, citations, cross-references
+- [x] Define expected PDF for: basic report, styled text, tables, images (visual reference only)
 
 ### Citation & Bibliography Test Fixtures
-- [ ] Create `tests/fixtures/bib/` directory
-- [ ] Create test `.bib` file with representative entries (article, book, inproceedings, thesis, report, webpage)
-- [ ] Create test CSL-JSON file with equivalent entries
-- [ ] Create test documents with citations in various modes (parenthetical, narrative, year-only)
-- [ ] Create expected citation rendering for each backend (LaTeX, DOCX, MD, HTML, TXT)
-- [ ] Create expected bibliography rendering for each style (numeric, author-year, Vancouver, superscript)
-- [ ] Create test document with cross-references (figure refs, table refs, equation refs, section refs)
+- [x] Create `tests/fixtures/bib/` directory
+- [x] Create test `.bib` file with representative entries (article, book, inproceedings, thesis, report, webpage)
+- [x] Create test CSL-JSON file with equivalent entries
+- [x] Create test documents with citations in various modes (parenthetical, narrative, year-only)
+- [x] Create expected citation rendering for each backend (LaTeX, DOCX, MD, HTML, TXT)
+- [x] Create expected bibliography rendering for each style (numeric, author-year, Vancouver, superscript)
+- [x] Create test document with cross-references (figure refs, table refs, equation refs, section refs)
 
 ### Multi-Script Test Corpus
 - [ ] Create `tests/fixtures/scripts/` directory for script-specific test data
