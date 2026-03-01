@@ -1,0 +1,24 @@
+\documentclass{article}
+\usepackage{fontspec}
+\usepackage[english]{babel}
+\usepackage{listings}
+
+\lstset{
+    basicstyle=\ttfamily,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny
+}
+
+\begin{document}
+\section{Code Example}
+
+\begin{lstlisting}[language=Python,caption={Python Example}]
+def hello():
+    print("Hello, world!")
+    
+if __name__ == "__main__":
+    hello()
+\end{lstlisting}
+\end{document}

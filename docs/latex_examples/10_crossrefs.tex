@@ -1,0 +1,41 @@
+\documentclass{article}
+\usepackage{fontspec}
+\usepackage[english]{babel}
+\usepackage{hyperref}
+\usepackage{cleveref}
+
+\begin{document}
+\section{Introduction}
+\label{sec:intro}
+
+See \cref{sec:methods} for details.
+
+\section{Methods}
+\label{sec:methods}
+
+As mentioned in \cref{sec:intro}, we use the following approach.
+
+Refer to \cref{fig:results} on page~\pageref{fig:results}.
+
+Also see \cref{tab:data}.
+
+\begin{figure}[h]
+\centering
+\rule{5cm}{3cm}
+\caption{Results}
+\label{fig:results}
+\end{figure}
+
+\begin{table}[h]
+\centering
+\caption{Data}
+\label{tab:data}
+\begin{tabular}{ll}
+\hline
+A & B \\
+\hline
+1 & 2 \\
+\hline
+\end{tabular}
+\end{table}
+\end{document}

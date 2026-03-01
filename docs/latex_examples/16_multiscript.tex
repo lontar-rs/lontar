@@ -1,0 +1,28 @@
+\documentclass{article}
+\usepackage{fontspec}
+\usepackage[english]{babel}
+
+% Set fonts with Unicode support
+\setmainfont{Noto Serif}
+\newfontfamily\arabicfont{Noto Naskh Arabic}[Script=Arabic]
+\newfontfamily\devanagarifont{Noto Serif Devanagari}[Script=Devanagari]
+\newfontfamily\balinesefont{Noto Serif Balinese}[Script=Balinese]
+
+\begin{document}
+\section{Multi-Script Support}
+
+\subsection{Latin}
+Hello, world!
+
+\subsection{Arabic}
+{\arabicfont مرحبا بالعالم}
+
+\subsection{Devanagari (Hindi)}
+{\devanagarifont नमस्ते दुनिया}
+
+\subsection{Balinese}
+{\balinesefont ᬒᬫ᭄ ᬲ᭄ᬯᬲ᭄ᬢᬶᬬᬲ᭄ᬢᬸ}
+
+\subsection{Mixed Scripts}
+This document contains Latin, {\arabicfont العربية}, {\devanagarifont हिन्दी}, and {\balinesefont ᬩᬮᬶ} scripts.
+\end{document}

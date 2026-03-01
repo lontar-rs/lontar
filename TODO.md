@@ -19,14 +19,14 @@ Detailed task breakdown by phase. Check the box when complete.
 - [x] Catalog EMU (English Metric Units) coordinate system for pptx
 
 ### LaTeX Spec Analysis
-- [ ] Document LaTeX package dependencies for each AST feature
-- [ ] Map AST nodes to LaTeX commands/environments (create mapping table)
-- [ ] Document BibLaTeX citation commands and their mapping to `CitationMode`
-- [ ] Catalog common medical/scientific journal document classes (Lancet, BMJ, JAMA, NEJM, Elsevier, Springer Nature)
-- [ ] Document XeLaTeX/LuaLaTeX `fontspec` usage for multi-script text
-- [ ] Document TikZ primitives needed for diagram rendering
-- [ ] Create minimal compilable .tex for each AST feature (verify with XeLaTeX)
-- [ ] Document LaTeX special character escaping rules (& % $ # _ { } ~ ^ \)
+- [x] Document LaTeX package dependencies for each AST feature
+- [x] Map AST nodes to LaTeX commands/environments (create mapping table)
+- [x] Document BibLaTeX citation commands and their mapping to `CitationMode`
+- [x] Catalog common medical/scientific journal document classes (Lancet, BMJ, JAMA, NEJM, Elsevier, Springer Nature)
+- [x] Document XeLaTeX/LuaLaTeX `fontspec` usage for multi-script text
+- [x] Document TikZ primitives needed for diagram rendering
+- [x] Create minimal compilable .tex for each AST feature (verify with XeLaTeX)
+- [x] Document LaTeX special character escaping rules (& % $ # _ { } ~ ^ \)
 
 ### Test Corpus Generation
 - [ ] Write Python script to generate reference documents using python-docx:

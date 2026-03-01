@@ -1,0 +1,25 @@
+\documentclass{article}
+\usepackage{fontspec}
+\usepackage[english]{babel}
+\usepackage[backend=biber,style=numeric]{biblatex}
+\addbibresource{references.bib}
+
+\begin{document}
+\section{Citations}
+
+Parenthetical citation: \parencite{knuth1984}
+
+Narrative citation: According to \textcite{knuth1984}, TeX is a typesetting system.
+
+Multiple citations: \parencite{knuth1984,lamport1994}
+
+Citation with prefix/suffix: \parencite[see][p. 42]{knuth1984}
+
+Year only: \cite*{knuth1984}
+
+Suppress author: \parencite*{knuth1984}
+
+Full citation: \fullcite{knuth1984}
+
+\printbibliography
+\end{document}
