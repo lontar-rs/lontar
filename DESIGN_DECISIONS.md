@@ -130,10 +130,6 @@ This document captures key architectural and design choices made during Lontar's
 
 ---
 
-*Add new decisions using the format: DD-NNN: Title, Decision, Alternatives, Rationale, Trade-offs.*
-
----
-
 ## DD-012: Universal Script Support via Text Shaping Pipeline
 
 **Decision:** Integrate a full text shaping pipeline (`rustybuzz`, `unicode-bidi`, `unicode-linebreak`) as a foundational layer rather than handling scripts individually or deferring to rendering applications.
@@ -145,7 +141,7 @@ This document captures key architectural and design choices made during Lontar's
 
 **Rationale:** Deferring to applications works for DOCX/PPTX but fails for PDF, where the generator must produce correctly positioned glyphs. Handling scripts individually doesn't scale — there are 159+ Unicode scripts, each with their own shaping rules. By integrating `rustybuzz` (a proven, pure-Rust port of HarfBuzz), we get correct shaping for all scripts at once. This is also central to Lontar's identity — a library named after Balinese palm leaf manuscripts should be able to render Aksara Bali correctly.
 
-**Trade-off accepted:** `rustybuzz` and font handling add to binary size and compile time. This is mitigated by making `lontar-aksara` an optional dependency — backends that don't need shaping (MD, TXT) don't pull it in. The `lontar-aksara` crate is required for DOCX (font embedding), PPTX (font embedding), and PDF (glyph positioning).
+**Trade-off accepted:** `rustybuzz` and font handling add to binary size and compile time. This is mitigated by making `lontar-aksara` an optional dependency — backends that don't need shaping (MD, TXT, LaTeX) don't pull it in. The `lontar-aksara` crate is required for DOCX (font embedding), PPTX (font embedding), and PDF (glyph positioning).
 
 ---
 
@@ -153,7 +149,7 @@ This document captures key architectural and design choices made during Lontar's
 
 **Decision:** Text shaping lives in its own crate (`lontar-aksara`) rather than inside `lontar-core`.
 
-**Rationale:** Not all backends need text shaping. Markdown and plain text output work with raw Unicode strings — they don't need `rustybuzz` or font management. Keeping `lontar-core` dependency-free means simple use cases stay lightweight. Backends that generate binary formats (DOCX, PPTX, PDF) depend on `lontar-aksara`; text-based backends depend only on `lontar-core`.
+**Rationale:** Not all backends need text shaping. Markdown, plain text, LaTeX, and HTML output work with raw Unicode strings — they don't need `rustybuzz` or font management. Keeping `lontar-core` dependency-free means simple use cases stay lightweight. Backends that generate binary formats (DOCX, PPTX, PDF) depend on `lontar-aksara`; text-based backends depend only on `lontar-core`.
 
 ---
 
@@ -181,6 +177,85 @@ This document captures key architectural and design choices made during Lontar's
 - Generate Mermaid code only and rely on external renderers
 - Exclude diagrams entirely and tell users to insert images
 
-**Rationale:** Every technical document needs diagrams, yet no document generation library in any language renders diagrams natively across output formats. Embedding rasterized images produces non-editable, resolution-dependent output. Generating Mermaid code only works for Markdown viewers. By computing layout internally and rendering to each format's native primitives (DrawingML shapes in Office, SVG paths in HTML/PDF, Mermaid in Markdown, ASCII in plain text), we produce output that is editable, scalable, and format-appropriate everywhere.
+**Rationale:** Every technical document needs diagrams, yet no document generation library in any language renders diagrams natively across output formats. Embedding rasterized images produces non-editable, resolution-dependent output. Generating Mermaid code only works for Markdown viewers. By computing layout internally and rendering to each format's native primitives (DrawingML shapes in Office, SVG paths in HTML/PDF, TikZ in LaTeX, Mermaid in Markdown, ASCII in plain text), we produce output that is editable, scalable, and format-appropriate everywhere.
 
 **Trade-off accepted:** Automatic graph layout is a complex problem. We start with layered (Sugiyama) layout for flowcharts and tree layout for hierarchies — these cover the majority of documentation diagrams. Force-directed layout for arbitrary graphs is Phase 2 of the diagram engine. Manual coordinate mode is the escape hatch for layouts the algorithms can't handle.
+
+---
+
+## DD-016: LaTeX as a First-Class Backend
+
+**Decision:** LaTeX output (`lontar-latex`) is a mainline backend in the build pipeline, not a stretch goal or community add-on.
+
+**Alternatives considered:**
+- Keep LaTeX as a stretch goal after all other backends
+- Generate LaTeX only via an intermediate format (e.g., AST → Markdown → pandoc → LaTeX)
+- Support only PDF output and skip LaTeX source entirely
+
+**Rationale:** Academic publishing — particularly in medicine, biology, and clinical research — runs on LaTeX. Journals require it. Grant agencies expect it. Collaborators need DOCX alongside it. The entire value proposition of Lontar ("write once, emit every format") breaks for a massive user base if LaTeX is an afterthought. Moreover, LaTeX is *technically simple* to emit (it's string concatenation like Markdown, with more structure) — the hard part is getting the preamble management and citation integration right, which we solve once and all backends benefit.
+
+**Trade-off accepted:** Supporting LaTeX well requires the `Citation`/`Bibliography` AST additions (DD-017) and cross-reference system, which add complexity to `lontar-core`. This is acceptable because these features benefit *every* backend — DOCX and PDF also need citations and cross-references. LaTeX is the forcing function that makes us build the right abstractions.
+
+---
+
+## DD-017: Citations and Bibliography in Core AST
+
+**Decision:** `Inline::Citation`, `Block::Bibliography`, and `BibliographyStore` are part of `lontar-core`, not a format-specific extension.
+
+**Alternatives considered:**
+- LaTeX-only citation support via `Raw` blocks
+- Separate `lontar-bib` crate that post-processes the document
+- Store citations as plain text and let each backend parse them
+
+**Rationale:** Citations are a *semantic* document feature, not a format-specific one. A citation says "this claim is supported by this source" — that meaning is independent of whether the output is `\cite{key}`, a DOCX field code, an HTML hyperlink, or `[1]` in plain text. By modeling citations in the AST, every backend can render them correctly according to its format's conventions. The `BibliographyStore` follows the same pattern as `ResourceStore` — centralized data, referenced by ID, rendered differently per backend.
+
+**Trade-off accepted:** The `BibEntry` struct must be expressive enough for academic references (which have many fields — DOI, volume, issue, pages, etc.) without becoming a full CSL-JSON reimplementation. We start with fields sufficient for common entry types (article, book, proceedings, thesis, report) and use `custom: HashMap<String, String>` as an escape hatch for rare fields.
+
+---
+
+## DD-018: Cross-Reference System via Labels
+
+**Decision:** Blocks that can be referenced (tables, figures, equations, code listings, diagrams) carry an optional `label: Option<String>` field. `Inline::CrossRef` resolves against these labels. Headings use their existing `id: Option<String>` field.
+
+**Alternatives considered:**
+- Automatic numbering only (no user-defined labels)
+- A separate cross-reference registry outside the AST
+- Format-specific cross-referencing (LaTeX `\label`/`\ref`, DOCX bookmarks) with no unified model
+
+**Rationale:** Labels are the universal mechanism. LaTeX has `\label{fig:results}`/`\ref{fig:results}`. DOCX has bookmarks. HTML has `id`/`href`. By putting labels in the AST, every backend maps to its native mechanism. The numbering (e.g., "Figure 3") is computed during write time by each backend — the AST stores the label, not the number.
+
+**Trade-off accepted:** Label uniqueness must be validated at document build time, not at write time. This is a builder responsibility — `DocumentBuilder` should reject duplicate labels.
+
+---
+
+## DD-019: XeLaTeX/LuaLaTeX Only, No pdfLaTeX
+
+**Decision:** The LaTeX backend targets XeLaTeX and LuaLaTeX exclusively. pdfLaTeX is not supported.
+
+**Alternatives considered:**
+- Target pdfLaTeX with `inputenc`/`fontenc` for basic Latin support
+- Emit different preambles depending on engine selection
+- Target all three engines with a compatibility layer
+
+**Rationale:** Lontar's core value includes universal script support. pdfLaTeX's 8-bit encoding model fundamentally cannot handle Unicode — it requires font encoding packages, special input encodings, and breaks entirely on scripts like Balinese, Devanagari, or Arabic without extreme workarounds. XeLaTeX and LuaLaTeX use Unicode natively and access system fonts via `fontspec`. Since Lontar guarantees multi-script output, targeting pdfLaTeX would mean either (a) silently producing broken output for non-Latin text or (b) maintaining two completely different preamble generation strategies. Neither is acceptable.
+
+**Trade-off accepted:** Users with legacy pdfLaTeX-only workflows cannot use Lontar's LaTeX output directly. This is mitigated by the fact that XeLaTeX/LuaLaTeX are the current standard for new LaTeX installations, and most journal submission systems accept XeLaTeX. For journals that truly require pdfLaTeX, Lontar's DOCX or PDF output is the better submission path.
+
+---
+
+## DD-020: BibLaTeX over BibTeX for LaTeX Citation Backend
+
+**Decision:** The LaTeX backend emits BibLaTeX commands (`\parencite`, `\textcite`, `\addbibresource`) rather than legacy BibTeX (`\cite`, `\bibliography`).
+
+**Alternatives considered:**
+- Legacy BibTeX for maximum compatibility
+- Configurable: user selects BibTeX or BibLaTeX
+- Custom citation rendering (bypass both, emit raw text)
+
+**Rationale:** BibLaTeX + Biber is the modern standard for citation management in LaTeX. It supports all citation modes in our `CitationMode` enum (parenthetical, narrative, year-only, suppress-author, full), offers proper Unicode support (critical for non-English references), and handles all bibliography styles through backend selection rather than `.bst` files. Legacy BibTeX cannot distinguish `\parencite` from `\textcite`, doesn't handle Unicode well, and has a more limited type system.
+
+**Trade-off accepted:** Some older journals or submission systems may still expect legacy BibTeX. For these cases, users can either (a) add `extra_preamble` overrides to switch to BibTeX or (b) use Lontar's PDF output instead. A future `LatexOptions::citation_backend` setting could offer a BibTeX fallback mode if demand warrants it.
+
+---
+
+*Add new decisions using the format: DD-NNN: Title, Decision, Alternatives, Rationale, Trade-offs.*

@@ -25,14 +25,14 @@ Lontar follows a **compiler-like architecture**: parse intent → build AST → 
                      │  Font Management  │
                      └────────┬──────────┘
                               │
-              ┌───────┬───────┼───────┬───────┬───────┬───────┐
-              ▼       ▼       ▼       ▼       ▼       ▼       ▼
-           ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐
-           │docx │ │pptx │ │ pdf │ │ md  │ │html │ │ txt │ │xlsx │
-           └──┬──┘ └──┬──┘ └──┬──┘ └──┬──┘ └──┬──┘ └──┬──┘ └──┬──┘
-              │       │       │       │       │       │       │
-              ▼       ▼       ▼       ▼       ▼       ▼       ▼
-           .docx   .pptx    .pdf    .md     .html   .txt   .xlsx
+        ┌───────┬───────┬─────┼─────┬───────┬───────┬───────┬───────┐
+        ▼       ▼       ▼     ▼     ▼       ▼       ▼       ▼       ▼
+     ┌─────┐ ┌─────┐ ┌─────┐ ┌───┐ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐
+     │docx │ │pptx │ │ pdf │ │tex│ │ md  │ │html │ │ txt │ │xlsx │ │diag │
+     └──┬──┘ └──┬──┘ └──┬──┘ └─┬─┘ └──┬──┘ └──┬──┘ └──┬──┘ └──┬──┘ └──┬──┘
+        │       │       │      │      │       │       │       │       │
+        ▼       ▼       ▼      ▼      ▼       ▼       ▼       ▼       ▼
+     .docx   .pptx    .pdf   .tex   .md     .html   .txt   .xlsx   (lib)
 ```
 
 ## Core Document Model (`lontar-core`)
@@ -48,6 +48,7 @@ pub struct Document {
     pub content: Vec<Block>,
     pub styles: StyleSheet,
     pub resources: ResourceStore,
+    pub bibliography: BibliographyStore,
 }
 
 pub struct DocumentMetadata {
@@ -85,6 +86,7 @@ pub enum Block {
         rows: Vec<Vec<Cell>>,
         style: TableStyle,
         caption: Option<Vec<Inline>>,
+        label: Option<String>,
     },
 
     /// Chart (bar, line, pie, etc.)
@@ -93,6 +95,7 @@ pub enum Block {
         data: ChartData,
         title: Option<String>,
         size: Option<Size>,
+        label: Option<String>,
     },
 
     /// Embedded image
@@ -100,12 +103,16 @@ pub enum Block {
         source: ImageSource,
         alt_text: Option<String>,
         layout: ImageLayout,
+        caption: Option<Vec<Inline>>,
+        label: Option<String>,
     },
 
     /// Fenced code block
     CodeBlock {
         language: Option<String>,
         content: String,
+        caption: Option<Vec<Inline>>,
+        label: Option<String>,
     },
 
     /// Block quote
@@ -151,6 +158,19 @@ pub enum Block {
         edges: Vec<DiagramEdge>,
         layout: DiagramLayout,
         style: DiagramStyle,
+        caption: Option<Vec<Inline>>,
+        label: Option<String>,
+    },
+
+    /// Math equation (display mode)
+    Equation {
+        expression: String,
+        label: Option<String>,
+    },
+
+    /// Rendered bibliography / reference list
+    Bibliography {
+        style: BibliographyStyle,
     },
 
     /// Raw format-specific passthrough (escape hatch)
@@ -249,6 +269,20 @@ pub enum Inline {
         alt_text: Option<String>,
     },
 
+    /// Citation reference (resolves from BibliographyStore)
+    Citation {
+        keys: Vec<String>,
+        prefix: Option<String>,
+        suffix: Option<String>,
+        mode: CitationMode,
+    },
+
+    /// Cross-reference to a labelled element (figure, table, equation, section)
+    CrossRef {
+        target: String,
+        kind: CrossRefKind,
+    },
+
     /// Footnote reference
     FootnoteRef {
         id: String,
@@ -281,7 +315,140 @@ pub enum Inline {
         format: Option<String>,
     },
 }
+
+/// How the citation is rendered in text
+pub enum CitationMode {
+    /// Parenthetical: (Author, Year) or [1]
+    Parenthetical,
+    /// Narrative: Author (Year) or Author [1]
+    Narrative,
+    /// Year only: (Year) — when author is already in prose
+    YearOnly,
+    /// Suppress author: (Year) — explicit variant for styles that distinguish
+    SuppressAuthor,
+    /// Full: render all authors even if previously abbreviated
+    Full,
+}
+
+/// What aspect of the target to display in a cross-reference
+pub enum CrossRefKind {
+    /// "Figure 3", "Table 2", etc. — auto-detect from target type
+    Auto,
+    /// Just the number: "3"
+    Number,
+    /// The page: "page 12"
+    Page,
+    /// The target's title or caption text
+    Title,
+}
 ```
+
+### Bibliography System
+
+The bibliography system stores reference metadata centrally, parallel to how
+`ResourceStore` handles binary assets. Backends resolve citations against
+this store and render according to their format's conventions.
+
+```rust
+pub struct BibliographyStore {
+    entries: HashMap<String, BibEntry>,
+}
+
+pub struct BibEntry {
+    pub key: String,
+    pub kind: BibEntryKind,
+    pub title: String,
+    pub authors: Vec<BibAuthor>,
+    pub year: Option<String>,
+    pub journal: Option<String>,
+    pub volume: Option<String>,
+    pub issue: Option<String>,
+    pub pages: Option<String>,
+    pub publisher: Option<String>,
+    pub doi: Option<String>,
+    pub url: Option<String>,
+    pub isbn: Option<String>,
+    pub abstract_text: Option<String>,
+    pub custom: HashMap<String, String>,
+}
+
+pub struct BibAuthor {
+    pub given: String,
+    pub family: String,
+    pub suffix: Option<String>,
+}
+
+pub enum BibEntryKind {
+    Article,
+    Book,
+    InProceedings,
+    InCollection,
+    Thesis,
+    Report,
+    Patent,
+    WebPage,
+    Software,
+    Dataset,
+    Other(String),
+}
+
+pub enum BibliographyStyle {
+    /// Numeric: [1], [2], [3]
+    Numeric,
+    /// Author-Year: (Smith, 2024)
+    AuthorYear,
+    /// Superscript numeric: ¹, ², ³ — common in medical journals
+    Superscript,
+    /// Vancouver style — numbered, ordered by first citation (common in medicine)
+    Vancouver,
+    /// APA 7th edition
+    Apa7,
+    /// Named style (resolved from a CSL file or built-in)
+    Named(String),
+}
+```
+
+**Backend rendering:**
+
+| Backend | Citation Rendering | Bibliography Rendering |
+|---|---|---|
+| **LaTeX** | `\cite{key}`, `\parencite{key}`, `\textcite{key}` + `.bib` file | `\printbibliography` (BibLaTeX) or `\bibliography{}` (BibTeX) |
+| **DOCX** | Field codes or inline text | Formatted reference list as paragraphs with hanging indent |
+| **PPTX** | Inline text (simplified) | Reference slide |
+| **PDF** | Rendered inline text with hyperlinks | Formatted reference list |
+| **HTML** | `<a>` with tooltip, linked to `#ref-key` anchor | `<ol>` or `<dl>` with anchor IDs |
+| **Markdown** | `[Author, Year]` or `[1]` with link | Formatted list at end of document |
+| **TXT** | `(Author, Year)` or `[1]` | Numbered/formatted list at end |
+
+**BibTeX/BibLaTeX import:**
+
+```rust
+impl BibliographyStore {
+    /// Parse a .bib file and add all entries
+    pub fn load_bibtex(&mut self, bibtex_source: &str) -> Result<(), BibParseError>;
+
+    /// Parse CSL-JSON (e.g., from Zotero export)
+    pub fn load_csl_json(&mut self, json: &str) -> Result<(), BibParseError>;
+}
+```
+
+This means a medical researcher can export from Zotero/Mendeley/EndNote as `.bib` or CSL-JSON, load it into the document, and get correct citations in every output format.
+
+### Cross-Reference System
+
+The `label` field on blocks (`Table`, `Image`, `Equation`, `Diagram`, `CodeBlock`)
+and the `id` field on `Heading` form the cross-reference namespace. Backends resolve
+`Inline::CrossRef { target }` by looking up matching labels/IDs and rendering
+format-appropriate references:
+
+| Backend | Cross-Reference Rendering |
+|---|---|
+| **LaTeX** | `\ref{target}`, `\autoref{target}`, `\cref{target}` |
+| **DOCX** | `SEQ` field codes for figure/table numbers, `REF` bookmarks for headings |
+| **PDF** | Internal hyperlinks with computed numbers |
+| **HTML** | `<a href="#target">` with computed text |
+| **Markdown** | `[Figure N](#target)` |
+| **TXT** | `(see Figure N)` |
 
 ### Style System
 
@@ -424,6 +591,7 @@ Each backend uses the text pipeline differently:
 | **DOCX/PPTX** | Font embedding and run-level language tagging. The application handles shaping, but correct font embedding ensures glyphs are available. |
 | **PDF** | Full shaping required. The pipeline produces positioned glyphs that are written directly into the PDF content stream. |
 | **HTML** | Font-face declarations with proper unicode-range. Browser handles shaping. |
+| **LaTeX** | Pass-through for text; XeLaTeX/LuaLaTeX handle shaping via HarfBuzz. Font declarations emitted in preamble. |
 | **MD/TXT** | Pass-through. Plain Unicode text; the viewer handles rendering. |
 
 ### Font Management
@@ -513,9 +681,9 @@ Diagram DSL (nodes + edges + kind)
    (nodes with x, y, width, height;
     edges with path control points)
          │
-    ┌────┼────┬────┬────┬────┐
-    ▼    ▼    ▼    ▼    ▼    ▼
-  DOCX  PPTX  PDF  HTML  MD  TXT
+    ┌────┼────┬────┬────┬────┬────┐
+    ▼    ▼    ▼    ▼    ▼    ▼    ▼
+  DOCX  PPTX  PDF  LaTeX HTML  MD  TXT
 ```
 
 ### Format-Native Rendering
@@ -525,6 +693,7 @@ Diagram DSL (nodes + edges + kind)
 | **DOCX** | DrawingML shapes | `<wsp:wsp>` with flowchart presets, connectors. Native vector, editable in Word. |
 | **PPTX** | DrawingML shapes | Same primitives, positioned in EMU. Editable in PowerPoint. |
 | **PDF** | Vector paths | Bezier curves, fills, strokes. Scalable, resolution-independent. |
+| **LaTeX** | TikZ code | `\begin{tikzpicture}` with nodes and edges. Native vector, editable. |
 | **HTML** | Inline SVG | `<svg>` with `<rect>`, `<path>`, `<text>`. Scalable, potentially interactive. |
 | **SVG** | Direct SVG | Standalone `.svg` file output (future backend). |
 | **MD** | Mermaid code block | ` ```mermaid ` fenced block. Renders on GitHub, GitLab, and Mermaid-aware viewers. |
@@ -557,6 +726,7 @@ lontar-diagram/
 │       ├── mod.rs
 │       ├── drawingml.rs  # DOCX/PPTX DrawingML shapes
 │       ├── svg.rs        # PDF/HTML/standalone SVG
+│       ├── tikz.rs       # LaTeX TikZ diagrams
 │       ├── mermaid.rs    # Markdown Mermaid code blocks
 │       └── ascii.rs      # Plain text ASCII art
 ```
@@ -626,6 +796,9 @@ output.docx (ZIP archive)
 | `Image` | `<w:drawing>` → `<wp:inline>` → `<a:blip>` |
 | `TextStyle.bold` | `<w:rPr><w:b/></w:rPr>` |
 | `PageBreak` | `<w:br w:type="page"/>` |
+| `Citation` | Field code `ADDIN ZOTERO_ITEM` or inline text with bookmark |
+| `Bibliography` | Formatted paragraphs with hanging indent style |
+| `CrossRef` | `REF` bookmark field or `SEQ` field |
 
 **Dependencies:** `zip`, `quick-xml`
 
@@ -674,6 +847,128 @@ output.pptx (ZIP archive)
 
 **Dependencies:** `zip`, `quick-xml`
 
+### LaTeX Backend (`lontar-latex`)
+
+Emits compilable LaTeX source files. Unlike most backends, LaTeX output is a *source format* — it requires a TeX engine (XeLaTeX or LuaLaTeX) to produce the final PDF. This is by design: the LaTeX ecosystem's typographic quality, citation management, and journal template system are the point.
+
+**Output structure:**
+
+For a self-contained document:
+```
+output.tex              ← main LaTeX source
+output.bib              ← BibTeX/BibLaTeX bibliography (if citations present)
+media/
+├── image1.png          ← referenced images (copied alongside)
+└── image2.pdf
+```
+
+**Key design decisions:**
+
+1. **XeLaTeX/LuaLaTeX assumed.** These engines support Unicode natively and use system fonts via `fontspec`. We don't target pdfLaTeX — its 8-bit encoding model is incompatible with universal script support.
+
+2. **Preamble is computed, not templated.** The backend analyzes which AST features are used and emits only the required `\usepackage` declarations. A document with no math doesn't load `amsmath`. A document with no tables doesn't load `booktabs`. This produces clean, minimal source.
+
+3. **BibLaTeX for citations.** BibLaTeX + Biber is the modern standard, supporting all `BibliographyStyle` variants. The backend emits `\addbibresource{output.bib}` and appropriate `\cite` commands.
+
+4. **Journal templates via document class.** The `LatexOptions` struct accepts a custom document class and preamble overrides, allowing journal-specific templates.
+
+**AST mapping:**
+
+| AST Node | LaTeX Output |
+|---|---|
+| `Heading { level: 1 }` | `\section{...}` |
+| `Heading { level: 2 }` | `\subsection{...}` |
+| `Heading { level: 3 }` | `\subsubsection{...}` |
+| `Heading { level: 4+ }` | `\paragraph{...}`, `\subparagraph{...}` |
+| `Paragraph` | Text block with `\par` separation |
+| `Table` | `\begin{table}` + `booktabs` (`\toprule`, `\midrule`, `\bottomrule`) |
+| `Image` | `\begin{figure}` + `\includegraphics` |
+| `CodeBlock` | `\begin{lstlisting}` or `\begin{minted}` |
+| `Equation` | `\begin{equation}` with optional `\label` |
+| `Citation` | `\parencite{key}`, `\textcite{key}`, `\cite{key}` per `CitationMode` |
+| `CrossRef` | `\ref{target}`, `\autoref{target}`, or `\cref{target}` |
+| `Bibliography` | `\printbibliography` |
+| `List (unordered)` | `\begin{itemize}` |
+| `List (ordered)` | `\begin{enumerate}` |
+| `BlockQuote` | `\begin{quote}` |
+| `Diagram` | `\begin{tikzpicture}` (via lontar-diagram TikZ renderer) |
+| `TextStyle.bold` | `\textbf{...}` |
+| `TextStyle.italic` | `\textit{...}` |
+| `PageBreak` | `\newpage` |
+| `Divider` | `\hrulefill` or `\rule{\linewidth}{0.4pt}` |
+| `TableOfContents` | `\tableofcontents` |
+| `Math { display: false }` | `$...$` |
+| `Math { display: true }` | `\[...\]` |
+
+**Preamble generation example:**
+
+```latex
+\documentclass[a4paper,12pt]{article}  % or journal-specific class
+\usepackage{fontspec}                   % always (XeLaTeX/LuaLaTeX)
+\usepackage[english]{babel}             % from DocumentMetadata.language
+\usepackage{graphicx}                   % if any Image blocks present
+\usepackage{booktabs}                   % if any Table blocks present
+\usepackage{amsmath,amssymb}            % if any Math/Equation nodes present
+\usepackage{listings}                   % if any CodeBlock nodes present
+\usepackage{hyperref}                   % if any Link/CrossRef nodes present
+\usepackage{tikz}                       % if any Diagram blocks present
+\usepackage[backend=biber,
+            style=numeric]{biblatex}    % style from BibliographyStyle
+\addbibresource{output.bib}
+
+\title{...}
+\author{...}
+\date{...}
+
+\begin{document}
+\maketitle
+% ... body ...
+\printbibliography
+\end{document}
+```
+
+**Options:**
+
+```rust
+pub struct LatexOptions {
+    /// Document class (default: "article")
+    pub document_class: String,
+    /// Additional class options (e.g., "twocolumn", "11pt")
+    pub class_options: Vec<String>,
+    /// Additional preamble lines (for journal-specific packages)
+    pub extra_preamble: Vec<String>,
+    /// TeX engine hint (for comments/documentation in output)
+    pub engine: TexEngine,
+    /// Whether to emit \maketitle
+    pub emit_maketitle: bool,
+    /// Code listing package preference
+    pub code_package: CodePackage,
+    /// Cross-reference package preference
+    pub crossref_package: CrossRefPackage,
+}
+
+pub enum TexEngine {
+    XeLaTeX,
+    LuaLaTeX,
+}
+
+pub enum CodePackage {
+    Listings,
+    Minted,
+}
+
+pub enum CrossRefPackage {
+    /// Standard \ref
+    Standard,
+    /// \autoref (hyperref)
+    AutoRef,
+    /// \cref (cleveref) — most flexible
+    CleverRef,
+}
+```
+
+**Dependencies:** None beyond `std`. LaTeX output is pure text generation. The complexity is in correct escaping and preamble management, not in binary format handling.
+
 ### PDF Backend (`lontar-pdf`)
 
 **Strategy decision (to be finalized in Phase 0):**
@@ -696,6 +991,8 @@ The simplest backend — primarily useful for:
 
 **Challenge:** Markdown has no standard for many features (charts, page breaks, complex tables). These emit HTML fallbacks or are skipped with warnings.
 
+**Citation rendering:** Inline text following the selected `BibliographyStyle` (e.g., `(Smith et al., 2024)` or `[1]`), with full reference list appended at the `Bibliography` block position.
+
 ### HTML Backend (`lontar-html`)
 
 Emits self-contained HTML with inline CSS. Can optionally emit separate CSS.
@@ -704,6 +1001,8 @@ Emits self-contained HTML with inline CSS. Can optionally emit separate CSS.
 - Email-ready document output
 - Web preview of documents
 - Intermediate format for PDF generation
+
+**Citation rendering:** `<a>` tags linking to `#ref-{key}` anchors in the bibliography section, with tooltip showing the full reference.
 
 ### XLSX Backend (`lontar-xlsx`)
 
@@ -745,6 +1044,37 @@ let doc = template.render(&data)?;
 doc.write_docx("q3_report.docx")?;
 ```
 
+### Academic Templates
+
+The template system explicitly supports academic workflows:
+
+```rust
+// Medical journal submission
+let template = Template::from_file("templates/lancet-article.lontar")?;
+let bib = BibliographyStore::from_bibtex_file("references.bib")?;
+
+let data = json!({
+    "title": "Efficacy of Novel Treatment in Randomized Controlled Trial",
+    "authors": ["Dr. A", "Dr. B"],
+    "abstract": "Background: ...",
+    "sections": { ... },
+});
+
+let doc = template.render_with_bibliography(&data, &bib)?;
+doc.write_latex("submission.tex")?;   // For journal submission
+doc.write_docx("review_copy.docx")?;  // For collaborator review
+doc.write_pdf("preprint.pdf")?;        // For preprint upload
+```
+
+**Built-in academic templates (planned):**
+- Generic research article (IMRAD structure)
+- Systematic review (PRISMA-compliant)
+- Case report
+- Conference abstract
+- Thesis/dissertation chapter
+- Grant proposal
+- Clinical trial report
+
 **Template language (TBD):** Likely a subset of Tera or a custom DSL that maps naturally to the document AST.
 
 ## Cross-Cutting Concerns
@@ -777,6 +1107,12 @@ pub enum LontarError {
 
     #[error("Image processing error: {0}")]
     Image(String),
+
+    #[error("Bibliography error: {0}")]
+    Bibliography(String),
+
+    #[error("Citation key not found: {0}")]
+    CitationNotFound(String),
 }
 ```
 
@@ -809,7 +1145,9 @@ tests/
 │   ├── expected_md/        ← Expected Markdown output
 │   ├── expected_html/      ← Expected HTML output
 │   ├── expected_txt/       ← Expected plain text output
+│   ├── expected_tex/       ← Expected LaTeX output
 │   ├── expected_pdf/       ← Reference PDF output for visual comparison
+│   ├── bib/                ← Test .bib files and CSL-JSON
 │   └── scripts/            ← Multi-script test strings and fonts
 ├── integration/            ← Cross-crate integration tests
 └── conformance/            ← Office compatibility tests
@@ -820,6 +1158,8 @@ tests/
 - **Multi-format snapshot testing:** Generate all output formats from same AST, compare each against expected fixtures
 - **XML snapshot testing:** Serialize AST to OOXML XML, compare against known-good snapshots
 - **Round-trip testing:** AST → Markdown → parse → AST (verify structural equivalence)
+- **LaTeX compilation testing:** Generate .tex → compile with XeLaTeX → verify PDF output
+- **Citation resolution testing:** AST with citations → each format → verify citation numbers/keys and bibliography entries match
 - **Reference comparison:** Generate equivalent docs via Python libs, compare XML structure
 - **Conformance testing:** Open in LibreOffice/MS Office, verify rendering (manual + screenshot diffing)
 - **Script rendering verification:** Shape test strings with rustybuzz, verify glyph output matches expected shaping behavior
@@ -837,6 +1177,7 @@ lontar-core          (zero external deps beyond std)
     │
     ├── lontar-diagram (petgraph — optional, consumed by all backends)
     ├── lontar-xlsx  (rust_xlsxwriter)
+    ├── lontar-latex (zero external deps — pure text generation)
     ├── lontar-md    (zero external deps)
     ├── lontar-txt   (zero external deps)
     ├── lontar-html  (zero external deps)
@@ -845,6 +1186,8 @@ lontar-core          (zero external deps beyond std)
 lontar (umbrella)    re-exports all backends via feature flags
 lontar-cli           (clap, lontar)
 ```
+
+Note: `lontar-latex` has zero external dependencies — it's pure text generation, like MD and TXT. The complexity is in correct LaTeX escaping and preamble management, not binary format handling. However, it *optionally* depends on `lontar-aksara` for font declarations when the document uses non-Latin scripts and the user wants explicit `\setmainfont` / `\newfontfamily` declarations.
 
 ## Performance Targets
 
@@ -855,6 +1198,7 @@ For a typical 20-page report with tables and images:
 | DOCX | < 50ms | XML templating + zip compression |
 | PPTX | < 100ms | More complex XML, chart rendering |
 | PDF | < 200ms | Layout computation is the bottleneck |
+| LaTeX | < 10ms | String concatenation + preamble computation |
 | XLSX | < 50ms | Delegates to rust_xlsxwriter |
 | MD | < 5ms | String concatenation |
 | HTML | < 10ms | String concatenation + CSS |
@@ -864,9 +1208,11 @@ These targets reflect native compilation and zero-copy where possible. Text shap
 
 ## Future Architecture Considerations
 
-- **WASM target:** Core + text shaping + MD/HTML backends should compile to WASM for browser-side document generation with full script support
+- **WASM target:** Core + text shaping + MD/HTML/LaTeX backends should compile to WASM for browser-side document generation with full script support
 - **Vertical text layout:** CJK vertical text for PDF and PPTX backends
 - **Streaming writes:** For very large documents, write pages/slides incrementally instead of buffering the entire ZIP
 - **Async support:** Optional async file I/O for server use cases
 - **Plugin system:** Allow third-party format backends (e.g., ODT, RTF, EPUB)
 - **Font auto-discovery:** Detect and use system-installed fonts with script coverage analysis
+- **BibTeX parser:** Native `.bib` file parsing (evaluate `biblatex-rs` or write custom parser)
+- **CSL processor:** Citation Style Language support for precise journal-specific citation formatting

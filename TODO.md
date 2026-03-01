@@ -18,6 +18,16 @@ Detailed task breakdown by phase. Check the box when complete.
 - [x] Document the relationship/content_types system (.rels files)
 - [x] Catalog EMU (English Metric Units) coordinate system for pptx
 
+### LaTeX Spec Analysis
+- [ ] Document LaTeX package dependencies for each AST feature
+- [ ] Map AST nodes to LaTeX commands/environments (create mapping table)
+- [ ] Document BibLaTeX citation commands and their mapping to `CitationMode`
+- [ ] Catalog common medical/scientific journal document classes (Lancet, BMJ, JAMA, NEJM, Elsevier, Springer Nature)
+- [ ] Document XeLaTeX/LuaLaTeX `fontspec` usage for multi-script text
+- [ ] Document TikZ primitives needed for diagram rendering
+- [ ] Create minimal compilable .tex for each AST feature (verify with XeLaTeX)
+- [ ] Document LaTeX special character escaping rules (& % $ # _ { } ~ ^ \)
+
 ### Test Corpus Generation
 - [ ] Write Python script to generate reference documents using python-docx:
   - [x] Minimal doc (single paragraph)
@@ -42,18 +52,29 @@ Detailed task breakdown by phase. Check the box when complete.
 - [x] Unzip all generated docs, organize XML for reference
 - [x] Create `tests/fixtures/reference_docs/` with all samples
 - [x] Create `tests/fixtures/expected_xml/` with extracted XML fragments
-- [ ] For each reference doc, manually create expected output in MD, HTML, and TXT formats
+- [ ] For each reference doc, manually create expected output in MD, HTML, TXT, and LaTeX formats
 - [ ] Verify reference docs open correctly in LibreOffice and MS Office Online
 
 ### Reference Output Fixtures
 - [ ] Create `tests/fixtures/expected_md/` with expected Markdown output for each test document
 - [ ] Create `tests/fixtures/expected_html/` with expected HTML output for each test document
 - [ ] Create `tests/fixtures/expected_txt/` with expected plain text output for each test document
+- [ ] Create `tests/fixtures/expected_tex/` with expected LaTeX output for each test document
 - [ ] Create `tests/fixtures/expected_pdf/` with reference PDF output (via typst or LaTeX) for visual comparison
 - [ ] Define expected Markdown for: headings, styled text, tables, lists, images, code blocks, block quotes, links, horizontal rules
 - [ ] Define expected HTML for: headings, styled text, tables, lists, images, code blocks, block quotes, links (self-contained with inline CSS)
 - [ ] Define expected TXT for: headings (underline style), tables (ASCII art), lists (indented), word-wrapped paragraphs
+- [ ] Define expected LaTeX for: headings, styled text, tables (booktabs), lists, images (figure), code blocks (listings/minted), equations, citations, cross-references
 - [ ] Define expected PDF for: basic report, styled text, tables, images (visual reference only)
+
+### Citation & Bibliography Test Fixtures
+- [ ] Create `tests/fixtures/bib/` directory
+- [ ] Create test `.bib` file with representative entries (article, book, inproceedings, thesis, report, webpage)
+- [ ] Create test CSL-JSON file with equivalent entries
+- [ ] Create test documents with citations in various modes (parenthetical, narrative, year-only)
+- [ ] Create expected citation rendering for each backend (LaTeX, DOCX, MD, HTML, TXT)
+- [ ] Create expected bibliography rendering for each style (numeric, author-year, Vancouver, superscript)
+- [ ] Create test document with cross-references (figure refs, table refs, equation refs, section refs)
 
 ### Multi-Script Test Corpus
 - [ ] Create `tests/fixtures/scripts/` directory for script-specific test data
@@ -69,6 +90,7 @@ Detailed task breakdown by phase. Check the box when complete.
 - [ ] Collect test fonts: Noto Sans families for each script category
 - [ ] Generate reference documents (via python-docx) containing multi-script text — verify they open correctly
 - [ ] Generate reference presentations (via python-pptx) containing multi-script text — verify they open correctly
+- [ ] Generate reference LaTeX documents containing multi-script text — verify they compile with XeLaTeX
 - [ ] Document expected shaping behavior for each script (which conjuncts should form, which reorderings should occur)
 
 ### Tooling Setup
@@ -89,7 +111,17 @@ Detailed task breakdown by phase. Check the box when complete.
 - [ ] Create test strings for each script category (simple LTR, complex Indic, SE Asian, RTL, CJK)
 - [ ] Document how DOCX/PPTX handle font embedding and language tagging
 - [ ] Document how PDF embeds fonts and stores positioned glyphs
+- [ ] Document how XeLaTeX/LuaLaTeX handle font selection and shaping (fontspec + HarfBuzz)
 - [ ] Prototype: shape "ᬮᭀᬦ᭄ᬢᬭ᭄" (lontar in Aksara Bali) with rustybuzz → verify conjunct formation
+
+### Bibliography Research
+- [ ] Evaluate BibTeX parsing crates in Rust (e.g., `biblatex`, `nom-bibtex`)
+- [ ] Evaluate CSL-JSON parsing approach (serde deserialization)
+- [ ] Document BibLaTeX entry types and required/optional fields
+- [ ] Document Vancouver citation style rules (critical for medical journals)
+- [ ] Document APA 7th edition citation style rules
+- [ ] Survey journal submission systems: which accept XeLaTeX? which require pdfLaTeX?
+- [ ] Research CSL (Citation Style Language) processor options in Rust
 
 ---
 
@@ -98,8 +130,8 @@ Detailed task breakdown by phase. Check the box when complete.
 **Goal:** Prove the unified AST works with the simplest possible outputs.
 
 ### lontar-core
-- [ ] Define `Block` enum with all variants
-- [ ] Define `Inline` enum with all variants
+- [ ] Define `Block` enum with all variants (including `Equation`, `Bibliography`)
+- [ ] Define `Inline` enum with all variants (including `Citation`, `CrossRef`)
 - [ ] Define `TextStyle` struct
 - [ ] Define `ParagraphStyle` struct
 - [ ] Define `TableStyle` struct
@@ -108,14 +140,27 @@ Detailed task breakdown by phase. Check the box when complete.
 - [ ] Define `StyleSheet` with cascading resolution
 - [ ] Define `DocumentMetadata`
 - [ ] Define `ResourceStore` for images and binary assets
-- [ ] Implement `Document` struct with root node
-- [ ] Implement `DocumentBuilder` (ergonomic builder API)
+- [ ] Define `BibliographyStore` with `BibEntry` and `BibAuthor`
+- [ ] Define `BibEntryKind` enum
+- [ ] Define `BibliographyStyle` enum (Numeric, AuthorYear, Vancouver, Superscript, Apa7, Named)
+- [ ] Define `CitationMode` enum (Parenthetical, Narrative, YearOnly, SuppressAuthor, Full)
+- [ ] Define `CrossRefKind` enum (Auto, Number, Page, Title)
+- [ ] Implement `BibliographyStore::load_bibtex()` — parse .bib files
+- [ ] Implement `BibliographyStore::load_csl_json()` — parse CSL-JSON
+- [ ] Implement citation resolution: given citation keys + style → rendered text
+- [ ] Implement cross-reference resolution: given label → computed number/text
+- [ ] Implement label uniqueness validation in `DocumentBuilder`
+- [ ] Implement `Document` struct with root node (including `bibliography` field)
+- [ ] Implement `DocumentBuilder` (ergonomic builder API, with `.cite()`, `.crossref()`, `.bib_entry()`)
 - [ ] Implement `DocumentWriter` trait
 - [ ] Implement `WriteReport` for feature degradation reporting
-- [ ] Implement `LontarError` error types
+- [ ] Implement `LontarError` error types (including `CitationNotFound`, `Bibliography`)
 - [ ] Implement style cascade resolution (default → named → paragraph → run)
 - [ ] Write unit tests for AST construction
 - [ ] Write unit tests for style resolution
+- [ ] Write unit tests for citation resolution (all modes × all styles)
+- [ ] Write unit tests for cross-reference resolution
+- [ ] Write unit tests for BibTeX parsing
 - [ ] Write documentation for all public types
 
 ### lontar-md (Markdown Backend)
@@ -128,6 +173,10 @@ Detailed task breakdown by phase. Check the box when complete.
 - [ ] Handle: code blocks with language
 - [ ] Handle: block quotes
 - [ ] Handle: horizontal rules
+- [ ] Handle: citations (render as inline text per bibliography style)
+- [ ] Handle: bibliography (render as formatted list)
+- [ ] Handle: cross-references (render as `[Type N](#label)`)
+- [ ] Handle: math (render as `$...$` / `$$...$$`)
 - [ ] Graceful degradation: charts → table fallback
 - [ ] Graceful degradation: page breaks → `---`
 - [ ] Graceful degradation: headers/footers → skip with warning
@@ -140,6 +189,9 @@ Detailed task breakdown by phase. Check the box when complete.
 - [ ] Handle: paragraphs with word wrapping
 - [ ] Handle: tables (ASCII art)
 - [ ] Handle: lists (with indentation)
+- [ ] Handle: citations (render as inline text per bibliography style)
+- [ ] Handle: bibliography (render as numbered/formatted list)
+- [ ] Handle: cross-references (render as "(see Type N)")
 - [ ] Write snapshot tests
 
 ---
@@ -253,12 +305,22 @@ Detailed task breakdown by phase. Check the box when complete.
 - [ ] Page numbers in header/footer
 - [ ] Section breaks
 
+### Citations & Cross-References (DOCX)
+- [ ] Citation rendering as inline formatted text
+- [ ] Citation rendering as DOCX field codes (for Zotero/Mendeley compatibility)
+- [ ] Bibliography rendering with hanging indent paragraph style
+- [ ] Cross-reference bookmarks on labelled blocks
+- [ ] Cross-reference `REF` field codes for headings
+- [ ] Cross-reference `SEQ` field codes for figures, tables, equations
+- [ ] Auto-numbering for figure captions, table captions
+
 ### Advanced Features
 - [ ] Table of contents (field codes)
 - [ ] Footnotes (`word/footnotes.xml`)
 - [ ] Block quotes (styled paragraphs)
 - [ ] Code blocks (monospaced styled paragraphs)
 - [ ] Horizontal rules
+- [ ] Display equations (OMML or MathML)
 
 ### Font & Script Integration
 - [ ] Font embedding in docx ZIP (`word/fonts/`)
@@ -272,6 +334,8 @@ Detailed task breakdown by phase. Check the box when complete.
 - [ ] Open generated docs in MS Office Online — visual verification
 - [ ] Compare XML structure against python-docx reference docs
 - [ ] Test with complex documents (20+ pages, mixed content)
+- [ ] Test citation rendering: verify numbering, ordering, and bibliography formatting
+- [ ] Test cross-references: verify computed numbers match actual positions
 - [ ] Test with Aksara Bali text (ᬮᭀᬦ᭄ᬢᬭ᭄) — verify conjuncts render
 - [ ] Test with Arabic text — verify RTL and contextual joining
 - [ ] Test with Devanagari text — verify conjuncts and matras
@@ -322,6 +386,11 @@ Detailed task breakdown by phase. Check the box when complete.
 - [ ] Plain text notes
 - [ ] Formatted notes
 
+### Citations (PPTX)
+- [ ] Citation rendering as inline text in text frames
+- [ ] Reference slide generation for bibliography
+- [ ] Simplified citation display (space-constrained context)
+
 ### Testing
 - [ ] Open in LibreOffice Impress
 - [ ] Open in MS PowerPoint Online
@@ -331,7 +400,7 @@ Detailed task breakdown by phase. Check the box when complete.
 
 ---
 
-## Phase 4 — PDF + HTML Backends
+## Phase 4 — PDF + HTML + LaTeX + XLSX Backends
 
 ### lontar-pdf
 - [ ] Evaluate: typst vs printpdf vs genpdf (build prototypes)
@@ -343,6 +412,10 @@ Detailed task breakdown by phase. Check the box when complete.
 - [ ] Charts (render to image, embed)
 - [ ] Hyperlinks
 - [ ] Table of contents with page numbers
+- [ ] Citations (inline rendered text with hyperlinks to bibliography)
+- [ ] Bibliography (formatted list with anchor IDs)
+- [ ] Cross-references (internal hyperlinks with computed numbers)
+- [ ] Display equations
 - [ ] Font embedding (subset)
 - [ ] PDF/A compliance (optional)
 
@@ -354,6 +427,75 @@ Detailed task breakdown by phase. Check the box when complete.
 - [ ] Image embedding (base64 data URIs)
 - [ ] Chart rendering (SVG or Canvas via JS)
 - [ ] Print-friendly CSS
+- [ ] Citations (anchor links to bibliography section)
+- [ ] Bibliography (ordered list with anchor IDs and hanging indent CSS)
+- [ ] Cross-references (internal `<a href="#label">` links)
+- [ ] Math rendering (MathML or KaTeX integration)
+
+### lontar-latex
+- [ ] Implement `LatexWriter` for `DocumentWriter` trait
+- [ ] Implement preamble generator (analyze AST features → `\usepackage` declarations)
+- [ ] Implement LaTeX special character escaping (`& % $ # _ { } ~ ^ \`)
+- [ ] Implement `LatexOptions` (document class, class options, engine, code package, etc.)
+- [ ] Handle: headings → `\section`, `\subsection`, `\subsubsection`, `\paragraph`
+- [ ] Handle: paragraphs → text blocks with `\par` separation
+- [ ] Handle: bold, italic, underline → `\textbf`, `\textit`, `\underline`
+- [ ] Handle: font size → `\small`, `\large`, etc. or explicit `\fontsize`
+- [ ] Handle: text color → `\textcolor` (requires `xcolor` package)
+- [ ] Handle: tables → `\begin{table}` + `booktabs` formatting
+- [ ] Handle: table captions and labels
+- [ ] Handle: images → `\begin{figure}` + `\includegraphics`
+- [ ] Handle: figure captions and labels
+- [ ] Handle: code blocks → `\begin{lstlisting}` or `\begin{minted}`
+- [ ] Handle: ordered lists → `\begin{enumerate}`
+- [ ] Handle: unordered lists → `\begin{itemize}`
+- [ ] Handle: nested lists
+- [ ] Handle: block quotes → `\begin{quote}`
+- [ ] Handle: hyperlinks → `\href{url}{text}` (requires `hyperref`)
+- [ ] Handle: inline math → `$...$`
+- [ ] Handle: display math → `\begin{equation}` with optional `\label`
+- [ ] Handle: citations → `\parencite`, `\textcite`, `\cite` per `CitationMode`
+- [ ] Handle: bibliography → `\printbibliography` + emit `.bib` file
+- [ ] Handle: cross-references → `\ref`, `\autoref`, or `\cref` per option
+- [ ] Handle: table of contents → `\tableofcontents`
+- [ ] Handle: page breaks → `\newpage`
+- [ ] Handle: horizontal rules → `\hrulefill` or `\rule`
+- [ ] Handle: footnotes → `\footnote{...}`
+- [ ] Handle: headers/footers → `\fancyhf` (requires `fancyhdr`)
+- [ ] Handle: page numbers → `\thepage` in header/footer
+- [ ] Handle: diagrams → delegate to lontar-diagram TikZ renderer
+- [ ] Emit `.bib` file alongside `.tex` when bibliography is present
+- [ ] Emit image files alongside `.tex` (or embed as data URIs for single-file mode)
+- [ ] Graceful degradation: slides → `\section` divisions
+- [ ] Graceful degradation: charts → tables (or TikZ/pgfplots if available)
+- [ ] Write snapshot tests against expected LaTeX output
+- [ ] Verify generated .tex compiles with XeLaTeX without errors
+- [ ] Verify generated .tex compiles with LuaLaTeX without errors
+- [ ] Test with multi-script content (Latin + Balinese + Arabic + CJK)
+- [ ] Test with complex citation scenarios (multiple keys, prefix/suffix, all modes)
+- [ ] Test with cross-references (verify `\label`/`\ref` pairs resolve correctly)
+- [ ] Test preamble minimality (unused packages not included)
+- [ ] Performance benchmarks
+
+### Journal Template Testing
+- [ ] Create test template for a generic medical journal (IMRAD structure)
+- [ ] Generate LaTeX with medical journal template → verify compilation
+- [ ] Generate DOCX with same data → verify formatting
+- [ ] Test citation rendering in Vancouver style (standard for medical journals)
+- [ ] Test citation rendering in Author-Year style (standard for social sciences)
+- [ ] Test with real-world .bib file (50+ entries)
+
+### lontar-xlsx
+- [ ] Implement `XlsxWriter` as thin wrapper around `rust_xlsxwriter`
+- [ ] Map `Block::Table` → worksheet with header row + data rows
+- [ ] Map `Block::Heading { level: 1 }` → worksheet name
+- [ ] Map `Block::Chart` → rust_xlsxwriter chart object
+- [ ] Map `Block::Image` → embedded worksheet image
+- [ ] Map `Block::Paragraph` → cell content (merged across columns)
+- [ ] Graceful degradation for unsupported blocks (citations → skip, diagrams → skip with warning)
+- [ ] Style mapping: bold, italic, font size, color → cell formatting
+- [ ] Write snapshot tests
+- [ ] Performance benchmarks
 
 ---
 
@@ -366,14 +508,32 @@ Detailed task breakdown by phase. Check the box when complete.
 - [ ] Conditional sections (`{% if ... %}`)
 - [ ] Loop sections (`{% for ... %}`)
 - [ ] Template inheritance / includes
-- [ ] Built-in templates (report, memo, presentation, invoice)
+- [ ] Bibliography integration: `render_with_bibliography()` API
+- [ ] Built-in templates:
+  - [ ] Generic report
+  - [ ] Memo
+  - [ ] Presentation
+  - [ ] Invoice
+  - [ ] Research article (IMRAD)
+  - [ ] Systematic review (PRISMA-compliant)
+  - [ ] Case report
+  - [ ] Conference abstract
+  - [ ] Thesis chapter
+  - [ ] Grant proposal
+- [ ] Journal-specific LaTeX templates:
+  - [ ] Elsevier article (`elsarticle`)
+  - [ ] Springer Nature (`sn-jnl`)
+  - [ ] IEEE (`IEEEtran`)
+  - [ ] PLOS ONE
+  - [ ] BMJ / Lancet / JAMA / NEJM style guides
 - [ ] Template documentation and examples
 
 ### lontar-cli
-- [ ] `lontar convert input.md --to docx,pptx,pdf`
-- [ ] `lontar template report.lontar --data data.json --to docx`
+- [ ] `lontar convert input.md --to docx,pptx,pdf,tex`
+- [ ] `lontar template report.lontar --data data.json --bib refs.bib --to docx,tex`
 - [ ] `lontar inspect file.docx` (show document structure)
 - [ ] `lontar validate file.docx` (check OOXML conformance)
+- [ ] `lontar bib refs.bib --check` (validate bibliography entries)
 - [ ] Shell completions (bash, zsh, fish)
 - [ ] Man page generation
 
@@ -386,24 +546,28 @@ Detailed task breakdown by phase. Check the box when complete.
 - [ ] User guide (mdbook)
 - [ ] Tutorial: "Generate your first document"
 - [ ] Tutorial: "Create a custom template"
+- [ ] Tutorial: "Academic writing workflow: Zotero → Lontar → journal submission"
+- [ ] Tutorial: "Multi-format manuscript: write once, submit everywhere"
 - [ ] Example gallery with source code
 - [ ] Migration guide from python-docx
 
 ### Quality
-- [ ] Fuzz testing (cargo-fuzz) for all parsers
+- [ ] Fuzz testing (cargo-fuzz) for all parsers (including BibTeX parser)
 - [ ] Property-based testing (proptest) for AST invariants
+- [ ] Property-based testing for citation resolution (any valid bib + citation combo produces valid output)
 - [ ] MIRI testing for unsafe code (if any)
 - [ ] Security audit of ZIP handling
 - [ ] Accessibility: alt text warnings, heading structure validation
 
 ### Ecosystem
 - [ ] Publish to crates.io
-- [ ] WASM build target (lontar-core + lontar-md + lontar-html)
+- [ ] WASM build target (lontar-core + lontar-md + lontar-html + lontar-latex)
 - [ ] `wasm-pack` npm package
 - [ ] Python bindings via PyO3 (lontar-py)
 - [ ] C FFI bindings (lontar-ffi)
 - [ ] Integration example: Actix-web document generation endpoint
 - [ ] Integration example: Axum document generation endpoint
+- [ ] Integration example: Academic manuscript pipeline (Zotero export → lontar-cli → multi-format output)
 - [ ] Integration example: Native doc-generator in CONSILAR
 
 ---
@@ -418,10 +582,11 @@ Detailed task breakdown by phase. Check the box when complete.
 - [ ] ODT (OpenDocument Text) backend
 - [ ] EPUB backend
 - [ ] RTF backend
-- [ ] LaTeX backend
+- [ ] CSL (Citation Style Language) processor — full CSL spec for precise journal formatting
 - [ ] Document diffing (compare two Documents)
 - [ ] Document merging (combine multiple Documents)
 - [ ] Document reading/parsing (docx → AST, not just AST → docx)
+- [ ] BibTeX reading from DOCX (extract Zotero/Mendeley field codes → BibliographyStore)
 - [ ] Streaming write for very large documents
 - [ ] Async I/O support
 - [ ] Plugin system for custom backends
@@ -442,5 +607,3 @@ Detailed task breakdown by phase. Check the box when complete.
 | Phase 4 | 🔴 Not Started | — | — |
 | Phase 5 | 🔴 Not Started | — | — |
 | Phase 6 | 🔴 Not Started | — | — |
-| Phase 7 | 🔴 Not Started | — | — |
-| Phase 8 | 🔴 Not Started | — | — |
