@@ -52,14 +52,14 @@ Detailed task breakdown by phase. Check the box when complete.
 - [x] Unzip all generated docs, organize XML for reference
 - [x] Create `tests/fixtures/reference_docs/` with all samples
 - [x] Create `tests/fixtures/expected_xml/` with extracted XML fragments
-- [ ] For each reference doc, manually create expected output in MD, HTML, TXT, and LaTeX formats
-- [ ] Verify reference docs open correctly in LibreOffice and MS Office Online
+- [x] For each reference doc, manually create expected output in MD, HTML, TXT, and LaTeX formats
+- [x] Verify reference docs open correctly in LibreOffice and MS Office Online
 
 ### Reference Output Fixtures
-- [ ] Create `tests/fixtures/expected_md/` with expected Markdown output for each test document
-- [ ] Create `tests/fixtures/expected_html/` with expected HTML output for each test document
-- [ ] Create `tests/fixtures/expected_txt/` with expected plain text output for each test document
-- [ ] Create `tests/fixtures/expected_tex/` with expected LaTeX output for each test document
+- [x] Create `tests/fixtures/expected_md/` with expected Markdown output for each test document
+- [x] Create `tests/fixtures/expected_html/` with expected HTML output for each test document
+- [x] Create `tests/fixtures/expected_txt/` with expected plain text output for each test document
+- [x] Create `tests/fixtures/expected_tex/` with expected LaTeX output for each test document
 - [ ] Create `tests/fixtures/expected_pdf/` with reference PDF output (via typst or LaTeX) for visual comparison
 - [ ] Define expected Markdown for: headings, styled text, tables, lists, images, code blocks, block quotes, links, horizontal rules
 - [ ] Define expected HTML for: headings, styled text, tables, lists, images, code blocks, block quotes, links (self-contained with inline CSS)
