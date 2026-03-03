@@ -119,36 +119,20 @@ lontar = { version = "0.1", features = ["docx", "pptx", "pdf", "latex", "xlsx"] 
 
 7. **Zero unsafe, minimal dependencies.** Core document model uses no unsafe code. Format backends depend on `zip`, `quick-xml`, and format-specific crates only as needed. Text-based backends (Markdown, LaTeX, plain text) have zero external dependencies.
 
-## Guaranteed Correctness
+## Document Integrity
 
-Unlike traditional LaTeX workflows that require multiple compilation passes and can silently produce `??` for undefined references, Lontar validates your document at build time:
+Lontar validates cross-references, citations, and labels before writing
+any output — eliminating an entire class of silent document errors.
 
-- **Undefined cross-reference** → compile error (not `??` in output)
-- **Missing citation key** → compile error (not silent failure)
-- **Duplicate labels** → compile error (not ambiguous refs)
-- **Circular dependencies** → impossible by design (AST is a tree/DAG)
+- **Undefined cross-reference** → `Err` at build time, not `??` in your PDF
+- **Missing citation key** → `Err` at build time, not a silent omission
+- **Duplicate labels** → `Err` at build time, not ambiguous references
+- **Auto-numbering** (figures, tables, equations) resolved in the AST
+  before any backend runs
 
-All cross-references, citations, and numbering are resolved in a single pass before any output is written. When your Rust code compiles, your document is guaranteed to be structurally valid.
-
-**Traditional LaTeX workflow:**
-```bash
-pdflatex paper.tex    # Pass 1: writes .aux with ??
-biber paper           # Resolves citations
-pdflatex paper.tex    # Pass 2: updates refs
-pdflatex paper.tex    # Pass 3: stabilizes page numbers
-# Hope everything converged correctly
-```
-
-**Lontar workflow:**
-```rust
-let doc = Document::new("paper")
-    .cite(&["smith2024"])      // ← Validated at build time
-    .crossref("fig:1")         // ← Guaranteed to exist
-    .build();                  // ← All refs resolved
-
-doc.write_latex("paper.tex")?; // ← Single-pass output
-doc.write_pdf("paper.pdf")?;   // ← No multi-pass needed
-```
+If `doc.build()` returns `Ok`, every internal reference in your document
+resolves correctly — across all output formats, in a single pass, with no
+external toolchain required.
 
 ## Academic Workflow
 
