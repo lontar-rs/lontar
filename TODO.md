@@ -102,17 +102,17 @@ Detailed task breakdown by phase. Check the box when complete.
 - [x] Set up dependabot for dependency updates
 
 ### Text Shaping Research
-- [ ] Evaluate `rustybuzz` API and capabilities
-- [ ] Evaluate `unicode-bidi` for bidirectional text
-- [ ] Evaluate `unicode-linebreak` for line break opportunities
-- [ ] Evaluate `unicode-script` for script run detection
-- [ ] Research font subsetting approaches in Rust
+- [x] Evaluate `rustybuzz` API and capabilities
+- [x] Evaluate `unicode-bidi` for bidirectional text
+- [x] Evaluate `unicode-linebreak` for line break opportunities
+- [x] Evaluate `unicode-script` for script run detection
+- [x] Research font subsetting approaches in Rust
 - [ ] Collect test fonts: Noto Sans Balinese, Noto Sans Devanagari, Noto Sans Arabic, Noto Sans CJK
-- [ ] Create test strings for each script category (simple LTR, complex Indic, SE Asian, RTL, CJK)
-- [ ] Document how DOCX/PPTX handle font embedding and language tagging
-- [ ] Document how PDF embeds fonts and stores positioned glyphs
-- [ ] Document how XeLaTeX/LuaLaTeX handle font selection and shaping (fontspec + HarfBuzz)
-- [ ] Prototype: shape "ᬮᭀᬦ᭄ᬢᬭ᭄" (lontar in Aksara Bali) with rustybuzz → verify conjunct formation
+- [x] Create test strings for each script category (simple LTR, complex Indic, SE Asian, RTL, CJK)
+- [x] Document how DOCX/PPTX handle font embedding and language tagging
+- [x] Document how PDF embeds fonts and stores positioned glyphs
+- [x] Document how XeLaTeX/LuaLaTeX handle font selection and shaping (fontspec + HarfBuzz)
+- [x] Prototype: shape "ᬮᭀᬦ᭄ᬢᬭ᭄" (lontar in Aksara Bali) with rustybuzz → verify conjunct formation
 
 ### Bibliography Research
 - [ ] Evaluate BibTeX parsing crates in Rust (e.g., `biblatex`, `nom-bibtex`)
