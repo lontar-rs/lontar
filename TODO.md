@@ -107,7 +107,7 @@ Detailed task breakdown by phase. Check the box when complete.
 - [x] Evaluate `unicode-linebreak` for line break opportunities
 - [x] Evaluate `unicode-script` for script run detection
 - [x] Research font subsetting approaches in Rust
-- [ ] Collect test fonts: Noto Sans Balinese, Noto Sans Devanagari, Noto Sans Arabic, Noto Sans CJK
+- [x] Collect test fonts: Noto Sans Balinese, Noto Sans Devanagari, Noto Sans Arabic, Noto Sans CJK
 - [x] Create test strings for each script category (simple LTR, complex Indic, SE Asian, RTL, CJK)
 - [x] Document how DOCX/PPTX handle font embedding and language tagging
 - [x] Document how PDF embeds fonts and stores positioned glyphs
