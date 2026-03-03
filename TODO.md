@@ -77,21 +77,21 @@ Detailed task breakdown by phase. Check the box when complete.
 - [x] Create test document with cross-references (figure refs, table refs, equation refs, section refs)
 
 ### Multi-Script Test Corpus
-- [ ] Create `tests/fixtures/scripts/` directory for script-specific test data
-- [ ] Create test strings file with representative text for each script category:
-  - [ ] Simple LTR: Latin, Cyrillic, Greek, Georgian
-  - [ ] Complex Indic: Devanagari (conjuncts, split matras), Bengali, Tamil, Telugu, Kannada, Malayalam
-  - [ ] Southeast Asian: Balinese (ᬮᭀᬦ᭄ᬢᬭ᭄), Javanese, Sundanese, Batak, Thai, Lao, Khmer, Myanmar
-  - [ ] RTL: Arabic (contextual joining), Hebrew, Syriac, Thaana, N'Ko
-  - [ ] CJK: Simplified Chinese, Traditional Chinese, Japanese (Kanji + Hiragana + Katakana), Korean (Hangul)
-  - [ ] Tibetan: stacking consonants
-  - [ ] African: Ethiopic, Tifinagh
-  - [ ] Mixed-script paragraphs: Latin + Balinese, Arabic + English, CJK + Latin
-- [ ] Collect test fonts: Noto Sans families for each script category
-- [ ] Generate reference documents (via python-docx) containing multi-script text — verify they open correctly
-- [ ] Generate reference presentations (via python-pptx) containing multi-script text — verify they open correctly
-- [ ] Generate reference LaTeX documents containing multi-script text — verify they compile with XeLaTeX
-- [ ] Document expected shaping behavior for each script (which conjuncts should form, which reorderings should occur)
+- [x] Create `tests/fixtures/scripts/` directory for script-specific test data
+- [x] Create test strings file with representative text for each script category:
+  - [x] Simple LTR: Latin, Cyrillic, Greek, Georgian
+  - [x] Complex Indic: Devanagari (conjuncts, split matras), Bengali, Tamil, Telugu, Kannada, Malayalam
+  - [x] Southeast Asian: Balinese (ᬮᭀᬦ᭄ᬢᬭ᭄), Javanese, Sundanese, Batak, Thai, Lao, Khmer, Myanmar
+  - [x] RTL: Arabic (contextual joining), Hebrew, Syriac, Thaana, N'Ko
+  - [x] CJK: Simplified Chinese, Traditional Chinese, Japanese (Kanji + Hiragana + Katakana), Korean (Hangul)
+  - [x] Tibetan: stacking consonants
+  - [x] African: Ethiopic, Tifinagh
+  - [x] Mixed-script paragraphs: Latin + Balinese, Arabic + English, CJK + Latin
+- [x] Collect test fonts: Noto Sans families for each script category
+- [x] Generate reference documents (via python-docx) containing multi-script text — verify they open correctly
+- [x] Generate reference presentations (via python-pptx) containing multi-script text — verify they open correctly
+- [x] Generate reference LaTeX documents containing multi-script text — verify they compile with XeLaTeX
+- [x] Document expected shaping behavior for each script (which conjuncts should form, which reorderings should occur)
 
 ### Tooling Setup
 - [ ] Initialize Cargo workspace

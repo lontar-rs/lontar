@@ -1,0 +1,285 @@
+{
+  "simple_ltr": {
+    "latin": {
+      "text": "The quick brown fox jumps over the lazy dog.",
+      "language": "en",
+      "script": "Latn",
+      "description": "Basic Latin alphabet with all common letters"
+    },
+    "cyrillic": {
+      "text": "Съешь же ещё этих мягких французских булок да выпей чаю.",
+      "language": "ru",
+      "script": "Cyrl",
+      "description": "Russian Cyrillic with special characters (ё, ъ, ь)"
+    },
+    "greek": {
+      "text": "Ξεσκεπάζω την ψυχοφθόρα βδελυγμία.",
+      "language": "el",
+      "script": "Grek",
+      "description": "Greek alphabet with diacritics"
+    },
+    "georgian": {
+      "text": "ვეპხის ტყაოსანი შოთა რუსთაველი",
+      "language": "ka",
+      "script": "Geor",
+      "description": "Georgian Mkhedruli script"
+    }
+  },
+  "complex_indic": {
+    "devanagari": {
+      "text": "क्षत्रिय संस्कृत भाषा ज्ञान",
+      "language": "hi",
+      "script": "Deva",
+      "description": "Devanagari with conjuncts (क्ष, त्र) and split matras",
+      "shaping_notes": "क्ष should form conjunct, त्रि should show reordering"
+    },
+    "devanagari_complex": {
+      "text": "श्रीमद्भगवद्गीता",
+      "language": "sa",
+      "script": "Deva",
+      "description": "Sanskrit with complex conjuncts",
+      "shaping_notes": "श्री has halant+र forming repha, द्भ and द्ग are conjuncts"
+    },
+    "bengali": {
+      "text": "আমি বাংলায় গান গাই",
+      "language": "bn",
+      "script": "Beng",
+      "description": "Bengali script with vowel signs"
+    },
+    "tamil": {
+      "text": "தமிழ் மொழி அழகு",
+      "language": "ta",
+      "script": "Taml",
+      "description": "Tamil script (no conjuncts, uses pulli)"
+    },
+    "telugu": {
+      "text": "తెలుగు లిపి సుందరము",
+      "language": "te",
+      "script": "Telu",
+      "description": "Telugu script with rounded characters"
+    },
+    "kannada": {
+      "text": "ಕನ್ನಡ ಲಿಪಿ ಸುಂದರ",
+      "language": "kn",
+      "script": "Knda",
+      "description": "Kannada script with conjuncts"
+    },
+    "malayalam": {
+      "text": "മലയാളം ലിപി സുന്ദരം",
+      "language": "ml",
+      "script": "Mlym",
+      "description": "Malayalam script with complex conjuncts"
+    }
+  },
+  "southeast_asian": {
+    "balinese": {
+      "text": "ᬮᭀᬦ᭄ᬢᬭ᭄",
+      "language": "ban",
+      "script": "Bali",
+      "description": "Aksara Bali spelling 'lontar'",
+      "shaping_notes": "ᬦ᭄ᬢ should form conjunct (n+t), ᬢᬭ᭄ should form conjunct (t+r)"
+    },
+    "balinese_phrase": {
+      "text": "ᬒᬫ᭄ ᬱᬶᬯᬵᬬ ᬦᬫᬄ",
+      "language": "ban",
+      "script": "Bali",
+      "description": "Om Shivaya Namah in Balinese script",
+      "shaping_notes": "Multiple conjuncts and vowel signs"
+    },
+    "javanese": {
+      "text": "ꦲꦏ꧀ꦱꦫꦗꦮ",
+      "language": "jv",
+      "script": "Java",
+      "description": "Javanese script (Aksara Jawa)"
+    },
+    "sundanese": {
+      "text": "ᮃᮊ᮪ᮞᮛ ᮞᮥᮔ᮪ᮓ",
+      "language": "su",
+      "script": "Sund",
+      "description": "Sundanese script"
+    },
+    "batak": {
+      "text": "ᯀᯂ᯲ᯘᯒ᯲ ᯅᯖᯂ᯲",
+      "language": "bbc",
+      "script": "Batk",
+      "description": "Batak script (Toba variant)"
+    },
+    "thai": {
+      "text": "ภาษาไทยสวยงาม",
+      "language": "th",
+      "script": "Thai",
+      "description": "Thai script with tone marks and vowels",
+      "shaping_notes": "Vowels and tone marks stack above/below consonants"
+    },
+    "lao": {
+      "text": "ພາສາລາວງາມ",
+      "language": "lo",
+      "script": "Laoo",
+      "description": "Lao script similar to Thai"
+    },
+    "khmer": {
+      "text": "អក្សរខ្មែរស្អាត",
+      "language": "km",
+      "script": "Khmr",
+      "description": "Khmer script with subscript consonants"
+    },
+    "myanmar": {
+      "text": "မြန်မာအက္ခရာလှပ",
+      "language": "my",
+      "script": "Mymr",
+      "description": "Myanmar (Burmese) script with stacking"
+    }
+  },
+  "rtl": {
+    "arabic": {
+      "text": "اللغة العربية جميلة",
+      "language": "ar",
+      "script": "Arab",
+      "description": "Arabic with contextual joining",
+      "shaping_notes": "Letters should connect based on position (initial, medial, final, isolated)"
+    },
+    "arabic_complex": {
+      "text": "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+      "language": "ar",
+      "script": "Arab",
+      "description": "Bismillah with diacritics (harakat)",
+      "shaping_notes": "Diacritics should position correctly above/below letters"
+    },
+    "hebrew": {
+      "text": "השפה העברית יפה",
+      "language": "he",
+      "script": "Hebr",
+      "description": "Hebrew script (RTL, no joining)"
+    },
+    "hebrew_niqqud": {
+      "text": "בְּרֵאשִׁית בָּרָא אֱלֹהִים",
+      "language": "he",
+      "script": "Hebr",
+      "description": "Hebrew with niqqud (vowel points)",
+      "shaping_notes": "Niqqud marks should position correctly"
+    },
+    "syriac": {
+      "text": "ܠܫܢܐ ܣܘܪܝܝܐ",
+      "language": "syr",
+      "script": "Syrc",
+      "description": "Syriac script with contextual joining"
+    },
+    "thaana": {
+      "text": "ދިވެހި ބަސް",
+      "language": "dv",
+      "script": "Thaa",
+      "description": "Thaana script (Maldivian, RTL)"
+    },
+    "nko": {
+      "text": "ߒߞߏ ߞߊ߲",
+      "language": "nqo",
+      "script": "Nkoo",
+      "description": "N'Ko script (West African, RTL)"
+    }
+  },
+  "cjk": {
+    "simplified_chinese": {
+      "text": "简体中文很美丽",
+      "language": "zh-Hans",
+      "script": "Hans",
+      "description": "Simplified Chinese characters"
+    },
+    "traditional_chinese": {
+      "text": "繁體中文很美麗",
+      "language": "zh-Hant",
+      "script": "Hant",
+      "description": "Traditional Chinese characters"
+    },
+    "japanese_mixed": {
+      "text": "日本語は漢字とひらがなとカタカナを使います",
+      "language": "ja",
+      "script": "Jpan",
+      "description": "Japanese with Kanji, Hiragana, and Katakana",
+      "shaping_notes": "Mixed scripts in single text run"
+    },
+    "korean": {
+      "text": "한국어는 아름답습니다",
+      "language": "ko",
+      "script": "Kore",
+      "description": "Korean Hangul syllables"
+    }
+  },
+  "tibetan": {
+    "tibetan": {
+      "text": "བོད་ཡིག་འབྲི་ཀླག",
+      "language": "bo",
+      "script": "Tibt",
+      "description": "Tibetan script with stacking consonants",
+      "shaping_notes": "Subjoined consonants stack below main consonant"
+    }
+  },
+  "african": {
+    "ethiopic": {
+      "text": "ግዕዝ ፊደል ቆንጆ ነው",
+      "language": "am",
+      "script": "Ethi",
+      "description": "Ethiopic (Ge'ez) syllabary for Amharic"
+    },
+    "tifinagh": {
+      "text": "ⵜⵉⴼⵉⵏⴰⵖ",
+      "language": "tzm",
+      "script": "Tfng",
+      "description": "Tifinagh script (Berber)"
+    }
+  },
+  "mixed_script": {
+    "latin_balinese": {
+      "text": "The word lontar in Balinese is ᬮᭀᬦ᭄ᬢᬭ᭄ (palm leaf).",
+      "language": "en-ban",
+      "script": "Latn+Bali",
+      "description": "Mixed Latin and Balinese in one paragraph",
+      "shaping_notes": "Script runs should be segmented correctly"
+    },
+    "arabic_english": {
+      "text": "The Arabic word for book is كتاب (kitab).",
+      "language": "en-ar",
+      "script": "Latn+Arab",
+      "description": "Mixed LTR and RTL in one paragraph",
+      "shaping_notes": "Bidirectional algorithm should handle correctly"
+    },
+    "cjk_latin": {
+      "text": "日本語 (Japanese) uses 漢字 (kanji) characters.",
+      "language": "ja-en",
+      "script": "Jpan+Latn",
+      "description": "Mixed CJK and Latin"
+    },
+    "multi_indic": {
+      "text": "Sanskrit श्लोक in Devanagari, Tamil தமிழ், and Malayalam മലയാളം.",
+      "language": "multi",
+      "script": "Latn+Deva+Taml+Mlym",
+      "description": "Multiple Indic scripts with Latin"
+    }
+  },
+  "edge_cases": {
+    "zwj_emoji": {
+      "text": "👨‍👩‍👧‍👦 family emoji with ZWJ",
+      "language": "en",
+      "script": "Zsym",
+      "description": "Emoji with zero-width joiners",
+      "shaping_notes": "Should render as single family emoji"
+    },
+    "skin_tone": {
+      "text": "👋🏽 waving hand with medium skin tone",
+      "language": "en",
+      "script": "Zsym",
+      "description": "Emoji with skin tone modifier"
+    },
+    "combining_marks": {
+      "text": "e̊ẙẘi̇̈ (Latin with multiple combining marks)",
+      "language": "en",
+      "script": "Latn",
+      "description": "Latin letters with stacked combining diacritics"
+    },
+    "variation_selectors": {
+      "text": "葛󠄀 (CJK with variation selector)",
+      "language": "ja",
+      "script": "Jpan",
+      "description": "CJK character with variation selector for glyph variant"
+    }
+  }
+}
