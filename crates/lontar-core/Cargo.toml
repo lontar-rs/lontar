@@ -10,3 +10,6 @@ description = "Core document model and traits for the Lontar document generation
 [dependencies]
 thiserror.workspace = true
 chrono.workspace = true
+
+[dev-dependencies]
+criterion.workspace = true
