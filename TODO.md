@@ -115,13 +115,13 @@ Detailed task breakdown by phase. Check the box when complete.
 - [x] Prototype: shape "ᬮᭀᬦ᭄ᬢᬭ᭄" (lontar in Aksara Bali) with rustybuzz → verify conjunct formation
 
 ### Bibliography Research
-- [ ] Evaluate BibTeX parsing crates in Rust (e.g., `biblatex`, `nom-bibtex`)
-- [ ] Evaluate CSL-JSON parsing approach (serde deserialization)
-- [ ] Document BibLaTeX entry types and required/optional fields
-- [ ] Document Vancouver citation style rules (critical for medical journals)
-- [ ] Document APA 7th edition citation style rules
-- [ ] Survey journal submission systems: which accept XeLaTeX? which require pdfLaTeX?
-- [ ] Research CSL (Citation Style Language) processor options in Rust
+- [x] Evaluate BibTeX parsing crates in Rust (e.g., `biblatex`, `nom-bibtex`)
+- [x] Evaluate CSL-JSON parsing approach (serde deserialization)
+- [x] Document BibLaTeX entry types and required/optional fields
+- [x] Document Vancouver citation style rules (critical for medical journals)
+- [x] Document APA 7th edition citation style rules
+- [x] Survey journal submission systems: which accept XeLaTeX? which require pdfLaTeX?
+- [x] Research CSL (Citation Style Language) processor options in Rust
 
 ---
 
