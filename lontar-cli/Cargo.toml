@@ -1,6 +1,6 @@
 [package]
 name        = "lontar-cli"
-version     = "0.1.0"
+version     = "0.1.1"
 edition     = "2024"
 description = "Command-line interface for the Lontar document generation library."
 authors     = ["Kresna Sucandra"]
@@ -12,5 +12,5 @@ name = "lontar"
 path = "src/main.rs"
 
 [dependencies]
-lontar = { path = "../lontar", version = "0.1.0", features = ["full"] }
+lontar = { path = "../lontar", version = "0.1.1", features = ["full"] }
 clap   = { workspace = true }
