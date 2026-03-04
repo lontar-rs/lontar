@@ -153,12 +153,12 @@ Detailed task breakdown by phase. Check the box when complete.
 - [x] Implement `WriteReport` for feature degradation reporting
 - [x] Implement `LontarError` error types (including `CitationNotFound`, `Bibliography`)
 - [x] Implement style cascade resolution (default → named → paragraph → run)
-- [ ] Write unit tests for AST construction
-- [ ] Write unit tests for style resolution
-- [ ] Write unit tests for citation resolution (all modes × all styles)
-- [ ] Write unit tests for cross-reference resolution
-- [ ] Write unit tests for BibTeX parsing
-- [ ] Write documentation for all public types
+- [x] Write unit tests for AST construction
+- [x] Write unit tests for style resolution
+- [x] Write unit tests for citation resolution (all modes × all styles)
+- [x] Write unit tests for cross-reference resolution
+- [x] Write unit tests for BibTeX parsing
+- [x] Write documentation for all public types
 
 ### lontar-md (Markdown Backend)
 - [ ] Implement `MarkdownWriter` for `DocumentWriter` trait

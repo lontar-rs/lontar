@@ -122,12 +122,14 @@ impl DocumentBuilder {
         self
     }
 
-    /// Register a cross-reference label with an auto-incremented number
+    /// Register a cross-reference label with an auto-incremented number.
+    ///
+    /// Labels must be unique. Attempting to register a duplicate label will silently skip it.
+    /// For error reporting, use a Result-based API in future versions.
     pub fn register_label(mut self, label: impl Into<String>, title: Option<String>) -> Self {
         let label_str = label.into();
-        // If duplicate, record degraded feature and skip
+        // If duplicate, skip silently (Phase 1 limitation)
         if self.doc.crossrefs.contains_key(&label_str) {
-            // In a richer API we could return a Result; for now, skip adding duplicate
             return self;
         }
 

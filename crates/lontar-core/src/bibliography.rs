@@ -9,11 +9,23 @@ use std::collections::HashMap;
 use std::path::Path;
 
 /// Bibliography store containing all bibliographic entries
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone)]
 pub struct BibliographyStore {
     entries: HashMap<String, BibEntry>,
     cited_keys: Vec<String>,
     citation_numbers: HashMap<String, usize>,
+    next_citation_number: usize,
+}
+
+impl Default for BibliographyStore {
+    fn default() -> Self {
+        Self {
+            entries: HashMap::new(),
+            cited_keys: Vec::new(),
+            citation_numbers: HashMap::new(),
+            next_citation_number: 1, // Start at 1 for 1-indexed citations
+        }
+    }
 }
 
 /// Single bibliographic entry
@@ -65,14 +77,19 @@ impl BibliographyStore {
         self.entries.get(key)
     }
 
-    /// Mark a citation key as cited
+    /// Mark a citation key as cited and assign it a number.
+    ///
+    /// **Important:** This must be called before `render_citation()` for numeric/superscript styles.
+    /// Citations are numbered in the order they are cited, not in bibliography order.
+    /// Calling `cite()` multiple times with the same key is idempotent.
     pub fn cite(&mut self, key: &str) -> Result<(), BibError> {
         if !self.entries.contains_key(key) {
             return Err(BibError::CitationNotFound(key.to_string()));
         }
 
         if !self.cited_keys.contains(&key.to_string()) {
-            let citation_number = self.cited_keys.len() + 1;
+            let citation_number = self.next_citation_number;
+            self.next_citation_number += 1;
             self.citation_numbers.insert(key.to_string(), citation_number);
             self.cited_keys.push(key.to_string());
         }
@@ -110,7 +127,7 @@ impl BibliographyStore {
         let mut store = Self::new();
 
         for entry_str in split_bib_entries(content) {
-            let parsed = parse_bibtex_entry(entry_str)?;
+            let parsed = parse_bibtex_entry(&entry_str)?;
             store.add_entry(parsed);
         }
 
@@ -484,7 +501,9 @@ fn split_bib_entries(content: &str) -> Vec<String> {
 }
 
 fn parse_bibtex_entry(entry: &str) -> Result<BibEntry, BibError> {
-    // Very small, tolerant parser: assumes format @type{key, field = {value}, ...}
+    // Tolerant BibTeX parser for Phase 1.
+    // Limitations: nested braces in values may not parse correctly, comments not supported,
+    // multi-line fields not supported. For production, use biblatex crate.
     let entry = entry.trim();
     let at_pos = entry.find('@').ok_or_else(|| BibError::ParseError("Missing @".into()))?;
     let brace_pos = entry[at_pos + 1..]
@@ -494,9 +513,26 @@ fn parse_bibtex_entry(entry: &str) -> Result<BibEntry, BibError> {
         + 1;
 
     let entry_type = entry[at_pos + 1..brace_pos].trim();
-    let rest = entry[brace_pos + 1..].trim();
-    let closing = rest.rfind('}').ok_or_else(|| BibError::ParseError("Missing closing }".into()))?;
-    let body = &rest[..closing];
+    let rest = &entry[brace_pos + 1..];
+    // Find matching closing brace, accounting for nested braces
+    let mut depth = 1; // We already consumed the opening brace
+    let mut closing_pos = None;
+    for (i, c) in rest.chars().enumerate() {
+        match c {
+            '{' => depth += 1,
+            '}' => {
+                depth -= 1;
+                if depth == 0 {
+                    closing_pos = Some(i);
+                    break;
+                }
+            }
+            _ => {}
+        }
+    }
+    let closing = closing_pos
+        .ok_or_else(|| BibError::ParseError("Mismatched braces in entry".into()))?;
+    let body = &rest[..closing].trim();
 
     let mut parts = body.splitn(2, ',');
     let key = parts
@@ -507,10 +543,36 @@ fn parse_bibtex_entry(entry: &str) -> Result<BibEntry, BibError> {
     let fields_str = parts.next().unwrap_or("");
 
     let mut fields = HashMap::new();
-    for field in fields_str.split(',') {
-        if let Some((name, value)) = field.split_once('=') {
+    // Parse fields more carefully to handle nested braces
+    let mut current_field = String::new();
+    let mut brace_depth = 0;
+    for c in fields_str.chars() {
+        match c {
+            '{' => {
+                brace_depth += 1;
+                current_field.push(c);
+            }
+            '}' => {
+                brace_depth -= 1;
+                current_field.push(c);
+            }
+            ',' if brace_depth == 0 => {
+                // End of field
+                if let Some((name, value)) = current_field.split_once('=') {
+                    let name = name.trim().to_lowercase();
+                    let value = extract_field_value(value.trim());
+                    fields.insert(name, value);
+                }
+                current_field.clear();
+            }
+            _ => current_field.push(c),
+        }
+    }
+    // Don't forget the last field
+    if !current_field.is_empty() {
+        if let Some((name, value)) = current_field.split_once('=') {
             let name = name.trim().to_lowercase();
-            let value = value.trim().trim_matches('{').trim_matches('}').trim_matches('"').to_string();
+            let value = extract_field_value(value.trim());
             fields.insert(name, value);
         }
     }
@@ -682,5 +744,17 @@ fn convert_csl_entry(csl: CslEntry) -> BibEntry {
         title: csl.title.unwrap_or_default(),
         year,
         fields,
+    }
+}
+
+/// Extract field value, handling braces and quotes
+fn extract_field_value(s: &str) -> String {
+    let s = s.trim();
+    if s.starts_with('{') && s.ends_with('}') {
+        s[1..s.len() - 1].to_string()
+    } else if s.starts_with('"') && s.ends_with('"') {
+        s[1..s.len() - 1].to_string()
+    } else {
+        s.to_string()
     }
 }
