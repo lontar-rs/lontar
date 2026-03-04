@@ -3,7 +3,7 @@ members  = ["lontar", "lontar-cli"]
 resolver = "2"
 
 [workspace.package]
-version      = "0.1.0"
+version      = "0.1.1"
 edition      = "2024"
 rust-version = "1.88"
 authors      = ["Kresna Sucandra"]
@@ -11,7 +11,7 @@ license      = "MIT OR Apache-2.0"
 repository   = "https://github.com/lontar-rs/lontar"
 
 [workspace.dependencies]
-lontar = { path = "lontar", version = "0.1.0" }
+lontar = { path = "lontar", version = "0.1.1" }
 
 zip               = "2"
 quick-xml         = { version = "0.37", features = ["serialize"] }
