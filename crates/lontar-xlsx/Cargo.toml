@@ -8,5 +8,5 @@ repository.workspace = true
 description = "Lontar XLSX backend — thin integration wrapper around rust_xlsxwriter"
 
 [dependencies]
-lontar-core = { path = "../lontar-core" }
+lontar-core = { path = "../lontar-core", version = "0.1.0" }
 rust_xlsxwriter.workspace = true

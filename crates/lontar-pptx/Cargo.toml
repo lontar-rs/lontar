@@ -8,7 +8,7 @@ repository.workspace = true
 description = "PPTX document format support for Lontar"
 
 [dependencies]
-lontar-core = { path = "../lontar-core" }
+lontar-core = { path = "../lontar-core", version = "0.1.0" }
 thiserror.workspace = true
 zip.workspace = true
 quick-xml.workspace = true
