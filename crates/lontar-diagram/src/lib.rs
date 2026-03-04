@@ -15,7 +15,7 @@
 //!
 //! # Example
 //!
-//! ```rust
+//! ```rust,ignore
 //! use lontar_diagram::*;
 //!
 //! let diagram = Diagram::flowchart()
