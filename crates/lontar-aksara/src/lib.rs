@@ -9,9 +9,9 @@
 //! Supports all 159+ Unicode scripts including complex scripts like
 //! Aksara Bali, Devanagari, Arabic, and CJK.
 
-pub mod shaping;
 pub mod bidi;
-pub mod linebreak;
-pub mod script;
 pub mod font;
 pub mod lang;
+pub mod linebreak;
+pub mod script;
+pub mod shaping;

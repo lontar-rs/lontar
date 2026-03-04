@@ -19,9 +19,9 @@ pub enum ImageSource {
 pub struct Image {
     pub source: ImageSource,
     pub alt_text: Option<String>,
-    pub width: Option<f64>,              // Inches
-    pub height: Option<f64>,             // Inches
-    pub mime_type: Option<String>,       // "image/png", "image/jpeg", etc.
+    pub width: Option<f64>,        // Inches
+    pub height: Option<f64>,       // Inches
+    pub mime_type: Option<String>, // "image/png", "image/jpeg", etc.
 }
 
 /// Resource store for managing images and other assets

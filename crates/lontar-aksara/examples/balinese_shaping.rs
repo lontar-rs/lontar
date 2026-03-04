@@ -16,7 +16,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Test text: "ᬮᭀᬦ᭄ᬢᬭ᭄" (lontar in Balinese)
     let test_text = "ᬮᭀᬦ᭄ᬢᬭ᭄";
-    
+
     println!("Input text: {}", test_text);
     println!("Unicode codepoints:");
     for (i, ch) in test_text.chars().enumerate() {
@@ -34,7 +34,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Demonstrate the structure
     println!("Character breakdown:");
     let chars: Vec<char> = test_text.chars().collect();
-    
+
     println!("  Position 0: '{}' (U+1B2E) - LA", chars[0]);
     println!("  Position 1: '{}' (U+1B40) - VOWEL O", chars[1]);
     println!("  Position 2: '{}' (U+1B26) - NA", chars[2]);
@@ -85,7 +85,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Additional test cases
     println!("=== Additional Test Cases ===");
-    
+
     let test_cases = vec![
         ("ᬒᬫ᭄ ᬱᬶᬯᬵᬬ ᬦᬫᬄ", "Om Shivaya Namah"),
         ("ᬅᬓ᭄ᬱᬭ", "Aksara (script)"),

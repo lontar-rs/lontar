@@ -196,10 +196,7 @@ pub enum Block {
     },
 
     /// Bulleted or numbered list
-    List {
-        ordered: bool,
-        items: Vec<ListItem>,
-    },
+    List { ordered: bool, items: Vec<ListItem> },
 
     /// Code block
     CodeBlock {
@@ -208,9 +205,7 @@ pub enum Block {
     },
 
     /// Block quote
-    BlockQuote {
-        content: Vec<Block>,
-    },
+    BlockQuote { content: Vec<Block> },
 
     /// Hard page break
     PageBreak,
@@ -233,9 +228,7 @@ pub enum Block {
     },
 
     /// Bibliography section
-    Bibliography {
-        style: BibliographyStyle,
-    },
+    Bibliography { style: BibliographyStyle },
 }
 
 /// A single item in an ordered or unordered list.
@@ -273,10 +266,7 @@ pub enum Inline {
     },
 
     /// Hyperlink
-    Link {
-        text: Vec<Inline>,
-        url: String,
-    },
+    Link { text: Vec<Inline>, url: String },
 
     /// Line break
     LineBreak,
@@ -294,15 +284,10 @@ pub enum Inline {
     },
 
     /// Cross-reference to a labeled element
-    CrossRef {
-        label: String,
-        kind: CrossRefKind,
-    },
+    CrossRef { label: String, kind: CrossRefKind },
 
     /// Inline mathematical equation
-    InlineEquation {
-        latex: String,
-    },
+    InlineEquation { latex: String },
 }
 
 impl Document {

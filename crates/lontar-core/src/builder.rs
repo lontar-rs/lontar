@@ -1,6 +1,8 @@
 //! Ergonomic builder API for constructing documents.
 
-use crate::ast::{BibliographyStyle, Block, CitationMode, CrossRefKind, Document, Inline, CrossRefTarget};
+use crate::ast::{
+    BibliographyStyle, Block, CitationMode, CrossRefKind, CrossRefTarget, Document, Inline,
+};
 use crate::bibliography::BibliographyStore;
 use crate::style::ParagraphStyle;
 
@@ -41,11 +43,7 @@ impl DocumentBuilder {
     }
 
     /// Add a paragraph with custom style
-    pub fn paragraph_with_style(
-        mut self,
-        text: impl Into<String>,
-        style: ParagraphStyle,
-    ) -> Self {
+    pub fn paragraph_with_style(mut self, text: impl Into<String>, style: ParagraphStyle) -> Self {
         let block = Block::Paragraph {
             content: vec![Inline::text(text)],
             style: Some(style),
@@ -112,7 +110,12 @@ impl DocumentBuilder {
     }
 
     /// Add an equation block
-    pub fn equation(mut self, latex: impl Into<String>, label: Option<String>, numbered: bool) -> Self {
+    pub fn equation(
+        mut self,
+        latex: impl Into<String>,
+        label: Option<String>,
+        numbered: bool,
+    ) -> Self {
         let block = Block::Equation {
             latex: latex.into(),
             label,
@@ -148,7 +151,10 @@ impl DocumentBuilder {
 
     /// Add a bibliography entry directly
     pub fn bib_entry(mut self, entry: crate::bibliography::BibEntry) -> Self {
-        let bib = self.doc.bibliography.get_or_insert_with(crate::bibliography::BibliographyStore::new);
+        let bib = self
+            .doc
+            .bibliography
+            .get_or_insert_with(crate::bibliography::BibliographyStore::new);
         bib.add_entry(entry);
         self
     }

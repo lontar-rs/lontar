@@ -12,25 +12,25 @@ pub struct TextStyle {
     pub italic: Option<bool>,
     pub underline: Option<bool>,
     pub strikethrough: Option<bool>,
-    pub color: Option<String>,           // RGB hex: "FF0000"
-    pub font_name: Option<String>,       // "Arial", "Calibri", etc.
-    pub font_size: Option<f64>,          // Points
+    pub color: Option<String>,     // RGB hex: "FF0000"
+    pub font_name: Option<String>, // "Arial", "Calibri", etc.
+    pub font_size: Option<f64>,    // Points
     pub superscript: Option<bool>,
     pub subscript: Option<bool>,
-    pub language: Option<String>,        // BCP 47 language tag
+    pub language: Option<String>, // BCP 47 language tag
 }
 
 /// Paragraph-level formatting (alignment, spacing, indentation)
 #[derive(Debug, Clone, Default)]
 pub struct ParagraphStyle {
     pub alignment: Option<Alignment>,
-    pub spacing_before: Option<f64>,     // Points
-    pub spacing_after: Option<f64>,      // Points
-    pub line_spacing: Option<f64>,       // 1.0 = single, 1.5 = 1.5 lines, 2.0 = double
-    pub indent_left: Option<f64>,        // Inches
-    pub indent_right: Option<f64>,       // Inches
-    pub indent_first: Option<f64>,       // Inches (first line)
-    pub text_style: Option<TextStyle>,   // Paragraph-level text formatting
+    pub spacing_before: Option<f64>,   // Points
+    pub spacing_after: Option<f64>,    // Points
+    pub line_spacing: Option<f64>,     // 1.0 = single, 1.5 = 1.5 lines, 2.0 = double
+    pub indent_left: Option<f64>,      // Inches
+    pub indent_right: Option<f64>,     // Inches
+    pub indent_first: Option<f64>,     // Inches (first line)
+    pub text_style: Option<TextStyle>, // Paragraph-level text formatting
 }
 
 /// Alignment options
@@ -45,11 +45,11 @@ pub enum Alignment {
 /// Table-level formatting (borders, shading, etc.)
 #[derive(Debug, Clone, Default)]
 pub struct TableStyle {
-    pub border_color: Option<String>,    // RGB hex
-    pub border_width: Option<f64>,       // Points
-    pub header_shading: Option<String>,  // RGB hex
-    pub row_shading: Option<String>,     // RGB hex (alternating rows)
-    pub cell_padding: Option<f64>,       // Points
+    pub border_color: Option<String>,   // RGB hex
+    pub border_width: Option<f64>,      // Points
+    pub header_shading: Option<String>, // RGB hex
+    pub row_shading: Option<String>,    // RGB hex (alternating rows)
+    pub cell_padding: Option<f64>,      // Points
 }
 
 /// Cell-specific formatting
@@ -64,7 +64,7 @@ pub struct CellStyle {
 #[derive(Debug, Clone)]
 pub struct NamedStyle {
     pub name: String,
-    pub based_on: Option<String>,        // Parent style name
+    pub based_on: Option<String>, // Parent style name
     pub text_style: Option<TextStyle>,
     pub paragraph_style: Option<ParagraphStyle>,
 }
@@ -73,15 +73,15 @@ pub struct NamedStyle {
 #[derive(Debug, Clone, Default)]
 pub struct StyleSheet {
     pub styles: HashMap<String, NamedStyle>,
-    pub default_style: Option<String>,   // Name of default style
+    pub default_style: Option<String>, // Name of default style
     pub page_setup: Option<PageSetup>,
 }
 
 /// Page setup configuration (paper size, margins)
 #[derive(Debug, Clone, Default)]
 pub struct PageSetup {
-    pub width_in: Option<f64>,   // Page width in inches
-    pub height_in: Option<f64>,  // Page height in inches
+    pub width_in: Option<f64>,  // Page width in inches
+    pub height_in: Option<f64>, // Page height in inches
     pub margins: Option<Margins>,
 }
 

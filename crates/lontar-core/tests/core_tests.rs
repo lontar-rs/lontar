@@ -15,7 +15,9 @@ fn ast_construction_basic() {
         _ => panic!("expected heading"),
     }
     match &doc.content[2] {
-        Block::Equation { label, numbered, .. } => {
+        Block::Equation {
+            label, numbered, ..
+        } => {
             assert_eq!(label.as_deref(), Some("eq1"));
             assert!(numbered);
         }
@@ -97,7 +99,11 @@ fn citation_numeric() {
 
     store.cite("knuth1984").unwrap();
     let rendered = store
-        .render_citation(&["knuth1984".to_string()], BibliographyStyle::Numeric, CitationMode::Parenthetical)
+        .render_citation(
+            &["knuth1984".to_string()],
+            BibliographyStyle::Numeric,
+            CitationMode::Parenthetical,
+        )
         .unwrap();
     assert_eq!(rendered, "[1]");
 }
@@ -147,7 +153,7 @@ fn duplicate_label_skipped() {
         .register_label("fig:1", Some("Figure One".to_string()))
         .register_label("fig:1", Some("Figure Two".to_string()))
         .build();
-    
+
     // Second registration should be skipped; first title should remain
     let title = doc.resolve_crossref("fig:1", CrossRefKind::Title).unwrap();
     assert_eq!(title, "Figure One");

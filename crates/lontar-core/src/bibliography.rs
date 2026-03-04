@@ -90,7 +90,8 @@ impl BibliographyStore {
         if !self.cited_keys.contains(&key.to_string()) {
             let citation_number = self.next_citation_number;
             self.next_citation_number += 1;
-            self.citation_numbers.insert(key.to_string(), citation_number);
+            self.citation_numbers
+                .insert(key.to_string(), citation_number);
             self.cited_keys.push(key.to_string());
         }
 
@@ -117,8 +118,8 @@ impl BibliographyStore {
 
     /// Load bibliography from BibTeX file
     pub fn load_bibtex(path: &Path) -> Result<Self, BibError> {
-        let content = std::fs::read_to_string(path)
-            .map_err(|e| BibError::IoError(e.to_string()))?;
+        let content =
+            std::fs::read_to_string(path).map_err(|e| BibError::IoError(e.to_string()))?;
         Self::from_bibtex_str(&content)
     }
 
@@ -136,15 +137,15 @@ impl BibliographyStore {
 
     /// Load bibliography from CSL-JSON file
     pub fn load_csl_json(path: &Path) -> Result<Self, BibError> {
-        let content = std::fs::read_to_string(path)
-            .map_err(|e| BibError::IoError(e.to_string()))?;
+        let content =
+            std::fs::read_to_string(path).map_err(|e| BibError::IoError(e.to_string()))?;
         Self::from_csl_json_str(&content)
     }
 
     /// Load bibliography from CSL-JSON string
     pub fn from_csl_json_str(content: &str) -> Result<Self, BibError> {
-        let csl_entries: Vec<CslEntry> = serde_json::from_str(content)
-            .map_err(|e| BibError::ParseError(e.to_string()))?;
+        let csl_entries: Vec<CslEntry> =
+            serde_json::from_str(content).map_err(|e| BibError::ParseError(e.to_string()))?;
 
         let mut store = Self::new();
         for csl in csl_entries {
@@ -260,11 +261,7 @@ impl BibliographyStore {
     }
 
     /// Render APA 7th edition citation
-    fn render_apa_citation(
-        &self,
-        keys: &[String],
-        mode: CitationMode,
-    ) -> Result<String, BibError> {
+    fn render_apa_citation(&self, keys: &[String], mode: CitationMode) -> Result<String, BibError> {
         // APA is similar to author-year
         self.render_author_year_citation(keys, mode)
     }
@@ -272,7 +269,9 @@ impl BibliographyStore {
     /// Render bibliography entries
     pub fn render_bibliography(&self, style: BibliographyStyle) -> Result<Vec<String>, BibError> {
         match style {
-            BibliographyStyle::Numeric | BibliographyStyle::Vancouver | BibliographyStyle::Superscript => {
+            BibliographyStyle::Numeric
+            | BibliographyStyle::Vancouver
+            | BibliographyStyle::Superscript => {
                 // Numeric styles: order by citation
                 Ok(self
                     .cited_entries()
@@ -289,7 +288,10 @@ impl BibliographyStore {
                     let b_author = b.authors.first().map(|au| &au.family).unwrap_or(&b.key);
                     a_author.cmp(b_author)
                 });
-                Ok(entries.iter().map(|entry| format_entry_apa(entry)).collect())
+                Ok(entries
+                    .iter()
+                    .map(|entry| format_entry_apa(entry))
+                    .collect())
             }
             BibliographyStyle::Named(_) => {
                 // TODO: Implement CSL processor
@@ -361,13 +363,24 @@ fn format_entry_vancouver(entry: &BibEntry) -> String {
 
     match entry.entry_type {
         BibEntryKind::Article => {
-            let journal = entry.fields.get("journal").map(|s| s.as_str()).unwrap_or("");
+            let journal = entry
+                .fields
+                .get("journal")
+                .map(|s| s.as_str())
+                .unwrap_or("");
             let volume = entry.fields.get("volume").map(|s| s.as_str()).unwrap_or("");
             let pages = entry.fields.get("pages").map(|s| s.as_str()).unwrap_or("");
-            format!("{}. {}. {}. {};{}:{}.", authors, title, journal, year, volume, pages)
+            format!(
+                "{}. {}. {}. {};{}:{}.",
+                authors, title, journal, year, volume, pages
+            )
         }
         BibEntryKind::Book => {
-            let publisher = entry.fields.get("publisher").map(|s| s.as_str()).unwrap_or("");
+            let publisher = entry
+                .fields
+                .get("publisher")
+                .map(|s| s.as_str())
+                .unwrap_or("");
             format!("{}. {}. {}; {}.", authors, title, publisher, year)
         }
         _ => format!("{}. {}. {}.", authors, title, year),
@@ -415,13 +428,24 @@ fn format_entry_apa(entry: &BibEntry) -> String {
 
     match entry.entry_type {
         BibEntryKind::Article => {
-            let journal = entry.fields.get("journal").map(|s| s.as_str()).unwrap_or("");
+            let journal = entry
+                .fields
+                .get("journal")
+                .map(|s| s.as_str())
+                .unwrap_or("");
             let volume = entry.fields.get("volume").map(|s| s.as_str()).unwrap_or("");
             let pages = entry.fields.get("pages").map(|s| s.as_str()).unwrap_or("");
-            format!("{}. ({}). {}. {}, {}, {}.", authors, year, title, journal, volume, pages)
+            format!(
+                "{}. ({}). {}. {}, {}, {}.",
+                authors, year, title, journal, volume, pages
+            )
         }
         BibEntryKind::Book => {
-            let publisher = entry.fields.get("publisher").map(|s| s.as_str()).unwrap_or("");
+            let publisher = entry
+                .fields
+                .get("publisher")
+                .map(|s| s.as_str())
+                .unwrap_or("");
             format!("{}. ({}). {}. {}.", authors, year, title, publisher)
         }
         _ => format!("{}. ({}). {}.", authors, year, title),
@@ -464,7 +488,12 @@ fn format_authors_apa(authors: &[BibAuthor]) -> String {
             .as_ref()
             .map(|g| format!("{}.", g.chars().next().unwrap()))
             .unwrap_or_default();
-        format!("{}, ... {}, {}", formatted.join(", "), last.family, last_initials)
+        format!(
+            "{}, ... {}, {}",
+            formatted.join(", "),
+            last.family,
+            last_initials
+        )
     }
 }
 
@@ -505,7 +534,9 @@ fn parse_bibtex_entry(entry: &str) -> Result<BibEntry, BibError> {
     // Limitations: nested braces in values may not parse correctly, comments not supported,
     // multi-line fields not supported. For production, use biblatex crate.
     let entry = entry.trim();
-    let at_pos = entry.find('@').ok_or_else(|| BibError::ParseError("Missing @".into()))?;
+    let at_pos = entry
+        .find('@')
+        .ok_or_else(|| BibError::ParseError("Missing @".into()))?;
     let brace_pos = entry[at_pos + 1..]
         .find('{')
         .ok_or_else(|| BibError::ParseError("Missing {".into()))?
@@ -530,8 +561,8 @@ fn parse_bibtex_entry(entry: &str) -> Result<BibEntry, BibError> {
             _ => {}
         }
     }
-    let closing = closing_pos
-        .ok_or_else(|| BibError::ParseError("Mismatched braces in entry".into()))?;
+    let closing =
+        closing_pos.ok_or_else(|| BibError::ParseError("Mismatched braces in entry".into()))?;
     let body = &rest[..closing].trim();
 
     let mut parts = body.splitn(2, ',');
@@ -582,9 +613,7 @@ fn parse_bibtex_entry(entry: &str) -> Result<BibEntry, BibError> {
         .map(|s| parse_authors(s))
         .unwrap_or_default();
     let title = fields.get("title").cloned().unwrap_or_default();
-    let year = fields
-        .get("year")
-        .and_then(|y| y.parse::<u32>().ok());
+    let year = fields.get("year").and_then(|y| y.parse::<u32>().ok());
 
     let entry_type = match entry_type.to_lowercase().as_str() {
         "article" => BibEntryKind::Article,
