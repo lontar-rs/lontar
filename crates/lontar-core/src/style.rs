@@ -74,6 +74,25 @@ pub struct NamedStyle {
 pub struct StyleSheet {
     pub styles: HashMap<String, NamedStyle>,
     pub default_style: Option<String>,   // Name of default style
+    pub page_setup: Option<PageSetup>,
+}
+
+/// Page setup configuration (paper size, margins)
+#[derive(Debug, Clone, Default)]
+pub struct PageSetup {
+    pub width_in: Option<f64>,   // Page width in inches
+    pub height_in: Option<f64>,  // Page height in inches
+    pub margins: Option<Margins>,
+}
+
+/// Page margins
+#[derive(Debug, Clone, Default)]
+pub struct Margins {
+    pub top_in: Option<f64>,
+    pub bottom_in: Option<f64>,
+    pub left_in: Option<f64>,
+    pub right_in: Option<f64>,
+    pub gutter_in: Option<f64>,
 }
 
 impl StyleSheet {

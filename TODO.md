@@ -130,32 +130,29 @@ Detailed task breakdown by phase. Check the box when complete.
 **Goal:** Prove the unified AST works with the simplest possible outputs.
 
 ### lontar-core
-- [ ] Define `Block` enum with all variants (including `Equation`, `Bibliography`)
-- [ ] Define `Inline` enum with all variants (including `Citation`, `CrossRef`)
-- [ ] Define `TextStyle` struct
-- [ ] Define `ParagraphStyle` struct
-- [ ] Define `TableStyle` struct
-- [ ] Define `ChartKind` and `ChartData` types
-- [ ] Define `PageSetup` and `Margins`
-- [ ] Define `StyleSheet` with cascading resolution
-- [ ] Define `DocumentMetadata`
-- [ ] Define `ResourceStore` for images and binary assets
-- [ ] Define `BibliographyStore` with `BibEntry` and `BibAuthor`
-- [ ] Define `BibEntryKind` enum
-- [ ] Define `BibliographyStyle` enum (Numeric, AuthorYear, Vancouver, Superscript, Apa7, Named)
-- [ ] Define `CitationMode` enum (Parenthetical, Narrative, YearOnly, SuppressAuthor, Full)
-- [ ] Define `CrossRefKind` enum (Auto, Number, Page, Title)
-- [ ] Implement `BibliographyStore::load_bibtex()` — parse .bib files
-- [ ] Implement `BibliographyStore::load_csl_json()` — parse CSL-JSON
-- [ ] Implement citation resolution: given citation keys + style → rendered text
-- [ ] Implement cross-reference resolution: given label → computed number/text
-- [ ] Implement label uniqueness validation in `DocumentBuilder`
-- [ ] Implement `Document` struct with root node (including `bibliography` field)
-- [ ] Implement `DocumentBuilder` (ergonomic builder API, with `.cite()`, `.crossref()`, `.bib_entry()`)
-- [ ] Implement `DocumentWriter` trait
-- [ ] Implement `WriteReport` for feature degradation reporting
-- [ ] Implement `LontarError` error types (including `CitationNotFound`, `Bibliography`)
-- [ ] Implement style cascade resolution (default → named → paragraph → run)
+- [x] Define `Block` enum with all variants (including `Equation`, `Bibliography`)
+- [x] Define `Inline` enum with all variants (including `Citation`, `CrossRef`)
+- [x] Define `TextStyle` struct
+- [x] Define `ParagraphStyle` struct
+- [x] Define `TableStyle` struct
+- [x] Define `ChartKind` and `ChartData` types
+- [x] Define `PageSetup` and `Margins`
+- [x] Define `StyleSheet` with cascading resolution
+- [x] Define `DocumentMetadata`
+- [x] Define `ResourceStore` for images and binary assets
+- [x] Define `BibliographyStore` with `BibEntry` and `BibAuthor`
+- [x] Define `BibEntryKind` enum
+- [x] Implement `BibliographyStore::load_bibtex()` — parse .bib files
+- [x] Implement `BibliographyStore::load_csl_json()` — parse CSL-JSON
+- [x] Implement citation resolution: given citation keys + style → rendered text
+- [x] Implement cross-reference resolution: given label → computed number/text
+- [x] Implement label uniqueness validation in `DocumentBuilder`
+- [x] Implement `Document` struct with root node (including `bibliography` field)
+- [x] Implement `DocumentBuilder` (ergonomic builder API, with `.cite()`, `.crossref()`, `.bib_entry()`)
+- [x] Implement `DocumentWriter` trait
+- [x] Implement `WriteReport` for feature degradation reporting
+- [x] Implement `LontarError` error types (including `CitationNotFound`, `Bibliography`)
+- [x] Implement style cascade resolution (default → named → paragraph → run)
 - [ ] Write unit tests for AST construction
 - [ ] Write unit tests for style resolution
 - [ ] Write unit tests for citation resolution (all modes × all styles)

@@ -18,6 +18,7 @@
 //! ```
 
 pub mod ast;
+pub mod bibliography;
 pub mod builder;
 pub mod error;
 pub mod resource;
@@ -27,6 +28,7 @@ pub mod writer;
 pub mod prelude {
     //! Convenience re-exports for common usage.
     pub use crate::ast::*;
+    pub use crate::bibliography::{BibAuthor, BibEntry, BibEntryKind, BibError, BibliographyStore};
     pub use crate::builder::DocumentBuilder;
     pub use crate::error::LontarError;
     pub use crate::resource::{ImageSource, ResourceStore};

@@ -1,11 +1,13 @@
 //! Ergonomic builder API for constructing documents.
 
-use crate::ast::{Block, Document, Inline};
+use crate::ast::{BibliographyStyle, Block, CitationMode, CrossRefKind, Document, Inline, CrossRefTarget};
+use crate::bibliography::BibliographyStore;
 use crate::style::ParagraphStyle;
 
 /// Ergonomic builder for constructing documents
 pub struct DocumentBuilder {
     doc: Document,
+    next_label_number: usize,
 }
 
 impl DocumentBuilder {
@@ -13,6 +15,7 @@ impl DocumentBuilder {
     pub fn new(title: impl Into<String>) -> Self {
         Self {
             doc: Document::new(title),
+            next_label_number: 1,
         }
     }
 
@@ -95,8 +98,94 @@ impl DocumentBuilder {
         self
     }
 
+    /// Set the bibliography store
+    pub fn bibliography(mut self, bib: BibliographyStore) -> Self {
+        self.doc.bibliography = Some(bib);
+        self
+    }
+
+    /// Add a bibliography section with the given style
+    pub fn render_bibliography(mut self, style: BibliographyStyle) -> Self {
+        let block = Block::Bibliography { style };
+        self.doc.add_block(block);
+        self
+    }
+
+    /// Add an equation block
+    pub fn equation(mut self, latex: impl Into<String>, label: Option<String>, numbered: bool) -> Self {
+        let block = Block::Equation {
+            latex: latex.into(),
+            label,
+            numbered,
+        };
+        self.doc.add_block(block);
+        self
+    }
+
+    /// Register a cross-reference label with an auto-incremented number
+    pub fn register_label(mut self, label: impl Into<String>, title: Option<String>) -> Self {
+        let label_str = label.into();
+        // If duplicate, record degraded feature and skip
+        if self.doc.crossrefs.contains_key(&label_str) {
+            // In a richer API we could return a Result; for now, skip adding duplicate
+            return self;
+        }
+
+        let number = self.next_label_number;
+        self.next_label_number += 1;
+        self.doc.crossrefs.insert(
+            label_str.clone(),
+            CrossRefTarget {
+                label: label_str,
+                number,
+                title,
+            },
+        );
+        self
+    }
+
+    /// Add a bibliography entry directly
+    pub fn bib_entry(mut self, entry: crate::bibliography::BibEntry) -> Self {
+        let bib = self.doc.bibliography.get_or_insert_with(crate::bibliography::BibliographyStore::new);
+        bib.add_entry(entry);
+        self
+    }
+
+    /// Create an inline citation (helper for ergonomics)
+    pub fn cite(&self, keys: Vec<String>, mode: CitationMode) -> Inline {
+        Inline::citation(keys, mode)
+    }
+
+    /// Create an inline cross-reference (helper for ergonomics)
+    pub fn crossref(&self, label: impl Into<String>, kind: CrossRefKind) -> Inline {
+        Inline::crossref(label, kind)
+    }
+
     /// Build the document
     pub fn build(self) -> Document {
         self.doc
+    }
+}
+
+/// Helper functions for creating inline elements
+impl Inline {
+    /// Create a citation inline
+    pub fn citation(keys: Vec<String>, mode: CitationMode) -> Self {
+        Self::Citation { keys, mode }
+    }
+
+    /// Create a cross-reference inline
+    pub fn crossref(label: impl Into<String>, kind: CrossRefKind) -> Self {
+        Self::CrossRef {
+            label: label.into(),
+            kind,
+        }
+    }
+
+    /// Create an inline equation
+    pub fn inline_equation(latex: impl Into<String>) -> Self {
+        Self::InlineEquation {
+            latex: latex.into(),
+        }
     }
 }

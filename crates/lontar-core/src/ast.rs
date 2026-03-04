@@ -8,6 +8,82 @@ use crate::style::{ParagraphStyle, StyleSheet, TableStyle, TextStyle};
 use chrono::{DateTime, Utc};
 use std::collections::HashMap;
 
+/// Chart type
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ChartKind {
+    Bar,
+    Line,
+    Pie,
+    Scatter,
+}
+
+/// Cross-reference target metadata
+#[derive(Debug, Clone)]
+pub struct CrossRefTarget {
+    pub label: String,
+    pub number: usize,
+    pub title: Option<String>,
+}
+
+/// Chart data (simplified for Phase 1)
+#[derive(Debug, Clone)]
+pub struct ChartData {
+    pub labels: Vec<String>,
+    pub datasets: Vec<Dataset>,
+}
+
+/// Dataset for charts
+#[derive(Debug, Clone)]
+pub struct Dataset {
+    pub label: String,
+    pub values: Vec<f64>,
+}
+
+/// Bibliography rendering style
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum BibliographyStyle {
+    /// Numeric citations [1], [2], etc.
+    Numeric,
+    /// Author-year citations (Smith, 2024)
+    AuthorYear,
+    /// Vancouver style (medical journals)
+    Vancouver,
+    /// Superscript citations ¹, ², etc.
+    Superscript,
+    /// APA 7th edition
+    Apa7,
+    /// Named style from CSL file
+    Named(u32), // Index into style registry
+}
+
+/// Citation rendering mode
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum CitationMode {
+    /// (Author, Year) or [1]
+    Parenthetical,
+    /// Author (Year) or Author [1]
+    Narrative,
+    /// (Year) only
+    YearOnly,
+    /// Suppress author, show year only
+    SuppressAuthor,
+    /// Full citation inline
+    Full,
+}
+
+/// Cross-reference rendering kind
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum CrossRefKind {
+    /// Auto-detect (number for equations/figures, title for sections)
+    Auto,
+    /// Show number only
+    Number,
+    /// Show page number
+    Page,
+    /// Show title/caption
+    Title,
+}
+
 /// Root document node
 #[derive(Debug, Clone)]
 pub struct Document {
@@ -15,6 +91,8 @@ pub struct Document {
     pub content: Vec<Block>,
     pub styles: StyleSheet,
     pub resources: ResourceStore,
+    pub bibliography: Option<crate::bibliography::BibliographyStore>,
+    pub crossrefs: std::collections::HashMap<String, CrossRefTarget>,
 }
 
 /// Document metadata (title, author, creation date, etc.)
@@ -83,6 +161,25 @@ pub enum Block {
 
     /// Horizontal rule
     HorizontalRule,
+
+    /// Mathematical equation
+    Equation {
+        latex: String,
+        label: Option<String>,
+        numbered: bool,
+    },
+
+    /// Chart or diagram
+    Chart {
+        kind: ChartKind,
+        data: ChartData,
+        caption: Option<Vec<Inline>>,
+    },
+
+    /// Bibliography section
+    Bibliography {
+        style: BibliographyStyle,
+    },
 }
 
 /// List item
@@ -123,6 +220,23 @@ pub enum Inline {
 
     /// Tab character
     Tab,
+
+    /// Citation reference
+    Citation {
+        keys: Vec<String>,
+        mode: CitationMode,
+    },
+
+    /// Cross-reference to a labeled element
+    CrossRef {
+        label: String,
+        kind: CrossRefKind,
+    },
+
+    /// Inline mathematical equation
+    InlineEquation {
+        latex: String,
+    },
 }
 
 impl Document {
@@ -138,6 +252,8 @@ impl Document {
             content: Vec::new(),
             styles: StyleSheet::new(),
             resources: ResourceStore::new(),
+            bibliography: None,
+            crossrefs: std::collections::HashMap::new(),
         }
     }
 
@@ -149,6 +265,16 @@ impl Document {
     /// Add multiple blocks
     pub fn add_blocks(&mut self, blocks: Vec<Block>) {
         self.content.extend(blocks);
+    }
+
+    /// Resolve a cross-reference to display text based on kind
+    pub fn resolve_crossref(&self, label: &str, kind: CrossRefKind) -> Option<String> {
+        let target = self.crossrefs.get(label)?;
+        match kind {
+            CrossRefKind::Auto | CrossRefKind::Number => Some(target.number.to_string()),
+            CrossRefKind::Title => target.title.clone(),
+            CrossRefKind::Page => None, // Page numbers not supported in core model
+        }
     }
 }
 

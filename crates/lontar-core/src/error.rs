@@ -28,4 +28,19 @@ pub enum LontarError {
 
     #[error("Internal error: {0}")]
     InternalError(String),
+
+    #[error("Cross-reference not found: {0}")]
+    CrossRefNotFound(String),
+
+    #[error("Duplicate label: {0}")]
+    DuplicateLabel(String),
+
+    #[error("Bibliography error: {0}")]
+    Bibliography(String),
+
+    #[error("Citation not found: {0}")]
+    CitationNotFound(String),
+
+    #[error("Bibliography parse error: {0}")]
+    BibliographyParse(String),
 }

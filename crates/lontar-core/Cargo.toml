@@ -10,6 +10,8 @@ description = "Core document model and traits for the Lontar document generation
 [dependencies]
 thiserror.workspace = true
 chrono.workspace = true
+serde = { workspace = true, features = ["derive"] }
+serde_json.workspace = true
 
 [dev-dependencies]
 criterion.workspace = true
