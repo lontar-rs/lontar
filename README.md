@@ -5,7 +5,7 @@
 *Named after the palm leaf manuscripts of the Indonesian archipelago — ancient technology for preserving and sharing knowledge. Lontar brings that same purpose to modern document formats.*
 
 [![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg)]()
-[![Rust](https://img.shields.io/badge/rust-1.75%2B-orange.svg)]()
+[![Rust](https://img.shields.io/badge/rust-1.85%2B-orange.svg)]()
 
 ---
 

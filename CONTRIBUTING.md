@@ -4,14 +4,14 @@
 
 ### Prerequisites
 
-- Rust 1.75+ (install via [rustup](https://rustup.rs/))
+- Rust 1.85+ (install via [rustup](https://rustup.rs/))
 - Python 3.10+ (for reference document generation in Phase 0)
 - LibreOffice (for visual conformance testing)
 
 ### Getting Started
 
 ```bash
-git clone https://github.com/YOUR_ORG/lontar.git
+git clone https://github.com/lontar-rs/lontar.git
 cd lontar
 cargo build
 cargo test

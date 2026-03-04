@@ -1,0 +1,12 @@
+/home/kade/lontar-rs/lontar/target/debug/deps/humansize-cdb86789b7f0da7b.d: /home/kade/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/lib.rs /home/kade/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/options/mod.rs /home/kade/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/options/defaults.rs /home/kade/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/numeric_traits.rs /home/kade/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/scales.rs /home/kade/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/utils.rs /home/kade/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/allocating.rs /home/kade/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/formatters.rs
+
+/home/kade/lontar-rs/lontar/target/debug/deps/libhumansize-cdb86789b7f0da7b.rmeta: /home/kade/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/lib.rs /home/kade/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/options/mod.rs /home/kade/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/options/defaults.rs /home/kade/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/numeric_traits.rs /home/kade/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/scales.rs /home/kade/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/utils.rs /home/kade/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/allocating.rs /home/kade/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/formatters.rs
+
+/home/kade/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/lib.rs:
+/home/kade/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/options/mod.rs:
+/home/kade/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/options/defaults.rs:
+/home/kade/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/numeric_traits.rs:
+/home/kade/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/scales.rs:
+/home/kade/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/utils.rs:
+/home/kade/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/allocating.rs:
+/home/kade/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/formatters.rs:

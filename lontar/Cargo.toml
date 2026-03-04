@@ -1,59 +1,51 @@
 [package]
-name = "lontar"
-version.workspace = true
-edition.workspace = true
-rust-version.workspace = true
-license.workspace = true
-repository.workspace = true
-description = "A comprehensive document generation library for Rust"
-
-[dependencies]
-lontar-core = { path = "../crates/lontar-core" }
+name        = "lontar"
+version     = "0.1.0"
+edition     = "2024"
+description = "Comprehensive document generation library for Rust — write once, render everywhere."
+keywords    = ["document", "docx", "pdf", "office", "ooxml"]
+categories  = ["text-processing", "encoding"]
+authors     = ["Kresna Sucandra"]
+license     = "MIT OR Apache-2.0"
+repository  = "https://github.com/lontar-rs/lontar"
 
 [features]
-default = ["md", "txt"]
-md = ["dep:lontar-md"]
-txt = ["dep:lontar-txt"]
-html = ["dep:lontar-html"]
-docx = ["dep:lontar-docx"]
-pptx = ["dep:lontar-pptx"]
-pdf = ["dep:lontar-pdf"]
-xlsx = ["dep:lontar-xlsx"]
-template = ["dep:lontar-template"]
-full = ["md", "txt", "html", "docx", "pptx", "pdf", "xlsx", "template"]
+default = []
+full    = ["docx", "pptx", "pdf", "xlsx", "md", "html", "txt", "diagram", "template"]
 
-[dependencies.lontar-md]
-path = "../crates/lontar-md"
-optional = true
+aksara = [
+    "dep:rustybuzz",
+    "dep:unicode-bidi",
+    "dep:unicode-linebreak",
+    "dep:unicode-script",
+]
 
-[dependencies.lontar-txt]
-path = "../crates/lontar-txt"
-optional = true
+diagram = ["dep:petgraph"]
 
-[dependencies.lontar-html]
-path = "../crates/lontar-html"
-optional = true
+docx     = ["aksara", "dep:zip", "dep:quick-xml"]
+pptx     = ["aksara", "dep:zip", "dep:quick-xml"]
+pdf      = ["aksara"]
+xlsx     = ["dep:rust_xlsxwriter"]
+md       = []
+html     = []
+txt      = []
+template = ["dep:tera"]
 
-[dependencies.lontar-docx]
-path = "../crates/lontar-docx"
-optional = true
+[dependencies]
+thiserror  = { workspace = true }
+chrono     = { workspace = true }
+serde      = { workspace = true }
+serde_json = { workspace = true }
 
-[dependencies.lontar-pptx]
-path = "../crates/lontar-pptx"
-optional = true
+zip               = { workspace = true, optional = true }
+quick-xml         = { workspace = true, optional = true }
+rustybuzz         = { workspace = true, optional = true }
+unicode-bidi      = { workspace = true, optional = true }
+unicode-linebreak = { workspace = true, optional = true }
+unicode-script    = { workspace = true, optional = true }
+petgraph          = { workspace = true, optional = true }
+rust_xlsxwriter   = { workspace = true, optional = true }
+tera              = { workspace = true, optional = true }
 
-[dependencies.lontar-pdf]
-path = "../crates/lontar-pdf"
-optional = true
-
-[dependencies.lontar-xlsx]
-path = "../crates/lontar-xlsx"
-optional = true
-
-[dependencies.lontar-template]
-path = "../crates/lontar-template"
-optional = true
-
-[dependencies.lontar-diagram]
-path = "../crates/lontar-diagram"
-optional = true
+[dev-dependencies]
+serde_json = { workspace = true }

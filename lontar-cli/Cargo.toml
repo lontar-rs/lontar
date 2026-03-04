@@ -1,0 +1,16 @@
+[package]
+name        = "lontar-cli"
+version     = "0.1.0"
+edition     = "2024"
+description = "Command-line interface for the Lontar document generation library."
+authors     = ["Kresna Sucandra"]
+license     = "MIT OR Apache-2.0"
+repository  = "https://github.com/lontar-rs/lontar"
+
+[[bin]]
+name = "lontar"
+path = "src/main.rs"
+
+[dependencies]
+lontar = { path = "../lontar", version = "0.1.0", features = ["full"] }
+clap   = { workspace = true }

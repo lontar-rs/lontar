@@ -97,16 +97,51 @@ This document captures key architectural and design choices made during Lontar's
 
 ---
 
-## DD-009: Workspace of Small Crates
+## DD-009: Single Crate with Feature-Flagged Modules
 
-**Decision:** Cargo workspace with one crate per backend, not a single crate with feature flags only.
+**Decision:** Lontar is published as a single `lontar` crate on crates.io, with backends and optional subsystems gated behind Cargo feature flags. A minimal two-member workspace exists only because the CLI binary cannot live inside a library crate.
 
-**Rationale:**
-- Users only compile what they use
-- Each backend can have its own dependencies without bloating others
-- Parallel compilation of independent crates
-- Clear ownership boundaries for contributors
-- The umbrella `lontar` crate re-exports everything for convenience
+**Previous decision (reverted):** Cargo workspace of one crate per backend. Reverted at v0.1.0 before any real users existed.
+
+**Alternatives considered:**
+- Workspace of small crates, one per backend (original DD-009)
+- Single flat crate with no feature flags (everything always compiled)
+
+**Rationale for reversal:** The original rationale held that separate crates give users compile-time savings by not pulling in unused backends. In practice, Cargo feature flags achieve the same result within a single crate. The multi-crate approach added real costs that outweighed the theoretical benefits:
+
+- **Publishing friction.** crates.io rate-limits publishes. A 12-crate workspace requires coordinated releases and version synchronization on every change. A single crate publishes once.
+- **Dependency graph complexity.** Intra-workspace path dependencies need to become versioned crates.io dependencies on every release, with tight version coupling across all members.
+- **User-facing surface area.** Users have to discover which of 12 crates they need and keep their versions in sync. One crate with documented feature flags is simpler.
+- **Cross-cutting changes.** Modifying a core type (e.g., adding a `Block` variant) required touching `lontar-core` plus every backend crate in the same PR. With modules, it's one crate, one version bump.
+
+The workspace-of-crates approach genuinely pays off when backends have separate maintainers, separate release cadences, or are designed to be used independently. Lontar's backends are tightly coupled to the core AST by design — they are not independent libraries. That coupling belongs in a single crate.
+
+**Current structure:**
+```toml
+lontar = { version = "0.1", features = ["docx", "pdf"] }  # typical server use
+lontar = { version = "0.1", features = ["full"] }          # everything
+lontar = { version = "0.1" }                               # core AST only
+```
+
+**Feature flag topology:**
+
+| Feature    | Deps enabled                              |
+|------------|-------------------------------------------|
+| `aksara`   | rustybuzz, unicode-bidi, unicode-linebreak, unicode-script |
+| `diagram`  | petgraph                                  |
+| `docx`     | aksara + zip + quick-xml                  |
+| `pptx`     | aksara + zip + quick-xml                  |
+| `pdf`      | aksara                                    |
+| `xlsx`     | rust_xlsxwriter                           |
+| `md`       | (none)                                    |
+| `html`     | (none)                                    |
+| `txt`      | (none)                                    |
+| `template` | tera                                      |
+| `full`     | all of the above                          |
+
+**Trade-off accepted:** The `lontar` crate name is now a hard dependency for anyone who wants any part of Lontar. This is the correct trade-off — it matches how users think about the library and how the project presents itself.
+
+**Yanked crates:** `lontar-core`, `lontar-aksara`, `lontar-cli`, `lontar-diagram`, `lontar-docx` v0.1.0 were yanked. No production users existed at the time of the reversal.
 
 ---
 
@@ -145,11 +180,21 @@ This document captures key architectural and design choices made during Lontar's
 
 ---
 
-## DD-013: Separate lontar-aksara Crate
 
-**Decision:** Text shaping lives in its own crate (`lontar-aksara`) rather than inside `lontar-core`.
+---
 
-**Rationale:** Not all backends need text shaping. Markdown, plain text, LaTeX, and HTML output work with raw Unicode strings — they don't need `rustybuzz` or font management. Keeping `lontar-core` dependency-free means simple use cases stay lightweight. Backends that generate binary formats (DOCX, PPTX, PDF) depend on `lontar-aksara`; text-based backends depend only on `lontar-core`.
+## DD-013: MSRV 1.85 / Edition 2024
+
+**Decision:** Set MSRV to 1.85 (Rust 2024 edition floor) for all crates. LontarOffice Desktop tracks stable channel.
+
+**Alternatives considered:**
+- Keep 1.75 / edition 2021 (original scaffold value)
+- Pin to latest stable (1.93) as MSRV for library crates too
+- Use nightly for async features
+
+**Rationale:** The projects were scaffolded with 1.75 during the design phase but have zero published releases and zero external users. Edition 2024 provides async closures (needed for collaboration and sync layers), refined lifetime capture (cleaner trait returns), and MSRV-aware dependency resolution. 1.85 is the natural floor as the first release supporting edition 2024. For the Desktop binary, there is no reason to pin — tracking stable avoids maintenance overhead with no downside since no one depends on it as a library.
+
+**Trade-off accepted:** Any user on Rust < 1.85 cannot compile Lontar. This excludes distros shipping very old Rust toolchains (e.g., Debian oldstable). Acceptable because our primary targets (Alpine/musl, direct source builds) always have current Rust available, and edition 2024 features materially improve the codebase.
 
 ---
 
