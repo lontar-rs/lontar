@@ -1,0 +1,45 @@
+% Reference LaTeX document for multi-script testing (XeLaTeX)
+\documentclass{article}
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setmainfont{Noto Sans}
+\newfontfamily\cjkfont{Noto Sans CJK SC}
+\newfontfamily\arabicfont{Noto Sans Arabic}
+\newfontfamily\hebrewfont{Noto Sans Hebrew}
+\newfontfamily\devanagarifont{Noto Sans Devanagari}
+\newfontfamily\tamilfont{Noto Sans Tamil}
+\newfontfamily\koreanfont{Noto Sans KR}
+\newfontfamily\tibetanfont{Noto Sans Tibetan}
+\newfontfamily\ethiopicfont{Noto Sans Ethiopic}
+
+% Add more font families as needed for specific scripts.
+
+\begin{document}
+\section*{Multi-Script Reference}
+
+\subsection*{Simple LTR}
+Latin: The quick brown fox jumps over the lazy dog.\\
+Greek: Καλημέρα κόσμε\\
+Cyrillic: Привет мир\\
+Georgian: გამარჯობა მსოფლიო\\
+
+\subsection*{Complex Indic}
+Devanagari: {\devanagarifont क्योंकि क्षत्रिय}\\
+Tamil: {\tamilfont வணக்கம் உலகம்}\\
+
+\subsection*{RTL}
+Arabic: {\arabicfont مرحبا بالعالم}\\
+Hebrew: {\hebrewfont שלום עולם}\\
+
+\subsection*{CJK}
+Chinese: {\cjkfont 你好，世界}\\
+Japanese: {\cjkfont こんにちは世界}\\
+Korean: {\koreanfont 안녕하세요 세계}\\
+
+\subsection*{Tibetan}
+{\tibetanfont བོད་ཀྱི་སྐད་}
+
+\subsection*{African}
+Ethiopic: {\ethiopicfont ሰላም ዓለም}
+
+\end{document}

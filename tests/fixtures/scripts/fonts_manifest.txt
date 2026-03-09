@@ -1,0 +1,48 @@
+# Noto Sans font manifest (one representative family per script category)
+# Download manually; place fonts under tests/fixtures/scripts/fonts/
+# Sources: https://www.google.com/get/noto/ or https://github.com/googlefonts/noto-fonts
+
+Simple LTR:
+- Noto Sans (Latin, Cyrillic, Greek)
+- Noto Sans Georgian
+
+Complex Indic:
+- Noto Sans Devanagari
+- Noto Sans Bengali
+- Noto Sans Tamil
+- Noto Sans Telugu
+- Noto Sans Kannada
+- Noto Sans Malayalam
+
+Southeast Asian:
+- Noto Sans Balinese
+- Noto Sans Javanese
+- Noto Sans Sundanese
+- Noto Sans Batak
+- Noto Sans Thai
+- Noto Sans Lao
+- Noto Sans Khmer
+- Noto Sans Myanmar
+
+RTL:
+- Noto Sans Arabic
+- Noto Sans Hebrew
+- Noto Sans Syriac
+- Noto Sans Thaana
+- Noto Sans NKo
+
+CJK:
+- Noto Sans CJK SC (Simplified)
+- Noto Sans CJK TC (Traditional)
+- Noto Sans JP
+- Noto Sans KR
+
+Tibetan:
+- Noto Sans Tibetan
+
+African:
+- Noto Sans Ethiopic
+- Noto Sans Tifinagh
+
+Mixed:
+- Reuse appropriate fonts above per script run
