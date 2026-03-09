@@ -7,8 +7,10 @@ from pptx.util import Inches
 
 ROOT = pathlib.Path(__file__).parent
 STRINGS = ROOT / "strings.txt"
-OUT_DOCX = ROOT / "reference.docx"
-OUT_PPTX = ROOT / "reference.pptx"
+REFERENCE_DIR = ROOT.parent / "reference_docs"
+REFERENCE_DIR.mkdir(parents=True, exist_ok=True)
+OUT_DOCX = REFERENCE_DIR / "multiscript.docx"
+OUT_PPTX = REFERENCE_DIR / "multiscript.pptx"
 
 
 def parse_strings():
