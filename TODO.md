@@ -77,8 +77,8 @@ Detailed task breakdown by phase. Check the box when complete.
 - [x] Create test document with cross-references (figure refs, table refs, equation refs, section refs)
 
 ### Multi-Script Test Corpus
-- [ ] Create `tests/fixtures/scripts/` directory for script-specific test data
-- [ ] Create test strings file with representative text for each script category:
+- [x] Create `tests/fixtures/scripts/` directory for script-specific test data
+- [x] Create test strings file with representative text for each script category:
   - [ ] Simple LTR: Latin, Cyrillic, Greek, Georgian
   - [ ] Complex Indic: Devanagari (conjuncts, split matras), Bengali, Tamil, Telugu, Kannada, Malayalam
   - [ ] Southeast Asian: Balinese (ᬮᭀᬦ᭄ᬢᬭ᭄), Javanese, Sundanese, Batak, Thai, Lao, Khmer, Myanmar

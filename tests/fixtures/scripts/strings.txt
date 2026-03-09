@@ -1,0 +1,51 @@
+# Multi-Script Test Strings (reference corpus)
+# Each section lists representative text for the given script category.
+
+[Simple LTR]
+Latin: The quick brown fox jumps over the lazy dog.
+Cyrillic: Привет мир
+Greek: Καλημέρα κόσμε
+Georgian: გამარჯობა მსოფლიო
+
+[Complex Indic]
+Devanagari: क्योंकि क्षत्रिय
+Bengali: শুভ সকাল পৃথিবী
+Tamil: வணக்கம் உலகம்
+Telugu: హలో ప్రపంచం
+Kannada: ನಮಸ್ಕಾರ ವಿಶ್ವ
+Malayalam: ലോകമേ, ഹലോ
+
+[Southeast Asian]
+Balinese: ᬮᭀᬦ᭄ᬢᬭ᭄
+Javanese: ꦗꦮ꧀ꦮꦫꦏ
+Sundanese: ᮞᮥᮔ᮪ᮓ
+Batak: ᯅᯖᯂᯪ
+Thai: สวัสดีโลก
+Lao: ສະບາຍດີໂລກ
+Khmer: សួស្តី​ពិភព​លោក
+Myanmar: မင်္ဂလာပါကမ္ဘာ
+
+[RTL]
+Arabic: مرحبا بالعالم
+Hebrew: שלום עולם
+Syriac: ܫܠܡܐ ܥܠܡܐ
+Thaana: އަސްސަލާމު އަލައްމް
+N'Ko: ߒߞߐ ߡߊ߬ߣߌ߲߫߸
+
+[CJK]
+Simplified Chinese: 你好，世界
+Traditional Chinese: 你好，世界
+Japanese: こんにちは世界
+Korean: 안녕하세요 세계
+
+[Tibetan]
+Tibetan: བོད་ཀྱི་སྐད་
+
+[African]
+Ethiopic: ሰላም ዓለም
+Tifinagh: ⵣⵉⵍⴻⵎ ⴰⵎⴰⵣⵉⵖ
+
+[Mixed]
+Latin+Balinese: Hello ᬮᭀᬦ᭄ᬢᬭ᭄
+Arabic+English: مرحبا world
+CJK+Latin: 你好 world
