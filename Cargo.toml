@@ -19,7 +19,7 @@ rustybuzz         = "0.20"
 unicode-bidi      = "0.3"
 unicode-linebreak = "0.1"
 unicode-script    = "0.5"
-petgraph          = "0.6"
+petgraph          = "0.8"
 rust_xlsxwriter   = "0.79"
 tera              = "1"
 clap              = { version = "4", features = ["derive"] }
