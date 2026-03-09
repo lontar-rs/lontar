@@ -12,7 +12,7 @@ o_bwpure = attribute o:bwpure { o_ST_BWMode }
 o_bwnormal = attribute o:bwnormal { o_ST_BWMode }
 o_targetscreensize = attribute o:targetscreensize { o_ST_ScreenSize }
 o_insetmode =
-  
+
   ## default value: custom
   attribute o:insetmode { o_ST_InsetMode }
 o_spt = attribute o:spt { xsd:float }
@@ -21,7 +21,7 @@ o_oned = attribute o:oned { s_ST_TrueFalse }
 o_regroupid = attribute o:regroupid { xsd:integer }
 o_doubleclicknotify = attribute o:doubleclicknotify { s_ST_TrueFalse }
 o_connectortype =
-  
+
   ## default value: straight
   attribute o:connectortype { o_ST_ConnectorType }
 o_button = attribute o:button { s_ST_TrueFalse }
@@ -38,7 +38,7 @@ o_hrstd = attribute o:hrstd { s_ST_TrueFalse }
 o_hrnoshade = attribute o:hrnoshade { s_ST_TrueFalse }
 o_hrpct = attribute o:hrpct { xsd:float }
 o_hralign =
-  
+
   ## default value: left
   attribute o:hralign { o_ST_HrAlign }
 o_allowincell = attribute o:allowincell { s_ST_TrueFalse }
@@ -137,10 +137,10 @@ o_CT_R =
   attribute idref { xsd:string }?,
   element proxy { o_CT_Proxy }*
 o_CT_Proxy =
-  
+
   ## default value: false
   attribute start { s_ST_TrueFalseBlank }?,
-  
+
   ## default value: false
   attribute end { s_ST_TrueFalseBlank }?,
   attribute idref { xsd:string }?,
@@ -206,15 +206,15 @@ o_CT_Skew =
 o_CT_Extrusion =
   v_AG_Ext,
   attribute on { s_ST_TrueFalse }?,
-  
+
   ## default value: parallel
   attribute type { o_ST_ExtrusionType }?,
-  
+
   ## default value: solid
   attribute render { o_ST_ExtrusionRender }?,
   attribute viewpointorigin { xsd:string }?,
   attribute viewpoint { xsd:string }?,
-  
+
   ## default value: XY
   attribute plane { o_ST_ExtrusionPlane }?,
   attribute skewangle { xsd:float }?,
@@ -252,7 +252,7 @@ o_CT_Callout =
   attribute dropauto { s_ST_TrueFalse }?,
   attribute drop { o_ST_CalloutDrop }?,
   attribute distance { xsd:string }?,
-  
+
   ## default value: f
   attribute lengthspecified { s_ST_TrueFalse }?,
   attribute length { xsd:string }?,

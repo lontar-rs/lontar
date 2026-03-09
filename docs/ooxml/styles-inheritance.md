@@ -190,20 +190,20 @@ The `w:docDefaults` element is the foundation of the styles hierarchy. It contai
   <w:rPr>
     <!-- Font family -->
     <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri" w:cs="Calibri"/>
-    
+
     <!-- Font size (in half-points) -->
     <w:sz w:val="22"/>        <!-- 11pt -->
     <w:szCs w:val="22"/>      <!-- complex script size -->
-    
+
     <!-- Language -->
     <w:lang w:val="en-US" w:eastAsia="zh-CN" w:bidi="ar-SA"/>
-    
+
     <!-- Text color -->
     <w:color w:val="000000"/>
-    
+
     <!-- Theme color (optional, used if w:color is not present) -->
     <w:color w:val="auto" w:themeColor="text1"/>
-    
+
     <!-- Bold, italic (typically not set in defaults) -->
     <!-- <w:b/> -->
     <!-- <w:i/> -->
@@ -218,16 +218,16 @@ The `w:docDefaults` element is the foundation of the styles hierarchy. It contai
   <w:pPr>
     <!-- Line spacing -->
     <w:spacing w:line="240" w:lineRule="auto"/>  <!-- 1.0 line spacing -->
-    
+
     <!-- Paragraph alignment -->
     <w:jc w:val="left"/>
-    
+
     <!-- Indentation (optional) -->
     <w:ind w:left="0" w:right="0" w:firstLine="0"/>
-    
+
     <!-- Paragraph borders (optional) -->
     <!-- <w:pBdr>...</w:pBdr> -->
-    
+
     <!-- Shading (optional) -->
     <!-- <w:shd w:val="clear" w:color="auto" w:fill="FFFFFF"/> -->
   </w:pPr>
@@ -281,32 +281,32 @@ Word defines standard style IDs that should be recognized:
   <!-- w:type: paragraph, character, table, numbering -->
   <!-- w:styleId: unique identifier (used in w:pStyle, w:rStyle, w:tblStyle) -->
   <!-- w:default="1": if present, this is the default style for its type -->
-  
+
   <w:name w:val="Normal"/>
   <!-- Display name in Word UI -->
-  
+
   <w:basedOn w:val="DefaultParagraphFont"/>
   <!-- Style this one inherits from (optional) -->
-  
+
   <w:next w:val="Normal"/>
   <!-- Style to apply to next paragraph after pressing Enter (paragraph styles only) -->
-  
+
   <w:link w:val="NormalChar"/>
   <!-- Links paragraph style to character style (optional) -->
-  
+
   <w:qFormat/>
   <!-- Marks as "quick style" (appears in styles gallery) -->
-  
+
   <w:hidden/>
   <!-- Hides from UI (optional) -->
-  
+
   <w:unhideWhenUsed/>
   <!-- Show in UI when this style is used (optional) -->
-  
+
   <w:pPr>
     <!-- Paragraph properties -->
   </w:pPr>
-  
+
   <w:rPr>
     <!-- Run properties -->
   </w:rPr>
@@ -319,33 +319,33 @@ Word defines standard style IDs that should be recognized:
 <w:pPr>
   <!-- Style reference -->
   <w:pStyle w:val="Heading1"/>
-  
+
   <!-- Spacing before/after paragraph (in twips, 1/20th of a point) -->
   <w:spacing w:before="240" w:after="120" w:line="240" w:lineRule="auto"/>
   <!-- line="240" = 1.0 line spacing, "360" = 1.5, "480" = 2.0 -->
   <!-- lineRule="auto" = proportional, "exact" = fixed -->
-  
+
   <!-- Indentation (in twips) -->
   <w:ind w:left="0" w:right="0" w:firstLine="0" w:hanging="0"/>
   <!-- hanging: first line indentation (negative = hanging indent) -->
-  
+
   <!-- Alignment -->
   <w:jc w:val="left"/>
   <!-- left, center, right, both (justified) -->
-  
+
   <!-- Keep paragraph with next paragraph -->
   <w:keepNext/>
-  
+
   <!-- Keep all lines of paragraph together -->
   <w:keepLines/>
-  
+
   <!-- Paragraph page break before -->
   <w:pageBreakBefore/>
-  
+
   <!-- Outline level (for TOC) -->
   <w:outlineLevel w:val="0"/>
   <!-- 0 = Heading1, 1 = Heading2, ..., 8 = Heading9, 9 = body text -->
-  
+
   <!-- Paragraph borders -->
   <w:pBdr>
     <w:top w:val="single" w:sz="12" w:space="1" w:color="000000"/>
@@ -353,11 +353,11 @@ Word defines standard style IDs that should be recognized:
     <w:bottom w:val="single" w:sz="12" w:space="1" w:color="000000"/>
     <w:right w:val="single" w:sz="12" w:space="1" w:color="000000"/>
   </w:pBdr>
-  
+
   <!-- Paragraph shading -->
   <w:shd w:val="clear" w:color="auto" w:fill="FFFF00"/>
   <!-- fill = background color in hex -->
-  
+
   <!-- Numbering/list properties -->
   <w:numPr>
     <w:ilvl w:val="0"/>  <!-- list level (0-8) -->
@@ -373,68 +373,68 @@ Word defines standard style IDs that should be recognized:
   <!-- Font family -->
   <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri" w:cs="Calibri"/>
   <!-- ascii = Latin, hAnsi = Western European, cs = complex scripts -->
-  
+
   <!-- Font size (in half-points) -->
   <w:sz w:val="22"/>        <!-- 11pt -->
   <w:szCs w:val="22"/>      <!-- complex script size -->
-  
+
   <!-- Bold -->
   <w:b/>
   <w:bCs/>  <!-- complex script bold -->
-  
+
   <!-- Italic -->
   <w:i/>
   <w:iCs/>  <!-- complex script italic -->
-  
+
   <!-- Underline -->
   <w:u w:val="single"/>
   <!-- single, double, thick, dotted, dash, dotDash, dotDotDash, wave, etc. -->
-  
+
   <!-- Strikethrough -->
   <w:strike/>
-  
+
   <!-- Double strikethrough -->
   <w:dstrike/>
-  
+
   <!-- Superscript/subscript -->
   <w:vertAlign w:val="superscript"/>
   <!-- superscript, subscript, baseline -->
-  
+
   <!-- Text color -->
   <w:color w:val="FF0000"/>
   <!-- hex color, or w:themeColor for theme colors -->
-  
+
   <!-- Highlight color -->
   <w:highlight w:val="yellow"/>
   <!-- yellow, green, cyan, magenta, blue, red, darkBlue, darkCyan, darkGreen, darkMagenta, darkRed, darkYellow, lightGray, darkGray, black, none -->
-  
+
   <!-- Language -->
   <w:lang w:val="en-US" w:eastAsia="zh-CN" w:bidi="ar-SA"/>
-  
+
   <!-- All caps -->
   <w:caps/>
-  
+
   <!-- Small caps -->
   <w:smallCaps/>
-  
+
   <!-- Spacing between characters (in twips) -->
   <w:spacing w:val="24"/>
-  
+
   <!-- Character scale (percentage) -->
   <w:w w:val="100"/>
-  
+
   <!-- Kerning (minimum font size in half-points) -->
   <w:kern w:val="24"/>
-  
+
   <!-- Shadow -->
   <w:shadow/>
-  
+
   <!-- Outline -->
   <w:outline/>
-  
+
   <!-- Emboss -->
   <w:emboss/>
-  
+
   <!-- Imprint -->
   <w:imprint/>
 </w:rPr>
@@ -485,23 +485,23 @@ Result: effective_formatting is the final formatting applied to the text
 ```python
 def resolve_formatting(run, paragraph, table=None):
     """Resolve effective formatting for a text run."""
-    
+
     # Start with document defaults
     effective = copy(doc_defaults.rPr)
     effective.update(doc_defaults.pPr)
-    
+
     # Apply paragraph style and its inheritance chain
     if paragraph.pStyle:
         style = get_style(paragraph.pStyle)
         effective.update(style.rPr)
         effective.update(style.pPr)
-        
+
         # Walk the basedOn chain
         while style.basedOn:
             style = get_style(style.basedOn)
             effective.update(style.rPr)
             effective.update(style.pPr)
-    
+
     # Apply table style (if in table)
     if table and table.tblStyle:
         table_style = get_style(table.tblStyle)
@@ -512,18 +512,18 @@ def resolve_formatting(run, paragraph, table=None):
         if is_last_row(cell):
             effective.update(table_style.lastRow)
         # ... etc for other conditional types
-    
+
     # Apply numbering style (if in list)
     if paragraph.numPr:
         numbering_style = get_style(paragraph.numPr.numId)
         effective.update(numbering_style.pPr)
-    
+
     # Apply direct paragraph formatting
     effective.update(paragraph.pPr)
-    
+
     # Apply direct run formatting (highest precedence)
     effective.update(run.rPr)
-    
+
     return effective
 ```
 
@@ -597,7 +597,7 @@ Table styles define formatting for entire tables and conditional formatting for 
 <w:style w:type="table" w:styleId="TableGrid">
   <w:name w:val="Table Grid"/>
   <w:basedOn w:val="TableNormal"/>
-  
+
   <!-- Table-level properties -->
   <w:tblPr>
     <w:tblW w:w="0" w:type="auto"/>
@@ -611,7 +611,7 @@ Table styles define formatting for entire tables and conditional formatting for 
       <w:insideV w:val="single" w:sz="12" w:space="0" w:color="auto"/>
     </w:tblBorders>
   </w:tblPr>
-  
+
   <!-- Conditional formatting for specific cell types -->
   <w:tblStylePr w:type="firstRow">
     <!-- Formatting for first row -->
@@ -623,62 +623,62 @@ Table styles define formatting for entire tables and conditional formatting for 
       <w:shd w:val="clear" w:color="auto" w:fill="4472C4"/>
     </w:tcPr>
   </w:tblStylePr>
-  
+
   <w:tblStylePr w:type="lastRow">
     <!-- Formatting for last row -->
     <w:rPr>
       <w:b/>
     </w:rPr>
   </w:tblStylePr>
-  
+
   <w:tblStylePr w:type="firstCol">
     <!-- Formatting for first column -->
     <w:rPr>
       <w:b/>
     </w:rPr>
   </w:tblStylePr>
-  
+
   <w:tblStylePr w:type="lastCol">
     <!-- Formatting for last column -->
     <w:rPr>
       <w:b/>
     </w:rPr>
   </w:tblStylePr>
-  
+
   <w:tblStylePr w:type="band1Vert">
     <!-- Formatting for odd columns (vertical banding) -->
     <w:tcPr>
       <w:shd w:val="clear" w:color="auto" w:fill="F2F2F2"/>
     </w:tcPr>
   </w:tblStylePr>
-  
+
   <w:tblStylePr w:type="band2Vert">
     <!-- Formatting for even columns -->
   </w:tblStylePr>
-  
+
   <w:tblStylePr w:type="band1Horz">
     <!-- Formatting for odd rows (horizontal banding) -->
     <w:tcPr>
       <w:shd w:val="clear" w:color="auto" w:fill="F2F2F2"/>
     </w:tcPr>
   </w:tblStylePr>
-  
+
   <w:tblStylePr w:type="band2Horz">
     <!-- Formatting for even rows -->
   </w:tblStylePr>
-  
+
   <w:tblStylePr w:type="neCell">
     <!-- Formatting for northeast cell (top-right corner) -->
   </w:tblStylePr>
-  
+
   <w:tblStylePr w:type="nwCell">
     <!-- Formatting for northwest cell (top-left corner) -->
   </w:tblStylePr>
-  
+
   <w:tblStylePr w:type="seCell">
     <!-- Formatting for southeast cell (bottom-right corner) -->
   </w:tblStylePr>
-  
+
   <w:tblStylePr w:type="swCell">
     <!-- Formatting for southwest cell (bottom-left corner) -->
   </w:tblStylePr>
@@ -708,11 +708,11 @@ Table styles define formatting for entire tables and conditional formatting for 
 <w:tcPr>
   <!-- Cell width -->
   <w:tcW w:w="2880" w:type="dxa"/>
-  
+
   <!-- Vertical alignment -->
   <w:vAlign w:val="center"/>
   <!-- top, center, bottom -->
-  
+
   <!-- Cell margins -->
   <w:tcMar>
     <w:top w:w="100" w:type="dxa"/>
@@ -720,7 +720,7 @@ Table styles define formatting for entire tables and conditional formatting for 
     <w:bottom w:w="100" w:type="dxa"/>
     <w:right w:w="100" w:type="dxa"/>
   </w:tcMar>
-  
+
   <!-- Cell borders -->
   <w:tcBorders>
     <w:top w:val="single" w:sz="12" w:space="0" w:color="000000"/>
@@ -728,10 +728,10 @@ Table styles define formatting for entire tables and conditional formatting for 
     <w:bottom w:val="single" w:sz="12" w:space="0" w:color="000000"/>
     <w:right w:val="single" w:sz="12" w:space="0" w:color="000000"/>
   </w:tcBorders>
-  
+
   <!-- Cell shading -->
   <w:shd w:val="clear" w:color="auto" w:fill="FFFF00"/>
-  
+
   <!-- No wrap -->
   <w:noWrap/>
 </w:tcPr>

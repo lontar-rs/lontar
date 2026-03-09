@@ -1001,7 +1001,7 @@ Only load packages that are actually used:
 ```rust
 fn generate_preamble(doc: &Document) -> String {
     let mut packages = vec!["fontspec", "babel", "geometry"];
-    
+
     if doc.has_images() {
         packages.push("graphicx");
     }
@@ -1013,7 +1013,7 @@ fn generate_preamble(doc: &Document) -> String {
         packages.push("amssymb");
     }
     // ... etc
-    
+
     packages.iter()
         .map(|p| format!("\\usepackage{{{}}}", p))
         .collect::<Vec<_>>()

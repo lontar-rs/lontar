@@ -25,10 +25,10 @@ ddgrm_CT_CTCategories = element cat { ddgrm_CT_CTCategory }*
 ddgrm_ST_ClrAppMethod = "span" | "cycle" | "repeat"
 ddgrm_ST_HueDir = "cw" | "ccw"
 ddgrm_CT_Colors =
-  
+
   ## default value: span
   attribute meth { ddgrm_ST_ClrAppMethod }?,
-  
+
   ## default value: cw
   attribute hueDir { ddgrm_ST_HueDir }?,
   a_EG_ColorChoice*
@@ -53,7 +53,7 @@ ddgrm_colorsDef = element colorsDef { ddgrm_CT_ColorTransform }
 ddgrm_CT_ColorTransformHeader =
   attribute uniqueId { xsd:string },
   attribute minVer { xsd:string }?,
-  
+
   ## default value: 0
   attribute resId { xsd:int }?,
   element title { ddgrm_CT_CTName }+,
@@ -70,10 +70,10 @@ ddgrm_ST_PtType =
   "node" | "asst" | "doc" | "pres" | "parTrans" | "sibTrans"
 ddgrm_CT_Pt =
   attribute modelId { ddgrm_ST_ModelId },
-  
+
   ## default value: node
   attribute type { ddgrm_ST_PtType }?,
-  
+
   ## default value: 0
   attribute cxnId { ddgrm_ST_ModelId }?,
   element prSet { ddgrm_CT_ElemPropSet }?,
@@ -85,17 +85,17 @@ ddgrm_ST_CxnType =
   "parOf" | "presOf" | "presParOf" | "unknownRelationship"
 ddgrm_CT_Cxn =
   attribute modelId { ddgrm_ST_ModelId },
-  
+
   ## default value: parOf
   attribute type { ddgrm_ST_CxnType }?,
   attribute srcId { ddgrm_ST_ModelId },
   attribute destId { ddgrm_ST_ModelId },
   attribute srcOrd { xsd:unsignedInt },
   attribute destOrd { xsd:unsignedInt },
-  
+
   ## default value: 0
   attribute parTransId { ddgrm_ST_ModelId }?,
-  
+
   ## default value: 0
   attribute sibTransId { ddgrm_ST_ModelId }?,
   attribute presId { xsd:string }?,
@@ -109,67 +109,67 @@ ddgrm_CT_DataModel =
   element extLst { a_CT_OfficeArtExtensionList }?
 ddgrm_dataModel = element dataModel { ddgrm_CT_DataModel }
 ddgrm_AG_IteratorAttributes =
-  
+
   ## default value: none
   attribute axis { ddgrm_ST_AxisTypes }?,
-  
+
   ## default value: all
   attribute ptType { ddgrm_ST_ElementTypes }?,
-  
+
   ## default value: true
   attribute hideLastTrans { ddgrm_ST_Booleans }?,
-  
+
   ## default value: 1
   attribute st { ddgrm_ST_Ints }?,
-  
+
   ## default value: 0
   attribute cnt { ddgrm_ST_UnsignedInts }?,
-  
+
   ## default value: 1
   attribute step { ddgrm_ST_Ints }?
 ddgrm_AG_ConstraintAttributes =
   attribute type { ddgrm_ST_ConstraintType },
-  
+
   ## default value: self
   attribute for { ddgrm_ST_ConstraintRelationship }?,
   attribute forName { xsd:string }?,
-  
+
   ## default value: all
   attribute ptType { ddgrm_ST_ElementType }?
 ddgrm_AG_ConstraintRefAttributes =
-  
+
   ## default value: none
   attribute refType { ddgrm_ST_ConstraintType }?,
-  
+
   ## default value: self
   attribute refFor { ddgrm_ST_ConstraintRelationship }?,
   attribute refForName { xsd:string }?,
-  
+
   ## default value: all
   attribute refPtType { ddgrm_ST_ElementType }?
 ddgrm_CT_Constraint =
   ddgrm_AG_ConstraintAttributes,
   ddgrm_AG_ConstraintRefAttributes,
-  
+
   ## default value: none
   attribute op { ddgrm_ST_BoolOperator }?,
-  
+
   ## default value: 0
   attribute val { xsd:double }?,
-  
+
   ## default value: 1
   attribute fact { xsd:double }?,
   element extLst { a_CT_OfficeArtExtensionList }?
 ddgrm_CT_Constraints = element constr { ddgrm_CT_Constraint }*
 ddgrm_CT_NumericRule =
   ddgrm_AG_ConstraintAttributes,
-  
+
   ## default value: NaN
   attribute val { xsd:double }?,
-  
+
   ## default value: NaN
   attribute fact { xsd:double }?,
-  
+
   ## default value: NaN
   attribute max { xsd:double }?,
   element extLst { a_CT_OfficeArtExtensionList }?
@@ -184,23 +184,23 @@ ddgrm_CT_Adj =
   attribute val { xsd:double }
 ddgrm_CT_AdjLst = element adj { ddgrm_CT_Adj }*
 ddgrm_CT_Shape =
-  
+
   ## default value: 0
   attribute rot { xsd:double }?,
-  
+
   ## default value: none
   attribute type { ddgrm_ST_LayoutShapeType }?,
   r_blip?,
-  
+
   ## default value: 0
   attribute zOrderOff { xsd:int }?,
-  
+
   ## default value: false
   attribute hideGeom { xsd:boolean }?,
-  
+
   ## default value: false
   attribute lkTxEntry { xsd:boolean }?,
-  
+
   ## default value: false
   attribute blipPhldr { xsd:boolean }?,
   element adjLst { ddgrm_CT_AdjLst }?,
@@ -210,7 +210,7 @@ ddgrm_CT_Parameter =
   attribute val { ddgrm_ST_ParameterVal }
 ddgrm_CT_Algorithm =
   attribute type { ddgrm_ST_AlgorithmType },
-  
+
   ## default value: 0
   attribute rev { xsd:unsignedInt }?,
   element param { ddgrm_CT_Parameter }*,
@@ -218,7 +218,7 @@ ddgrm_CT_Algorithm =
 ddgrm_CT_LayoutNode =
   attribute name { xsd:string }?,
   attribute styleLbl { xsd:string }?,
-  
+
   ## default value: b
   attribute chOrder { ddgrm_ST_ChildOrderType }?,
   attribute moveWith { xsd:string }?,
@@ -249,7 +249,7 @@ ddgrm_CT_When =
   attribute name { xsd:string }?,
   ddgrm_AG_IteratorAttributes,
   attribute func { ddgrm_ST_FunctionType },
-  
+
   ## default value: none
   attribute arg { ddgrm_ST_FunctionArgument }?,
   attribute op { ddgrm_ST_FunctionOperator },
@@ -279,7 +279,7 @@ ddgrm_CT_Choose =
   element if { ddgrm_CT_When }+,
   element else { ddgrm_CT_Otherwise }?
 ddgrm_CT_SampleData =
-  
+
   ## default value: false
   attribute useDef { xsd:boolean }?,
   element dataModel { ddgrm_CT_DataModel }?
@@ -310,7 +310,7 @@ ddgrm_CT_DiagramDefinitionHeader =
   attribute uniqueId { xsd:string },
   attribute minVer { xsd:string }?,
   attribute defStyle { xsd:string }?,
-  
+
   ## default value: 0
   attribute resId { xsd:int }?,
   element title { ddgrm_CT_Name }+,
@@ -400,41 +400,41 @@ ddgrm_ST_HierBranchStyle = "l" | "r" | "hang" | "std" | "init"
 ddgrm_ST_AnimOneStr = "none" | "one" | "branch"
 ddgrm_ST_AnimLvlStr = "none" | "lvl" | "ctr"
 ddgrm_CT_OrgChart =
-  
+
   ## default value: false
   attribute val { xsd:boolean }?
 ddgrm_ST_NodeCount = xsd:int { minInclusive = "-1" }
 ddgrm_CT_ChildMax =
-  
+
   ## default value: -1
   attribute val { ddgrm_ST_NodeCount }?
 ddgrm_CT_ChildPref =
-  
+
   ## default value: -1
   attribute val { ddgrm_ST_NodeCount }?
 ddgrm_CT_BulletEnabled =
-  
+
   ## default value: false
   attribute val { xsd:boolean }?
 ddgrm_CT_Direction =
-  
+
   ## default value: norm
   attribute val { ddgrm_ST_Direction }?
 ddgrm_CT_HierBranchStyle =
-  
+
   ## default value: std
   attribute val { ddgrm_ST_HierBranchStyle }?
 ddgrm_CT_AnimOne =
-  
+
   ## default value: one
   attribute val { ddgrm_ST_AnimOneStr }?
 ddgrm_CT_AnimLvl =
-  
+
   ## default value: none
   attribute val { ddgrm_ST_AnimLvlStr }?
 ddgrm_ST_ResizeHandlesStr = "exact" | "rel"
 ddgrm_CT_ResizeHandles =
-  
+
   ## default value: rel
   attribute val { ddgrm_ST_ResizeHandlesStr }?
 ddgrm_CT_LayoutVariablePropertySet =
@@ -478,7 +478,7 @@ ddgrm_styleDef = element styleDef { ddgrm_CT_StyleDefinition }
 ddgrm_CT_StyleDefinitionHeader =
   attribute uniqueId { xsd:string },
   attribute minVer { xsd:string }?,
-  
+
   ## default value: 0
   attribute resId { xsd:int }?,
   element title { ddgrm_CT_SDName }+,

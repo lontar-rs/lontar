@@ -368,71 +368,71 @@ src/
 
 ```rust
 // DOCX/PPTX shared namespaces
-pub const NS_RELATIONSHIPS: &str = 
+pub const NS_RELATIONSHIPS: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
-pub const NS_MARKUP_COMPAT: &str = 
+pub const NS_MARKUP_COMPAT: &str =
     "http://schemas.openxmlformats.org/markup-compatibility/2006";
-pub const NS_XML: &str = 
+pub const NS_XML: &str =
     "http://www.w3.org/XML/1998/namespace";
-pub const NS_XSI: &str = 
+pub const NS_XSI: &str =
     "http://www.w3.org/2001/XMLSchema-instance";
 
 // DrawingML namespaces (shared)
-pub const NS_DRAWINGML: &str = 
+pub const NS_DRAWINGML: &str =
     "http://schemas.openxmlformats.org/drawingml/2006/main";
-pub const NS_DRAWINGML_PICTURE: &str = 
+pub const NS_DRAWINGML_PICTURE: &str =
     "http://schemas.openxmlformats.org/drawingml/2006/picture";
-pub const NS_DRAWINGML_CHART: &str = 
+pub const NS_DRAWINGML_CHART: &str =
     "http://schemas.openxmlformats.org/drawingml/2006/chart";
-pub const NS_DRAWINGML_DIAGRAM: &str = 
+pub const NS_DRAWINGML_DIAGRAM: &str =
     "http://schemas.openxmlformats.org/drawingml/2006/diagram";
 
 // VML namespaces (legacy)
-pub const NS_VML: &str = 
+pub const NS_VML: &str =
     "urn:schemas-microsoft-com:vml";
-pub const NS_VML_OFFICE: &str = 
+pub const NS_VML_OFFICE: &str =
     "urn:schemas-microsoft-com:office:office";
 
 // Metadata namespaces
-pub const NS_DUBLIN_CORE: &str = 
+pub const NS_DUBLIN_CORE: &str =
     "http://purl.org/dc/elements/1.1/";
-pub const NS_DUBLIN_CORE_TERMS: &str = 
+pub const NS_DUBLIN_CORE_TERMS: &str =
     "http://purl.org/dc/terms/";
-pub const NS_DUBLIN_CORE_TYPE: &str = 
+pub const NS_DUBLIN_CORE_TYPE: &str =
     "http://purl.org/dc/dcmitype/";
-pub const NS_CORE_PROPERTIES: &str = 
+pub const NS_CORE_PROPERTIES: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/custom-properties";
 
 // DOCX-specific namespaces
-pub const NS_WML: &str = 
+pub const NS_WML: &str =
     "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
-pub const NS_WML_2010: &str = 
+pub const NS_WML_2010: &str =
     "http://schemas.microsoft.com/office/word/2010/wordml";
-pub const NS_WML_2012: &str = 
+pub const NS_WML_2012: &str =
     "http://schemas.microsoft.com/office/word/2012/wordml";
-pub const NS_WML_DRAWING: &str = 
+pub const NS_WML_DRAWING: &str =
     "http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing";
-pub const NS_WML_DRAWING_2010: &str = 
+pub const NS_WML_DRAWING_2010: &str =
     "http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing";
-pub const NS_WML_SHAPE: &str = 
+pub const NS_WML_SHAPE: &str =
     "http://schemas.microsoft.com/office/word/2010/wordprocessingShape";
-pub const NS_WML_GROUP: &str = 
+pub const NS_WML_GROUP: &str =
     "http://schemas.microsoft.com/office/word/2010/wordprocessingGroup";
-pub const NS_MATH: &str = 
+pub const NS_MATH: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/math";
 
 // PPTX-specific namespaces
-pub const NS_PML: &str = 
+pub const NS_PML: &str =
     "http://schemas.openxmlformats.org/presentationml/2006/main";
-pub const NS_PML_2010: &str = 
+pub const NS_PML_2010: &str =
     "http://schemas.microsoft.com/office/powerpoint/2010/main";
-pub const NS_PML_2012: &str = 
+pub const NS_PML_2012: &str =
     "http://schemas.microsoft.com/office/powerpoint/2012/main";
 
 // Package namespaces
-pub const NS_CONTENT_TYPES: &str = 
+pub const NS_CONTENT_TYPES: &str =
     "http://schemas.openxmlformats.org/package/2006/content-types";
-pub const NS_PACKAGE_RELATIONSHIPS: &str = 
+pub const NS_PACKAGE_RELATIONSHIPS: &str =
     "http://schemas.openxmlformats.org/package/2006/relationships";
 ```
 
@@ -440,51 +440,51 @@ pub const NS_PACKAGE_RELATIONSHIPS: &str =
 
 ```rust
 // DOCX relationships
-pub const REL_STYLES: &str = 
+pub const REL_STYLES: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles";
-pub const REL_NUMBERING: &str = 
+pub const REL_NUMBERING: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering";
-pub const REL_FONT_TABLE: &str = 
+pub const REL_FONT_TABLE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable";
-pub const REL_SETTINGS: &str = 
+pub const REL_SETTINGS: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings";
-pub const REL_HEADER: &str = 
+pub const REL_HEADER: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/header";
-pub const REL_FOOTER: &str = 
+pub const REL_FOOTER: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer";
 
 // PPTX relationships
-pub const REL_SLIDE: &str = 
+pub const REL_SLIDE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide";
-pub const REL_SLIDE_LAYOUT: &str = 
+pub const REL_SLIDE_LAYOUT: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout";
-pub const REL_SLIDE_MASTER: &str = 
+pub const REL_SLIDE_MASTER: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster";
-pub const REL_PRES_PROPS: &str = 
+pub const REL_PRES_PROPS: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/presProps";
-pub const REL_TABLE_STYLES: &str = 
+pub const REL_TABLE_STYLES: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/tableStyles";
 
 // Shared relationships
-pub const REL_OFFICE_DOCUMENT: &str = 
+pub const REL_OFFICE_DOCUMENT: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument";
-pub const REL_THEME: &str = 
+pub const REL_THEME: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme";
-pub const REL_IMAGE: &str = 
+pub const REL_IMAGE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image";
-pub const REL_HYPERLINK: &str = 
+pub const REL_HYPERLINK: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink";
-pub const REL_CHART: &str = 
+pub const REL_CHART: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart";
-pub const REL_PACKAGE: &str = 
+pub const REL_PACKAGE: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/package";
 
 // Core properties
-pub const REL_CORE_PROPERTIES: &str = 
+pub const REL_CORE_PROPERTIES: &str =
     "http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties";
-pub const REL_EXTENDED_PROPERTIES: &str = 
+pub const REL_EXTENDED_PROPERTIES: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties";
-pub const REL_CUSTOM_PROPERTIES: &str = 
+pub const REL_CUSTOM_PROPERTIES: &str =
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties";
 ```
 
@@ -492,49 +492,49 @@ pub const REL_CUSTOM_PROPERTIES: &str =
 
 ```rust
 // DOCX content types
-pub const CT_DOCUMENT: &str = 
+pub const CT_DOCUMENT: &str =
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml";
-pub const CT_STYLES: &str = 
+pub const CT_STYLES: &str =
     "application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml";
-pub const CT_NUMBERING: &str = 
+pub const CT_NUMBERING: &str =
     "application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml";
-pub const CT_FONT_TABLE: &str = 
+pub const CT_FONT_TABLE: &str =
     "application/vnd.openxmlformats-officedocument.wordprocessingml.fontTable+xml";
-pub const CT_SETTINGS: &str = 
+pub const CT_SETTINGS: &str =
     "application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml";
-pub const CT_HEADER: &str = 
+pub const CT_HEADER: &str =
     "application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml";
-pub const CT_FOOTER: &str = 
+pub const CT_FOOTER: &str =
     "application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml";
 
 // PPTX content types
-pub const CT_PRESENTATION: &str = 
+pub const CT_PRESENTATION: &str =
     "application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml";
-pub const CT_SLIDE: &str = 
+pub const CT_SLIDE: &str =
     "application/vnd.openxmlformats-officedocument.presentationml.slide+xml";
-pub const CT_SLIDE_LAYOUT: &str = 
+pub const CT_SLIDE_LAYOUT: &str =
     "application/vnd.openxmlformats-officedocument.presentationml.slideLayout+xml";
-pub const CT_SLIDE_MASTER: &str = 
+pub const CT_SLIDE_MASTER: &str =
     "application/vnd.openxmlformats-officedocument.presentationml.slideMaster+xml";
-pub const CT_THEME: &str = 
+pub const CT_THEME: &str =
     "application/vnd.openxmlformats-officedocument.theme+xml";
-pub const CT_PRES_PROPS: &str = 
+pub const CT_PRES_PROPS: &str =
     "application/vnd.openxmlformats-officedocument.presentationml.presProps+xml";
-pub const CT_TABLE_STYLES: &str = 
+pub const CT_TABLE_STYLES: &str =
     "application/vnd.openxmlformats-officedocument.presentationml.tableStyles+xml";
 
 // Shared content types
-pub const CT_CHART: &str = 
+pub const CT_CHART: &str =
     "application/vnd.openxmlformats-officedocument.drawingml.chart+xml";
-pub const CT_CORE_PROPERTIES: &str = 
+pub const CT_CORE_PROPERTIES: &str =
     "application/vnd.openxmlformats-package.core-properties+xml";
-pub const CT_EXTENDED_PROPERTIES: &str = 
+pub const CT_EXTENDED_PROPERTIES: &str =
     "application/vnd.openxmlformats-officedocument.extended-properties+xml";
-pub const CT_CUSTOM_PROPERTIES: &str = 
+pub const CT_CUSTOM_PROPERTIES: &str =
     "application/vnd.openxmlformats-officedocument.custom-properties+xml";
-pub const CT_RELATIONSHIPS: &str = 
+pub const CT_RELATIONSHIPS: &str =
     "application/vnd.openxmlformats-package.relationships+xml";
-pub const CT_CONTENT_TYPES: &str = 
+pub const CT_CONTENT_TYPES: &str =
     "application/vnd.openxmlformats-package.content-types+xml";
 
 // Image content types
@@ -546,11 +546,11 @@ pub const CT_IMAGE_TIFF: &str = "image/tiff";
 pub const CT_IMAGE_SVG: &str = "image/svg+xml";
 
 // Font content type
-pub const CT_FONT_OBFUSCATED: &str = 
+pub const CT_FONT_OBFUSCATED: &str =
     "application/vnd.openxmlformats-officedocument.obfuscatedFont";
 
 // Spreadsheet (for embedded xlsx in charts)
-pub const CT_SPREADSHEET: &str = 
+pub const CT_SPREADSHEET: &str =
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 ```
 

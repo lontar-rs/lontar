@@ -47,10 +47,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Export to DOCX
     DocxWriter::new().write(&doc, "output.docx")?;
-    
+
     // Export to PDF
     PdfWriter::new().write(&doc, "output.pdf")?;
-    
+
     // Export to HTML
     HtmlWriter::new().write(&doc, "output.html")?;
 

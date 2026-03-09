@@ -29,25 +29,25 @@ The OOXML numbering system consists of two components:
 <w:numbering xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
              xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
              xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml">
-  
+
   <!-- Abstract numbering definitions -->
   <w:abstractNum w:abstractNumId="0">
     <!-- Level definitions (w:lvl) for levels 0-8 -->
   </w:abstractNum>
-  
+
   <w:abstractNum w:abstractNumId="1">
     <!-- Another abstract definition -->
   </w:abstractNum>
-  
+
   <!-- Numbering instances -->
   <w:num w:numId="1">
     <w:abstractNumId w:val="0"/>
   </w:num>
-  
+
   <w:num w:numId="2">
     <w:abstractNumId w:val="1"/>
   </w:num>
-  
+
 </w:numbering>
 ```
 
@@ -84,7 +84,7 @@ The `Id` value (e.g., "rId5") is arbitrary but must be unique within the documen
 ```xml
 <w:abstractNum w:abstractNumId="0">
   <!-- Multilevel list definition -->
-  
+
   <!-- Level 0 (top level) -->
   <w:lvl w:ilvl="0">
     <w:start w:val="1"/>
@@ -98,7 +98,7 @@ The `Id` value (e.g., "rId5") is arbitrary but must be unique within the documen
       <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/>
     </w:rPr>
   </w:lvl>
-  
+
   <!-- Level 1 (second level) -->
   <w:lvl w:ilvl="1">
     <w:start w:val="1"/>
@@ -112,9 +112,9 @@ The `Id` value (e.g., "rId5") is arbitrary but must be unique within the documen
       <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/>
     </w:rPr>
   </w:lvl>
-  
+
   <!-- Levels 2-8 follow the same pattern -->
-  
+
 </w:abstractNum>
 ```
 
@@ -211,7 +211,7 @@ Defines indentation and spacing for list items:
   <!-- Indentation -->
   <w:ind w:left="720"      <!-- Left indent in twips (1/20th point) -->
          w:hanging="360"/> <!-- Hanging indent (negative space for number) -->
-  
+
   <!-- Optional: spacing -->
   <w:spacing w:before="0" w:after="0" w:line="240" w:lineRule="auto"/>
 </w:pPr>
@@ -255,7 +255,7 @@ Defines font and styling for the number/bullet character:
       <w:rFonts w:ascii="Symbol" w:hAnsi="Symbol"/>
     </w:rPr>
   </w:lvl>
-  
+
   <!-- Levels 1-8 (unused, but required) -->
   <w:lvl w:ilvl="1">
     <w:start w:val="1"/>
@@ -269,7 +269,7 @@ Defines font and styling for the number/bullet character:
       <w:rFonts w:ascii="Symbol" w:hAnsi="Symbol"/>
     </w:rPr>
   </w:lvl>
-  
+
   <!-- Levels 2-8 omitted for brevity -->
 </w:abstractNum>
 ```
@@ -290,7 +290,7 @@ Defines font and styling for the number/bullet character:
       <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/>
     </w:rPr>
   </w:lvl>
-  
+
   <!-- Levels 1-8 omitted -->
 </w:abstractNum>
 ```
@@ -312,7 +312,7 @@ Defines font and styling for the number/bullet character:
       <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/>
     </w:rPr>
   </w:lvl>
-  
+
   <!-- Level 1: "1.1" -->
   <w:lvl w:ilvl="1">
     <w:start w:val="1"/>
@@ -326,7 +326,7 @@ Defines font and styling for the number/bullet character:
       <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/>
     </w:rPr>
   </w:lvl>
-  
+
   <!-- Level 2: "1.1.1" -->
   <w:lvl w:ilvl="2">
     <w:start w:val="1"/>
@@ -340,7 +340,7 @@ Defines font and styling for the number/bullet character:
       <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/>
     </w:rPr>
   </w:lvl>
-  
+
   <!-- Levels 3-8 omitted -->
 </w:abstractNum>
 ```
@@ -362,7 +362,7 @@ Defines font and styling for the number/bullet character:
       <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/>
     </w:rPr>
   </w:lvl>
-  
+
   <!-- Level 1: "•" (bullet) -->
   <w:lvl w:ilvl="1">
     <w:start w:val="1"/>
@@ -376,7 +376,7 @@ Defines font and styling for the number/bullet character:
       <w:rFonts w:ascii="Symbol" w:hAnsi="Symbol"/>
     </w:rPr>
   </w:lvl>
-  
+
   <!-- Level 2: "–" (dash) -->
   <w:lvl w:ilvl="2">
     <w:start w:val="1"/>
@@ -390,7 +390,7 @@ Defines font and styling for the number/bullet character:
       <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/>
     </w:rPr>
   </w:lvl>
-  
+
   <!-- Levels 3-8 omitted -->
 </w:abstractNum>
 ```
@@ -413,7 +413,7 @@ Defines font and styling for the number/bullet character:
       <w:b/>
     </w:rPr>
   </w:lvl>
-  
+
   <!-- Level 1: "Section 1.1" -->
   <w:lvl w:ilvl="1">
     <w:start w:val="1"/>
@@ -427,7 +427,7 @@ Defines font and styling for the number/bullet character:
       <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/>
     </w:rPr>
   </w:lvl>
-  
+
   <!-- Level 2: "Clause 1.1.1" -->
   <w:lvl w:ilvl="2">
     <w:start w:val="1"/>
@@ -441,7 +441,7 @@ Defines font and styling for the number/bullet character:
       <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/>
     </w:rPr>
   </w:lvl>
-  
+
   <!-- Levels 3-8 omitted -->
 </w:abstractNum>
 ```
@@ -482,12 +482,12 @@ Level overrides allow you to customize a specific level for a particular numberi
 ```xml
 <w:num w:numId="3">
   <w:abstractNumId w:val="2"/>
-  
+
   <!-- Override level 0 to start at 5 instead of 1 -->
   <w:lvlOverride w:ilvl="0">
     <w:startOverride w:val="5"/>
   </w:lvlOverride>
-  
+
   <!-- Override level 1 to use uppercase letters instead of decimal -->
   <w:lvlOverride w:ilvl="1">
     <w:numFmt w:val="upperLetter"/>
@@ -930,7 +930,7 @@ Generate:
     <w:lvlText w:val="%1."/>
     <!-- ... -->
   </w:lvl>
-  
+
   <!-- Level 1: bullet (for nested unordered) -->
   <w:lvl w:ilvl="1">
     <w:numFmt w:val="bullet"/>
@@ -1031,7 +1031,7 @@ Block::List { kind: Unordered, items: [...] }  // Different numId
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <w:numbering xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
-  
+
   <!-- Abstract definition for ordered lists -->
   <w:abstractNum w:abstractNumId="0">
     <w:lvl w:ilvl="0">
@@ -1059,7 +1059,7 @@ Block::List { kind: Unordered, items: [...] }  // Different numId
       </w:rPr>
     </w:lvl>
   </w:abstractNum>
-  
+
   <!-- Abstract definition for unordered lists -->
   <w:abstractNum w:abstractNumId="1">
     <w:lvl w:ilvl="0">
@@ -1075,16 +1075,16 @@ Block::List { kind: Unordered, items: [...] }  // Different numId
       </w:rPr>
     </w:lvl>
   </w:abstractNum>
-  
+
   <!-- Numbering instances -->
   <w:num w:numId="1">
     <w:abstractNumId w:val="0"/>
   </w:num>
-  
+
   <w:num w:numId="2">
     <w:abstractNumId w:val="1"/>
   </w:num>
-  
+
 </w:numbering>
 ```
 

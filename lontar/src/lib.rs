@@ -31,9 +31,8 @@ pub mod backends;
 
 pub mod prelude {
     pub use crate::core::{
-        Block, Document, DocumentBuilder, DocumentMetadata,
-        Inline, PageSetup, ResourceStore, StyleSheet,
-        TextStyle, ParagraphStyle, TableStyle,
+        Block, Document, DocumentBuilder, DocumentMetadata, Inline, PageSetup, ParagraphStyle,
+        ResourceStore, StyleSheet, TableStyle, TextStyle,
     };
 
     #[cfg(feature = "docx")]

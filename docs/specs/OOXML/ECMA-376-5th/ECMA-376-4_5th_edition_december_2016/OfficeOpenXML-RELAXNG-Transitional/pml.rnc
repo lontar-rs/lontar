@@ -16,44 +16,44 @@ p_ST_TransitionSideDirectionType = "l" | "u" | "r" | "d"
 p_ST_TransitionCornerDirectionType = "lu" | "ru" | "ld" | "rd"
 p_ST_TransitionInOutDirectionType = "out" | "in"
 p_CT_SideDirectionTransition =
-  
+
   ## default value: l
   attribute dir { p_ST_TransitionSideDirectionType }?
 p_CT_CornerDirectionTransition =
-  
+
   ## default value: lu
   attribute dir { p_ST_TransitionCornerDirectionType }?
 p_ST_TransitionEightDirectionType =
   p_ST_TransitionSideDirectionType | p_ST_TransitionCornerDirectionType
 p_CT_EightDirectionTransition =
-  
+
   ## default value: l
   attribute dir { p_ST_TransitionEightDirectionType }?
 p_CT_OrientationTransition =
-  
+
   ## default value: horz
   attribute dir { p_ST_Direction }?
 p_CT_InOutTransition =
-  
+
   ## default value: out
   attribute dir { p_ST_TransitionInOutDirectionType }?
 p_CT_OptionalBlackTransition =
-  
+
   ## default value: false
   attribute thruBlk { xsd:boolean }?
 p_CT_SplitTransition =
-  
+
   ## default value: horz
   attribute orient { p_ST_Direction }?,
-  
+
   ## default value: out
   attribute dir { p_ST_TransitionInOutDirectionType }?
 p_CT_WheelTransition =
-  
+
   ## default value: 4
   attribute spokes { xsd:unsignedInt }?
 p_CT_TransitionStartSoundAction =
-  
+
   ## default value: false
   attribute loop { xsd:boolean }?,
   element snd { a_CT_EmbeddedWAVAudioFile }
@@ -62,10 +62,10 @@ p_CT_TransitionSoundAction =
   | element endSnd { p_CT_Empty }
 p_ST_TransitionSpeed = "slow" | "med" | "fast"
 p_CT_SlideTransition =
-  
+
   ## default value: fast
   attribute spd { p_ST_TransitionSpeed }?,
-  
+
   ## default value: true
   attribute advClick { xsd:boolean }?,
   attribute advTm { xsd:unsignedInt }?,
@@ -100,10 +100,10 @@ p_CT_TLIterateIntervalPercentage =
   attribute val { a_ST_PositivePercentage }
 p_ST_IterateType = "el" | "wd" | "lt"
 p_CT_TLIterateData =
-  
+
   ## default value: el
   attribute type { p_ST_IterateType }?,
-  
+
   ## default value: false
   attribute backwards { xsd:boolean }?,
   (element tmAbs { p_CT_TLIterateIntervalTime }
@@ -116,7 +116,7 @@ p_ST_TLChartSubelementType =
   "gridLegend" | "series" | "category" | "ptInSeries" | "ptInCategory"
 p_CT_TLOleChartTargetElement =
   attribute type { p_ST_TLChartSubelementType },
-  
+
   ## default value: 0
   attribute lvl { xsd:unsignedInt }?
 p_CT_TLShapeTargetElement =
@@ -189,20 +189,20 @@ p_CT_TLCommonTimeNodeData =
   attribute presetClass { p_ST_TLTimeNodePresetClassType }?,
   attribute presetSubtype { xsd:int }?,
   attribute dur { p_ST_TLTime }?,
-  
+
   ## default value: 1000
   attribute repeatCount { p_ST_TLTime }?,
   attribute repeatDur { p_ST_TLTime }?,
-  
+
   ## default value: 100%
   attribute spd { a_ST_Percentage }?,
-  
+
   ## default value: 0%
   attribute accel { a_ST_PositiveFixedPercentage }?,
-  
+
   ## default value: 0%
   attribute decel { a_ST_PositiveFixedPercentage }?,
-  
+
   ## default value: false
   attribute autoRev { xsd:boolean }?,
   attribute restart { p_ST_TLTimeNodeRestartType }?,
@@ -264,7 +264,7 @@ p_CT_TLAnimVariant =
 p_ST_TLTimeAnimateValueTime =
   a_ST_PositiveFixedPercentage | p_ST_TLTimeIndefinite
 p_CT_TLTimeAnimateValue =
-  
+
   ## default value: indefinite
   attribute tm { p_ST_TLTimeAnimateValueTime }?,
   attribute fmla { xsd:string }?,
@@ -302,7 +302,7 @@ p_CT_TLAnimateColorBehavior =
   element to { a_CT_Color }?
 p_ST_TLAnimateEffectTransition = "in" | "out" | "none"
 p_CT_TLAnimateEffectBehavior =
-  
+
   ## default value: in
   attribute transition { p_ST_TLAnimateEffectTransition }?,
   attribute filter { xsd:string }?,
@@ -345,38 +345,38 @@ p_CT_TLSetBehavior =
   element cBhvr { p_CT_TLCommonBehaviorData },
   element to { p_CT_TLAnimVariant }?
 p_CT_TLCommonMediaNodeData =
-  
+
   ## default value: 50%
   attribute vol { a_ST_PositiveFixedPercentage }?,
-  
+
   ## default value: false
   attribute mute { xsd:boolean }?,
-  
+
   ## default value: 1
   attribute numSld { xsd:unsignedInt }?,
-  
+
   ## default value: true
   attribute showWhenStopped { xsd:boolean }?,
   element cTn { p_CT_TLCommonTimeNodeData },
   element tgtEl { p_CT_TLTimeTargetElement }
 p_CT_TLMediaNodeAudio =
-  
+
   ## default value: false
   attribute isNarration { xsd:boolean }?,
   element cMediaNode { p_CT_TLCommonMediaNodeData }
 p_CT_TLMediaNodeVideo =
-  
+
   ## default value: false
   attribute fullScrn { xsd:boolean }?,
   element cMediaNode { p_CT_TLCommonMediaNodeData }
 p_AG_TLBuild =
   attribute spid { a_ST_DrawingElementId },
   attribute grpId { xsd:unsignedInt },
-  
+
   ## default value: false
   attribute uiExpand { xsd:boolean }?
 p_CT_TLTemplate =
-  
+
   ## default value: 0
   attribute lvl { xsd:unsignedInt }?,
   element tnLst { p_CT_TimeNodeList }
@@ -384,22 +384,22 @@ p_CT_TLTemplateList = element tmpl { p_CT_TLTemplate }*
 p_ST_TLParaBuildType = "allAtOnce" | "p" | "cust" | "whole"
 p_CT_TLBuildParagraph =
   p_AG_TLBuild,
-  
+
   ## default value: whole
   attribute build { p_ST_TLParaBuildType }?,
-  
+
   ## default value: 1
   attribute bldLvl { xsd:unsignedInt }?,
-  
+
   ## default value: false
   attribute animBg { xsd:boolean }?,
-  
+
   ## default value: true
   attribute autoUpdateAnimBg { xsd:boolean }?,
-  
+
   ## default value: false
   attribute rev { xsd:boolean }?,
-  
+
   ## default value: indefinite
   attribute advAuto { p_ST_TLTime }?,
   element tmplLst { p_CT_TLTemplateList }?
@@ -423,17 +423,17 @@ p_ST_TLDiagramBuildType =
   | "cust"
 p_CT_TLBuildDiagram =
   p_AG_TLBuild,
-  
+
   ## default value: whole
   attribute bld { p_ST_TLDiagramBuildType }?
 p_ST_TLOleChartBuildType =
   "allAtOnce" | "series" | "category" | "seriesEl" | "categoryEl"
 p_CT_TLOleBuildChart =
   p_AG_TLBuild,
-  
+
   ## default value: allAtOnce
   attribute bld { p_ST_TLOleChartBuildType }?,
-  
+
   ## default value: true
   attribute animBg { xsd:boolean }?
 p_CT_TLGraphicalObjectBuild =
@@ -480,7 +480,7 @@ p_CT_Extension_any =
 p_EG_ExtensionList = element ext { p_CT_Extension }*
 p_CT_ExtensionList = p_EG_ExtensionList?
 p_CT_ExtensionListModify =
-  
+
   ## default value: false
   attribute mod { xsd:boolean }?,
   p_EG_ExtensionList?
@@ -504,7 +504,7 @@ p_CT_CommentList = element cm { p_CT_Comment }*
 p_cmLst = element cmLst { p_CT_CommentList }
 p_AG_Ole =
   attribute name { xsd:string }?,
-  
+
   ## default value: false
   attribute showAsIcon { xsd:boolean }?,
   r_id?,
@@ -512,12 +512,12 @@ p_AG_Ole =
   attribute imgH { a_ST_PositiveCoordinate32 }?
 p_ST_OleObjectFollowColorScheme = "none" | "full" | "textAndBackground"
 p_CT_OleObjectEmbed =
-  
+
   ## default value: none
   attribute followColorScheme { p_ST_OleObjectFollowColorScheme }?,
   element extLst { p_CT_ExtensionList }?
 p_CT_OleObjectLink =
-  
+
   ## default value: false
   attribute updateAutomatic { xsd:boolean }?,
   element extLst { p_CT_ExtensionList }?
@@ -590,16 +590,16 @@ p_ST_PhotoAlbumFrameShape =
   | "frameStyle6"
   | "frameStyle7"
 p_CT_PhotoAlbum =
-  
+
   ## default value: false
   attribute bw { xsd:boolean }?,
-  
+
   ## default value: false
   attribute showCaptions { xsd:boolean }?,
-  
+
   ## default value: fitToSlide
   attribute layout { p_ST_PhotoAlbumLayout }?,
-  
+
   ## default value: frameStyle1
   attribute frame { p_ST_PhotoAlbumFrameShape }?,
   element extLst { p_CT_ExtensionList }?
@@ -628,7 +628,7 @@ p_ST_SlideSizeType =
 p_CT_SlideSize =
   attribute cx { p_ST_SlideSizeCoordinate },
   attribute cy { p_ST_SlideSizeCoordinate },
-  
+
   ## default value: custom
   attribute type { p_ST_SlideSizeType }?
 p_CT_Kinsoku =
@@ -655,37 +655,37 @@ p_CT_ModifyVerifier =
   attribute cryptProviderTypeExt { xsd:unsignedInt }?,
   attribute cryptProviderTypeExtSource { xsd:string }?
 p_CT_Presentation =
-  
+
   ## default value: 50%
   attribute serverZoom { a_ST_Percentage }?,
-  
+
   ## default value: 1
   attribute firstSlideNum { xsd:int }?,
-  
+
   ## default value: true
   attribute showSpecialPlsOnTitleSld { xsd:boolean }?,
-  
+
   ## default value: false
   attribute rtl { xsd:boolean }?,
-  
+
   ## default value: false
   attribute removePersonalInfoOnSave { xsd:boolean }?,
-  
+
   ## default value: false
   attribute compatMode { xsd:boolean }?,
-  
+
   ## default value: true
   attribute strictFirstAndLastChars { xsd:boolean }?,
-  
+
   ## default value: false
   attribute embedTrueTypeFonts { xsd:boolean }?,
-  
+
   ## default value: false
   attribute saveSubsetFonts { xsd:boolean }?,
-  
+
   ## default value: true
   attribute autoCompressPictures { xsd:boolean }?,
-  
+
   ## default value: 1
   attribute bookmarkIdSeed { p_ST_BookmarkIdSeed }?,
   attribute conformance { s_ST_ConformanceClass }?,
@@ -706,7 +706,7 @@ p_CT_Presentation =
   element extLst { p_CT_ExtensionList }?
 p_presentation = element presentation { p_CT_Presentation }
 p_CT_HtmlPublishProperties =
-  
+
   ## default value: true
   attribute showSpeakerNotes { xsd:boolean }?,
   attribute target { xsd:string }?,
@@ -735,29 +735,29 @@ p_ST_WebScreenSize =
   | "1920x1200"
 p_ST_WebEncoding = xsd:string
 p_CT_WebProperties =
-  
+
   ## default value: false
   attribute showAnimation { xsd:boolean }?,
-  
+
   ## default value: true
   attribute resizeGraphics { xsd:boolean }?,
-  
+
   ## default value: false
   attribute allowPng { xsd:boolean }?,
-  
+
   ## default value: false
   attribute relyOnVml { xsd:boolean }?,
-  
+
   ## default value: true
   attribute organizeInFolders { xsd:boolean }?,
-  
+
   ## default value: true
   attribute useLongFilenames { xsd:boolean }?,
-  
+
   ## default value: 800x600
   attribute imgSz { p_ST_WebScreenSize }?,
   attribute encoding { p_ST_WebEncoding }?,
-  
+
   ## default value: whiteTextOnBlack
   attribute clr { p_ST_WebColorType }?,
   element extLst { p_CT_ExtensionList }?
@@ -773,28 +773,28 @@ p_ST_PrintWhat =
   | "outline"
 p_ST_PrintColorMode = "bw" | "gray" | "clr"
 p_CT_PrintProperties =
-  
+
   ## default value: slides
   attribute prnWhat { p_ST_PrintWhat }?,
-  
+
   ## default value: clr
   attribute clrMode { p_ST_PrintColorMode }?,
-  
+
   ## default value: false
   attribute hiddenSlides { xsd:boolean }?,
-  
+
   ## default value: false
   attribute scaleToFitPaper { xsd:boolean }?,
-  
+
   ## default value: false
   attribute frameSlides { xsd:boolean }?,
   element extLst { p_CT_ExtensionList }?
 p_CT_ShowInfoBrowse =
-  
+
   ## default value: true
   attribute showScrollbar { xsd:boolean }?
 p_CT_ShowInfoKiosk =
-  
+
   ## default value: 300000
   attribute restart { xsd:unsignedInt }?
 p_EG_ShowType =
@@ -802,16 +802,16 @@ p_EG_ShowType =
   | element browse { p_CT_ShowInfoBrowse }
   | element kiosk { p_CT_ShowInfoKiosk }
 p_CT_ShowProperties =
-  
+
   ## default value: false
   attribute loop { xsd:boolean }?,
-  
+
   ## default value: false
   attribute showNarration { xsd:boolean }?,
-  
+
   ## default value: true
   attribute showAnimation { xsd:boolean }?,
-  
+
   ## default value: true
   attribute useTimings { xsd:boolean }?,
   (p_EG_ShowType?,
@@ -828,16 +828,16 @@ p_CT_PresentationProperties =
 p_presentationPr =
   element presentationPr { p_CT_PresentationProperties }
 p_CT_HeaderFooter =
-  
+
   ## default value: true
   attribute sldNum { xsd:boolean }?,
-  
+
   ## default value: true
   attribute hdr { xsd:boolean }?,
-  
+
   ## default value: true
   attribute ftr { xsd:boolean }?,
-  
+
   ## default value: true
   attribute dt { xsd:boolean }?,
   element extLst { p_CT_ExtensionListModify }?
@@ -860,27 +860,27 @@ p_ST_PlaceholderType =
   | "pic"
 p_ST_PlaceholderSize = "full" | "half" | "quarter"
 p_CT_Placeholder =
-  
+
   ## default value: obj
   attribute type { p_ST_PlaceholderType }?,
-  
+
   ## default value: horz
   attribute orient { p_ST_Direction }?,
-  
+
   ## default value: full
   attribute sz { p_ST_PlaceholderSize }?,
-  
+
   ## default value: 0
   attribute idx { xsd:unsignedInt }?,
-  
+
   ## default value: false
   attribute hasCustomPrompt { xsd:boolean }?,
   element extLst { p_CT_ExtensionListModify }?
 p_CT_ApplicationNonVisualDrawingProps =
-  
+
   ## default value: false
   attribute isPhoto { xsd:boolean }?,
-  
+
   ## default value: false
   attribute userDrawn { xsd:boolean }?,
   element ph { p_CT_Placeholder }?,
@@ -892,7 +892,7 @@ p_CT_ShapeNonVisual =
   element cNvSpPr { a_CT_NonVisualDrawingShapeProps },
   element nvPr { p_CT_ApplicationNonVisualDrawingProps }
 p_CT_Shape =
-  
+
   ## default value: false
   attribute useBgFill { xsd:boolean }?,
   element nvSpPr { p_CT_ShapeNonVisual },
@@ -947,14 +947,14 @@ p_CT_Rel = r_id
 p_EG_TopLevelSlide = element clrMap { a_CT_ColorMapping }
 p_EG_ChildSlide = element clrMapOvr { a_CT_ColorMappingOverride }?
 p_AG_ChildSlide =
-  
+
   ## default value: true
   attribute showMasterSp { xsd:boolean }?,
-  
+
   ## default value: true
   attribute showMasterPhAnim { xsd:boolean }?
 p_CT_BackgroundProperties =
-  
+
   ## default value: false
   attribute shadeToTitle { xsd:boolean }?,
   a_EG_FillProperties,
@@ -964,7 +964,7 @@ p_EG_Background =
   element bgPr { p_CT_BackgroundProperties }
   | element bgRef { a_CT_StyleMatrixReference }
 p_CT_Background =
-  
+
   ## default value: white
   attribute bwMode { a_ST_BlackWhiteMode }?,
   p_EG_Background
@@ -977,7 +977,7 @@ p_CT_CommonSlideData =
   element extLst { p_CT_ExtensionList }?
 p_CT_Slide =
   p_AG_ChildSlide,
-  
+
   ## default value: true
   attribute show { xsd:boolean }?,
   element cSld { p_CT_CommonSlideData },
@@ -1026,13 +1026,13 @@ p_ST_SlideLayoutType =
 p_CT_SlideLayout =
   p_AG_ChildSlide,
   attribute matchingName { xsd:string }?,
-  
+
   ## default value: cust
   attribute type { p_ST_SlideLayoutType }?,
-  
+
   ## default value: false
   attribute preserve { xsd:boolean }?,
-  
+
   ## default value: false
   attribute userDrawn { xsd:boolean }?,
   element cSld { p_CT_CommonSlideData },
@@ -1055,7 +1055,7 @@ p_CT_SlideLayoutIdListEntry =
 p_CT_SlideLayoutIdList =
   element sldLayoutId { p_CT_SlideLayoutIdListEntry }*
 p_CT_SlideMaster =
-  
+
   ## default value: false
   attribute preserve { xsd:boolean }?,
   element cSld { p_CT_CommonSlideData },
@@ -1109,30 +1109,30 @@ p_ST_ViewType =
   | "sldThumbnailView"
 p_CT_NormalViewPortion =
   attribute sz { a_ST_PositiveFixedPercentage },
-  
+
   ## default value: true
   attribute autoAdjust { xsd:boolean }?
 p_CT_NormalViewProperties =
-  
+
   ## default value: true
   attribute showOutlineIcons { xsd:boolean }?,
-  
+
   ## default value: false
   attribute snapVertSplitter { xsd:boolean }?,
-  
+
   ## default value: restored
   attribute vertBarState { p_ST_SplitterBarState }?,
-  
+
   ## default value: restored
   attribute horzBarState { p_ST_SplitterBarState }?,
-  
+
   ## default value: false
   attribute preferSingleView { xsd:boolean }?,
   element restoredLeft { p_CT_NormalViewPortion },
   element restoredTop { p_CT_NormalViewPortion },
   element extLst { p_CT_ExtensionList }?
 p_CT_CommonViewProperties =
-  
+
   ## default value: false
   attribute varScale { xsd:boolean }?,
   element scale { a_CT_Scale2D },
@@ -1142,7 +1142,7 @@ p_CT_NotesTextViewProperties =
   element extLst { p_CT_ExtensionList }?
 p_CT_OutlineViewSlideEntry =
   r_id,
-  
+
   ## default value: false
   attribute collapse { xsd:boolean }?
 p_CT_OutlineViewSlideList = element sld { p_CT_OutlineViewSlideEntry }*
@@ -1151,27 +1151,27 @@ p_CT_OutlineViewProperties =
   element sldLst { p_CT_OutlineViewSlideList }?,
   element extLst { p_CT_ExtensionList }?
 p_CT_SlideSorterViewProperties =
-  
+
   ## default value: true
   attribute showFormatting { xsd:boolean }?,
   element cViewPr { p_CT_CommonViewProperties },
   element extLst { p_CT_ExtensionList }?
 p_CT_Guide =
-  
+
   ## default value: vert
   attribute orient { p_ST_Direction }?,
-  
+
   ## default value: 0
   attribute pos { a_ST_Coordinate32 }?
 p_CT_GuideList = element guide { p_CT_Guide }*
 p_CT_CommonSlideViewProperties =
-  
+
   ## default value: true
   attribute snapToGrid { xsd:boolean }?,
-  
+
   ## default value: false
   attribute snapToObjects { xsd:boolean }?,
-  
+
   ## default value: false
   attribute showGuides { xsd:boolean }?,
   element cViewPr { p_CT_CommonViewProperties },
@@ -1183,10 +1183,10 @@ p_CT_NotesViewProperties =
   element cSldViewPr { p_CT_CommonSlideViewProperties },
   element extLst { p_CT_ExtensionList }?
 p_CT_ViewProperties =
-  
+
   ## default value: sldView
   attribute lastView { p_ST_ViewType }?,
-  
+
   ## default value: true
   attribute showComments { xsd:boolean }?,
   (element normalViewPr { p_CT_NormalViewProperties }?,

@@ -10,7 +10,7 @@ coreProperties = element coreProperties { CT_CoreProperties }
 CT_CoreProperties =
   element category { xsd:string }?
   & element contentStatus { xsd:string }?
-  & element dcterms:created { 
+  & element dcterms:created {
       attribute xsi:type { xsd:QName "dcterms:W3CDTF" }, xml_lang?, W3CDTF
     }?
   & element dc:creator { SimpleLiteral }?
@@ -20,7 +20,7 @@ CT_CoreProperties =
   & element dc:language { SimpleLiteral }?
   & element lastModifiedBy { xsd:string }?
   & element lastPrinted { xsd:dateTime }?
-  & element dcterms:modified { 
+  & element dcterms:modified {
       attribute xsi:type { xsd:QName "dcterms:W3CDTF" }, xml_lang?, W3CDTF
     }?
   & element revision { xsd:string }?

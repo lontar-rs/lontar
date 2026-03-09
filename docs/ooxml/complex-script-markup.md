@@ -132,7 +132,7 @@ The `w:rtl` flag on run properties marks individual runs as RTL:
   <w:pPr>
     <w:bidi/>  <!-- Paragraph is RTL -->
   </w:pPr>
-  
+
   <!-- Arabic text -->
   <w:r>
     <w:rPr>
@@ -141,7 +141,7 @@ The `w:rtl` flag on run properties marks individual runs as RTL:
     </w:rPr>
     <w:t>مرحبا </w:t>
   </w:r>
-  
+
   <!-- English word (LTR) -->
   <w:r>
     <w:rPr>
@@ -149,7 +149,7 @@ The `w:rtl` flag on run properties marks individual runs as RTL:
     </w:rPr>
     <w:t>hello</w:t>
   </w:r>
-  
+
   <!-- More Arabic -->
   <w:r>
     <w:rPr>
@@ -171,7 +171,7 @@ The `w:rtl` flag on run properties marks individual runs as RTL:
 ```xml
 <w:p>
   <!-- No w:bidi: paragraph is LTR -->
-  
+
   <!-- English text -->
   <w:r>
     <w:rPr>
@@ -179,7 +179,7 @@ The `w:rtl` flag on run properties marks individual runs as RTL:
     </w:rPr>
     <w:t>Hello </w:t>
   </w:r>
-  
+
   <!-- Arabic phrase (RTL) -->
   <w:r>
     <w:rPr>
@@ -188,7 +188,7 @@ The `w:rtl` flag on run properties marks individual runs as RTL:
     </w:rPr>
     <w:t>مرحبا</w:t>
   </w:r>
-  
+
   <!-- More English -->
   <w:r>
     <w:rPr>
@@ -370,7 +370,7 @@ OOXML has separate properties for complex scripts because:
   <w:pPr>
     <!-- Paragraph is LTR (majority direction) -->
   </w:pPr>
-  
+
   <!-- Latin text -->
   <w:r>
     <w:rPr>
@@ -378,7 +378,7 @@ OOXML has separate properties for complex scripts because:
     </w:rPr>
     <w:t>Hello </w:t>
   </w:r>
-  
+
   <!-- Arabic text (RTL) -->
   <w:r>
     <w:rPr>
@@ -388,7 +388,7 @@ OOXML has separate properties for complex scripts because:
     </w:rPr>
     <w:t>مرحبا</w:t>
   </w:r>
-  
+
   <!-- CJK text -->
   <w:r>
     <w:rPr>
@@ -668,7 +668,7 @@ Paragraph-level RTL:
 <a:p>
   <a:pPr algn="lft">  <!-- LTR paragraph -->
   </a:pPr>
-  
+
   <!-- English text -->
   <a:r>
     <a:rPr lang="en-US">
@@ -676,7 +676,7 @@ Paragraph-level RTL:
     </a:rPr>
     <a:t>Hello </a:t>
   </a:r>
-  
+
   <!-- Arabic text (RTL) -->
   <a:r>
     <a:rPr lang="ar-SA" rtl="1">
@@ -684,7 +684,7 @@ Paragraph-level RTL:
     </a:rPr>
     <a:t>مرحبا</a:t>
   </a:r>
-  
+
   <!-- More English -->
   <a:r>
     <a:rPr lang="en-US">
@@ -743,7 +743,7 @@ pub struct ShapedRun {
 ```rust
 pub fn shaped_run_to_ooxml_run(run: &ShapedRun) -> XmlElement {
     let mut rpr = XmlElement::new("w:rPr");
-    
+
     // Determine font slot and properties based on script
     let (font_slot, is_cs, is_rtl) = match run.script {
         Script::Latin => ("w:ascii", false, false),
@@ -754,34 +754,34 @@ pub fn shaped_run_to_ooxml_run(run: &ShapedRun) -> XmlElement {
         Script::Thai | Script::Lao | Script::Khmer | Script::Myanmar | Script::Balinese => ("w:cs", true, false),
         Script::CJK | Script::Hiragana | Script::Katakana | Script::Hangul => ("w:eastAsia", false, false),
     };
-    
+
     // Set font
     let mut rfonts = XmlElement::new("w:rFonts");
     rfonts.set_attribute(font_slot, &run.font.name);
     rpr.append_child(rfonts);
-    
+
     // Set CS flag if needed
     if is_cs {
         rpr.append_child(XmlElement::new("w:cs"));
     }
-    
+
     // Set RTL flag if needed
     if is_rtl {
         rpr.append_child(XmlElement::new("w:rtl"));
     }
-    
+
     // Set language
     let lang_elem = generate_lang_element(&run.language);
     rpr.append_child(lang_elem);
-    
+
     // Create run element
     let mut r = XmlElement::new("w:r");
     r.append_child(rpr);
-    
+
     let mut t = XmlElement::new("w:t");
     t.set_text(&run.text);
     r.append_child(t);
-    
+
     r
 }
 ```
@@ -798,23 +798,23 @@ pub fn split_by_script(text: &str) -> Vec<ScriptRun> {
 
 pub fn generate_paragraph(text: &str) -> XmlElement {
     let script_runs = split_by_script(text);
-    
+
     let mut p = XmlElement::new("w:p");
     let mut ppr = XmlElement::new("w:pPr");
-    
+
     // Determine paragraph direction
     let para_direction = determine_paragraph_direction(&script_runs);
     if para_direction == Direction::RTL {
         ppr.append_child(XmlElement::new("w:bidi"));
     }
     p.append_child(ppr);
-    
+
     // Generate runs
     for script_run in script_runs {
         let run = shaped_run_to_ooxml_run(&script_run);
         p.append_child(run);
     }
-    
+
     p
 }
 ```
@@ -830,14 +830,14 @@ pub fn generate_paragraph(text: &str) -> XmlElement {
 pub fn determine_paragraph_direction(runs: &[ScriptRun]) -> Direction {
     let mut ltr_count = 0;
     let mut rtl_count = 0;
-    
+
     for run in runs {
         match run.script {
             Script::Arabic | Script::Hebrew | ... => rtl_count += run.text.len(),
             _ => ltr_count += run.text.len(),
         }
     }
-    
+
     if rtl_count > ltr_count {
         Direction::RTL
     } else {

@@ -14,10 +14,10 @@ cdr_CT_ShapeNonVisual =
 cdr_CT_Shape =
   attribute macro { xsd:string }?,
   attribute textlink { xsd:string }?,
-  
+
   ## default value: true
   attribute fLocksText { xsd:boolean }?,
-  
+
   ## default value: false
   attribute fPublished { xsd:boolean }?,
   element nvSpPr { cdr_CT_ShapeNonVisual },
@@ -29,7 +29,7 @@ cdr_CT_ConnectorNonVisual =
   element cNvCxnSpPr { a_CT_NonVisualConnectorProperties }
 cdr_CT_Connector =
   attribute macro { xsd:string }?,
-  
+
   ## default value: false
   attribute fPublished { xsd:boolean }?,
   element nvCxnSpPr { cdr_CT_ConnectorNonVisual },
@@ -40,7 +40,7 @@ cdr_CT_PictureNonVisual =
   element cNvPicPr { a_CT_NonVisualPictureProperties }
 cdr_CT_Picture =
   attribute macro { xsd:string }?,
-  
+
   ## default value: false
   attribute fPublished { xsd:boolean }?,
   element nvPicPr { cdr_CT_PictureNonVisual },
@@ -52,7 +52,7 @@ cdr_CT_GraphicFrameNonVisual =
   element cNvGraphicFramePr { a_CT_NonVisualGraphicFrameProperties }
 cdr_CT_GraphicFrame =
   attribute macro { xsd:string }?,
-  
+
   ## default value: false
   attribute fPublished { xsd:boolean }?,
   element nvGraphicFramePr { cdr_CT_GraphicFrameNonVisual },

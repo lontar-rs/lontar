@@ -113,15 +113,15 @@ presentation.pptx (ZIP archive)
 <c:chartSpace xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart"
               xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
               xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
-  
+
   <c:date1904 val="0"/>
   <c:lang val="en-US"/>
   <c:roundedCorners val="0"/>
-  
+
   <c:chartContainer>
     <!-- Chart definition goes here -->
   </c:chartContainer>
-  
+
 </c:chartSpace>
 ```
 
@@ -132,20 +132,20 @@ presentation.pptx (ZIP archive)
   <c:title>
     <!-- Chart title -->
   </c:title>
-  
+
   <c:autoTitleDeleted val="0"/>
-  
+
   <c:plotArea>
     <!-- Chart type (barChart, lineChart, etc.) -->
     <!-- Axes -->
   </c:plotArea>
-  
+
   <c:legend>
     <!-- Legend -->
   </c:legend>
-  
+
   <c:plotVisOnly val="0"/>
-  
+
 </c:chartContainer>
 ```
 
@@ -167,15 +167,15 @@ presentation.pptx (ZIP archive)
       </a:p>
     </c:txBody>
   </c:title>
-  
+
   <c:plotArea>
     <c:layout/>
-    
+
     <!-- Vertical bar chart (columns) -->
     <c:barChart>
       <c:barDir val="col"/>  <!-- col = vertical, bar = horizontal -->
       <c:grouping val="clustered"/>  <!-- clustered, stacked, percentStacked -->
-      
+
       <!-- Series 1 -->
       <c:ser>
         <c:idx val="0"/>
@@ -188,7 +188,7 @@ presentation.pptx (ZIP archive)
             </c:strCache>
           </c:strRef>
         </c:title>
-        
+
         <!-- Categories (X-axis labels) -->
         <c:cat>
           <c:strRef>
@@ -201,7 +201,7 @@ presentation.pptx (ZIP archive)
             </c:strCache>
           </c:strRef>
         </c:cat>
-        
+
         <!-- Values (Y-axis data) -->
         <c:val>
           <c:numRef>
@@ -215,7 +215,7 @@ presentation.pptx (ZIP archive)
             </c:numCache>
           </c:numRef>
         </c:val>
-        
+
         <!-- Series formatting -->
         <c:dLbls>
           <c:showVal val="0"/>
@@ -223,7 +223,7 @@ presentation.pptx (ZIP archive)
           <c:showSerName val="0"/>
           <c:showLegendKey val="0"/>
         </c:dLbls>
-        
+
         <!-- Series color -->
         <c:spPr>
           <a:solidFill>
@@ -231,7 +231,7 @@ presentation.pptx (ZIP archive)
           </a:solidFill>
         </c:spPr>
       </c:ser>
-      
+
       <!-- Category axis (X-axis) -->
       <c:catAx>
         <c:axId val="1"/>
@@ -244,7 +244,7 @@ presentation.pptx (ZIP archive)
         <c:minorTickMark val="none"/>
         <c:tickLblPos val="low"/>
       </c:catAx>
-      
+
       <!-- Value axis (Y-axis) -->
       <c:valAx>
         <c:axId val="2"/>
@@ -257,21 +257,21 @@ presentation.pptx (ZIP archive)
         <c:minorTickMark val="none"/>
         <c:tickLblPos val="low"/>
       </c:valAx>
-      
+
       <c:crossAx val="1"/>
       <c:crossesAt val="0"/>
     </c:barChart>
-    
+
     <c:spPr>
       <a:noFill/>
     </c:spPr>
   </c:plotArea>
-  
+
   <c:legend>
     <c:legendPos val="r"/>  <!-- r = right, l = left, t = top, b = bottom -->
     <c:layout/>
   </c:legend>
-  
+
 </c:chartContainer>
 ```
 
@@ -280,7 +280,7 @@ presentation.pptx (ZIP archive)
 ```xml
 <c:lineChart>
   <c:grouping val="standard"/>  <!-- standard, stacked, percentStacked -->
-  
+
   <c:ser>
     <c:idx val="0"/>
     <c:order val="0"/>
@@ -292,7 +292,7 @@ presentation.pptx (ZIP archive)
         </c:strCache>
       </c:strRef>
     </c:title>
-    
+
     <c:cat>
       <c:strRef>
         <c:strCache>
@@ -304,7 +304,7 @@ presentation.pptx (ZIP archive)
         </c:strCache>
       </c:strRef>
     </c:cat>
-    
+
     <c:val>
       <c:numRef>
         <c:numCache>
@@ -317,9 +317,9 @@ presentation.pptx (ZIP archive)
         </c:numCache>
       </c:numRef>
     </c:val>
-    
+
     <c:smooth val="1"/>  <!-- 1 = smooth lines, 0 = straight lines -->
-    
+
     <c:spPr>
       <a:ln>
         <a:solidFill>
@@ -330,7 +330,7 @@ presentation.pptx (ZIP archive)
       </a:ln>
     </c:spPr>
   </c:ser>
-  
+
   <c:catAx>
     <c:axId val="1"/>
     <c:scaling>
@@ -339,7 +339,7 @@ presentation.pptx (ZIP archive)
     <c:delete val="0"/>
     <c:axPos val="b"/>
   </c:catAx>
-  
+
   <c:valAx>
     <c:axId val="2"/>
     <c:scaling>
@@ -348,7 +348,7 @@ presentation.pptx (ZIP archive)
     <c:delete val="0"/>
     <c:axPos val="l"/>
   </c:valAx>
-  
+
   <c:crossAx val="1"/>
   <c:crossesAt val="0"/>
 </c:lineChart>
@@ -359,7 +359,7 @@ presentation.pptx (ZIP archive)
 ```xml
 <c:pieChart>
   <c:varyColors val="1"/>  <!-- 1 = each slice different color -->
-  
+
   <c:ser>
     <c:idx val="0"/>
     <c:order val="0"/>
@@ -371,7 +371,7 @@ presentation.pptx (ZIP archive)
         </c:strCache>
       </c:strRef>
     </c:title>
-    
+
     <!-- Categories (slice labels) -->
     <c:cat>
       <c:strRef>
@@ -383,7 +383,7 @@ presentation.pptx (ZIP archive)
         </c:strCache>
       </c:strRef>
     </c:cat>
-    
+
     <!-- Values (slice sizes) -->
     <c:val>
       <c:numRef>
@@ -396,7 +396,7 @@ presentation.pptx (ZIP archive)
         </c:numCache>
       </c:numRef>
     </c:val>
-    
+
     <!-- Data labels (show percentages) -->
     <c:dLbls>
       <c:showVal val="0"/>
@@ -406,7 +406,7 @@ presentation.pptx (ZIP archive)
       <c:showLegendKey val="0"/>
     </c:dLbls>
   </c:ser>
-  
+
 </c:pieChart>
 ```
 
@@ -415,7 +415,7 @@ presentation.pptx (ZIP archive)
 ```xml
 <c:scatterChart>
   <c:scatterStyle val="lineMarker"/>  <!-- lineMarker, lineMarkerNoLine, lineNoMarker, smoothMarker, smoothMarkerNoLine, smoothNoMarker -->
-  
+
   <c:ser>
     <c:idx val="0"/>
     <c:order val="0"/>
@@ -427,7 +427,7 @@ presentation.pptx (ZIP archive)
         </c:strCache>
       </c:strRef>
     </c:title>
-    
+
     <!-- X values -->
     <c:xVal>
       <c:numRef>
@@ -441,7 +441,7 @@ presentation.pptx (ZIP archive)
         </c:numCache>
       </c:numRef>
     </c:xVal>
-    
+
     <!-- Y values -->
     <c:yVal>
       <c:numRef>
@@ -455,14 +455,14 @@ presentation.pptx (ZIP archive)
         </c:numCache>
       </c:numRef>
     </c:yVal>
-    
+
     <c:spPr>
       <a:solidFill>
         <a:srgbClr val="4472C4"/>
       </a:solidFill>
     </c:spPr>
   </c:ser>
-  
+
   <!-- X axis (value axis) -->
   <c:valAx>
     <c:axId val="1"/>
@@ -472,7 +472,7 @@ presentation.pptx (ZIP archive)
     <c:delete val="0"/>
     <c:axPos val="b"/>
   </c:valAx>
-  
+
   <!-- Y axis (value axis) -->
   <c:valAx>
     <c:axId val="2"/>
@@ -482,7 +482,7 @@ presentation.pptx (ZIP archive)
     <c:delete val="0"/>
     <c:axPos val="l"/>
   </c:valAx>
-  
+
   <c:crossAx val="1"/>
   <c:crossesAt val="0"/>
 </c:scatterChart>
@@ -493,7 +493,7 @@ presentation.pptx (ZIP archive)
 ```xml
 <c:areaChart>
   <c:grouping val="standard"/>  <!-- standard, stacked, percentStacked -->
-  
+
   <c:ser>
     <c:idx val="0"/>
     <c:order val="0"/>
@@ -505,7 +505,7 @@ presentation.pptx (ZIP archive)
         </c:strCache>
       </c:strRef>
     </c:title>
-    
+
     <c:cat>
       <c:strRef>
         <c:strCache>
@@ -517,7 +517,7 @@ presentation.pptx (ZIP archive)
         </c:strCache>
       </c:strRef>
     </c:cat>
-    
+
     <c:val>
       <c:numRef>
         <c:numCache>
@@ -530,14 +530,14 @@ presentation.pptx (ZIP archive)
         </c:numCache>
       </c:numRef>
     </c:val>
-    
+
     <c:spPr>
       <a:solidFill>
         <a:srgbClr val="4472C4"/>
       </a:solidFill>
     </c:spPr>
   </c:ser>
-  
+
   <c:catAx>
     <c:axId val="1"/>
     <c:scaling>
@@ -546,7 +546,7 @@ presentation.pptx (ZIP archive)
     <c:delete val="0"/>
     <c:axPos val="b"/>
   </c:catAx>
-  
+
   <c:valAx>
     <c:axId val="2"/>
     <c:scaling>
@@ -555,7 +555,7 @@ presentation.pptx (ZIP archive)
     <c:delete val="0"/>
     <c:axPos val="l"/>
   </c:valAx>
-  
+
   <c:crossAx val="1"/>
   <c:crossesAt val="0"/>
 </c:areaChart>
@@ -711,7 +711,7 @@ pub fn generate_chart_with_xlsx(data: &ChartData) -> (XmlElement, Vec<u8>) {
 <c:barChart>
   <c:barDir val="col"/>
   <c:grouping val="clustered"/>
-  
+
   <!-- Series 1: Q1 Sales -->
   <c:ser>
     <c:idx val="0"/>
@@ -724,7 +724,7 @@ pub fn generate_chart_with_xlsx(data: &ChartData) -> (XmlElement, Vec<u8>) {
         </c:strCache>
       </c:strRef>
     </c:title>
-    
+
     <c:cat>
       <c:strRef>
         <c:strCache>
@@ -735,7 +735,7 @@ pub fn generate_chart_with_xlsx(data: &ChartData) -> (XmlElement, Vec<u8>) {
         </c:strCache>
       </c:strRef>
     </c:cat>
-    
+
     <c:val>
       <c:numRef>
         <c:numCache>
@@ -747,14 +747,14 @@ pub fn generate_chart_with_xlsx(data: &ChartData) -> (XmlElement, Vec<u8>) {
         </c:numCache>
       </c:numRef>
     </c:val>
-    
+
     <c:spPr>
       <a:solidFill>
         <a:srgbClr val="4472C4"/>  <!-- Blue -->
       </a:solidFill>
     </c:spPr>
   </c:ser>
-  
+
   <!-- Series 2: Q2 Sales -->
   <c:ser>
     <c:idx val="1"/>
@@ -767,7 +767,7 @@ pub fn generate_chart_with_xlsx(data: &ChartData) -> (XmlElement, Vec<u8>) {
         </c:strCache>
       </c:strRef>
     </c:title>
-    
+
     <c:cat>
       <c:strRef>
         <c:strCache>
@@ -778,7 +778,7 @@ pub fn generate_chart_with_xlsx(data: &ChartData) -> (XmlElement, Vec<u8>) {
         </c:strCache>
       </c:strRef>
     </c:cat>
-    
+
     <c:val>
       <c:numRef>
         <c:numCache>
@@ -790,14 +790,14 @@ pub fn generate_chart_with_xlsx(data: &ChartData) -> (XmlElement, Vec<u8>) {
         </c:numCache>
       </c:numRef>
     </c:val>
-    
+
     <c:spPr>
       <a:solidFill>
         <a:srgbClr val="ED7D31"/>  <!-- Orange -->
       </a:solidFill>
     </c:spPr>
   </c:ser>
-  
+
   <!-- Series 3: Q3 Sales -->
   <c:ser>
     <c:idx val="2"/>
@@ -810,7 +810,7 @@ pub fn generate_chart_with_xlsx(data: &ChartData) -> (XmlElement, Vec<u8>) {
         </c:strCache>
       </c:strRef>
     </c:title>
-    
+
     <c:cat>
       <c:strRef>
         <c:strCache>
@@ -821,7 +821,7 @@ pub fn generate_chart_with_xlsx(data: &ChartData) -> (XmlElement, Vec<u8>) {
         </c:strCache>
       </c:strRef>
     </c:cat>
-    
+
     <c:val>
       <c:numRef>
         <c:numCache>
@@ -833,14 +833,14 @@ pub fn generate_chart_with_xlsx(data: &ChartData) -> (XmlElement, Vec<u8>) {
         </c:numCache>
       </c:numRef>
     </c:val>
-    
+
     <c:spPr>
       <a:solidFill>
         <a:srgbClr val="A5A5A5"/>  <!-- Gray -->
       </a:solidFill>
     </c:spPr>
   </c:ser>
-  
+
   <!-- Axes... -->
 </c:barChart>
 ```
@@ -985,10 +985,10 @@ Chart formulas reference cells in the embedded spreadsheet:
   </c:scaling>
   <c:delete val="0"/>
   <c:axPos val="l"/>
-  
+
   <!-- Number format -->
   <c:numFmt formatCode="General" sourceLinked="0"/>
-  
+
   <!-- Font -->
   <c:txPr>
     <a:bodyPr/>
@@ -999,7 +999,7 @@ Chart formulas reference cells in the embedded spreadsheet:
       </a:pPr>
     </a:p>
   </c:txPr>
-  
+
   <!-- Grid lines -->
   <c:majorGridlines>
     <c:spPr>
@@ -1010,7 +1010,7 @@ Chart formulas reference cells in the embedded spreadsheet:
       </a:ln>
     </c:spPr>
   </c:majorGridlines>
-  
+
   <c:minorGridlines>
     <c:spPr>
       <a:ln>
@@ -1094,7 +1094,7 @@ Charts in PPTX are embedded in slides using `p:graphicFrame`:
 <p:cSld>
   <p:spTree>
     <!-- Other shapes... -->
-    
+
     <p:graphicFrame>
       <p:nvGraphicFramePr>
         <p:cNvPr id="2" name="Chart 1"/>

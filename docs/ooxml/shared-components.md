@@ -379,16 +379,16 @@ Relationship IDs are arbitrary strings, typically `rId1`, `rId2`, etc.
 
 **External (hyperlink):**
 ```xml
-<Relationship Id="rId5" 
-              Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink" 
-              Target="https://example.com" 
+<Relationship Id="rId5"
+              Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink"
+              Target="https://example.com"
               TargetMode="External"/>
 ```
 
 **Internal (image):**
 ```xml
-<Relationship Id="rId4" 
-              Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" 
+<Relationship Id="rId4"
+              Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
               Target="media/image1.png"/>
 ```
 
@@ -406,7 +406,7 @@ Relationship IDs are arbitrary strings, typically `rId1`, `rId2`, etc.
   <Default Extension="png" ContentType="image/png"/>
   <Default Extension="gif" ContentType="image/gif"/>
   <Default Extension="bmp" ContentType="image/bmp"/>
-  
+
   <!-- Override types for specific parts -->
   <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
   <Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>

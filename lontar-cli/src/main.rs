@@ -8,7 +8,7 @@ use clap::Parser;
 struct Cli {
     /// Input file
     input: String,
-    
+
     /// Output format
     #[arg(short, long)]
     format: String,

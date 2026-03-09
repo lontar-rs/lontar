@@ -378,7 +378,7 @@ fn scale_image(original_width: f64, original_height: f64, max_width: f64, max_he
     let width_ratio = max_width / original_width;
     let height_ratio = max_height / original_height;
     let scale = width_ratio.min(height_ratio);
-    
+
     (original_width * scale, original_height * scale)
 }
 

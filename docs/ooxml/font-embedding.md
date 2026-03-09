@@ -179,7 +179,7 @@ The `word/fontTable.xml` file lists all fonts used in the document:
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <w:fontTable xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
              xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
-  
+
   <w:font w:name="Calibri">
     <w:panose1 w:val="020B0604030504040204"/>
     <w:charset w:val="00"/>
@@ -188,7 +188,7 @@ The `word/fontTable.xml` file lists all fonts used in the document:
     <w:sig w:usb0="E0002AFF" w:usb1="C0000000" w:usb2="00000000" w:usb3="00000000"
            w:csb0="00000001" w:csb1="00000000"/>
   </w:font>
-  
+
   <w:font w:name="Arial">
     <w:panose1 w:val="020B0604020202020204"/>
     <w:charset w:val="00"/>
@@ -197,7 +197,7 @@ The `word/fontTable.xml` file lists all fonts used in the document:
     <w:sig w:usb0="E0002AFF" w:usb1="C0000000" w:usb2="00000000" w:usb3="00000000"
            w:csb0="00000001" w:csb1="00000000"/>
   </w:font>
-  
+
   <w:font w:name="Noto Sans Balinese">
     <w:panose1 w:val="020B0604030504040204"/>
     <w:charset w:val="00"/>
@@ -206,7 +206,7 @@ The `word/fontTable.xml` file lists all fonts used in the document:
     <w:sig w:usb0="00000000" w:usb1="00000000" w:usb2="00000000" w:usb3="00000010"
            w:csb0="00000000" w:csb1="00000000"/>
   </w:font>
-  
+
 </w:fontTable>
 ```
 
@@ -276,7 +276,7 @@ Font embedding is declared in `word/styles.xml` or `word/document.xml`:
 ```xml
 <w:rPr>
   <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri" w:cs="Noto Sans Balinese"/>
-  
+
   <!-- Embedding declarations -->
   <w:embedRegular w:fontKey="00000000" w:subsetted="1"/>
   <w:embedBold w:fontKey="00000000" w:subsetted="1"/>
@@ -671,7 +671,7 @@ pub fn should_embed_font(font: &Font) -> bool {
     if is_system_font(&font.name) {
         return false;
     }
-    
+
     // Check fsType
     match font.os2_table.fs_type {
         0 => true,      // Installable
@@ -734,7 +734,7 @@ pub fn script_to_language_tag(script: Script, region: &str) -> String {
 ```rust
 pub fn generate_rfonts(shaped_runs: &[ShapedRun]) -> XmlElement {
     let mut fonts = HashMap::new();
-    
+
     for run in shaped_runs {
         match run.script {
             Script::Latin | Script::LatinExtended => {
@@ -749,7 +749,7 @@ pub fn generate_rfonts(shaped_runs: &[ShapedRun]) -> XmlElement {
             }
         }
     }
-    
+
     // Generate XML
     let mut rfonts = XmlElement::new("w:rFonts");
     for (slot, font_name) in fonts {
@@ -764,21 +764,21 @@ pub fn generate_rfonts(shaped_runs: &[ShapedRun]) -> XmlElement {
 ```rust
 pub fn generate_lang(shaped_runs: &[ShapedRun]) -> XmlElement {
     let mut lang_elem = XmlElement::new("w:lang");
-    
+
     // Determine primary language
     let primary_lang = determine_primary_language(shaped_runs);
     lang_elem.set_attribute("w:val", &primary_lang);
-    
+
     // Set East Asian language if present
     if has_script(shaped_runs, Script::CJK) {
         lang_elem.set_attribute("w:eastAsia", "zh-CN");
     }
-    
+
     // Set bidirectional language if present
     if has_script(shaped_runs, Script::Arabic) {
         lang_elem.set_attribute("w:bidi", "ar-SA");
     }
-    
+
     lang_elem
 }
 ```

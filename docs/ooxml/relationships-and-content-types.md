@@ -17,8 +17,8 @@ OOXML documents are ZIP archives containing multiple XML files (parts) that are 
 ### Relationship Anatomy
 
 ```xml
-<Relationship Id="rId1" 
-              Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" 
+<Relationship Id="rId1"
+              Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
               Target="media/image1.png"
               TargetMode="Internal"/>
 ```
@@ -147,8 +147,8 @@ Relationships are referenced in XML using the `r:id` attribute (namespace `r` = 
 
 **Internal (default):**
 ```xml
-<Relationship Id="rId1" 
-              Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" 
+<Relationship Id="rId1"
+              Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
               Target="media/image1.png"/>
 ```
 - Target is relative path within the package
@@ -156,9 +156,9 @@ Relationships are referenced in XML using the `r:id` attribute (namespace `r` = 
 
 **External:**
 ```xml
-<Relationship Id="rId2" 
-              Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink" 
-              Target="https://example.com" 
+<Relationship Id="rId2"
+              Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink"
+              Target="https://example.com"
               TargetMode="External"/>
 ```
 - Target is absolute URL
@@ -183,7 +183,7 @@ The `[Content_Types].xml` file (note the square brackets) is located at the root
   <Default Extension="tiff" ContentType="image/tiff"/>
   <Default Extension="wmf" ContentType="image/x-wmf"/>
   <Default Extension="emf" ContentType="image/x-emf"/>
-  
+
   <!-- Override types for specific parts -->
   <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
   <Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>

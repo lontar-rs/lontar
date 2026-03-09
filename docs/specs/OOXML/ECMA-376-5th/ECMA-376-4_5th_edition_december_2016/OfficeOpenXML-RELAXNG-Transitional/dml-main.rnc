@@ -23,7 +23,7 @@ a_CT_QuickTimeFile =
   element extLst { a_CT_OfficeArtExtensionList }?
 a_CT_AudioCDTime =
   attribute track { xsd:unsignedByte },
-  
+
   ## default value: 0
   attribute time { xsd:unsignedInt }?
 a_CT_AudioCD =
@@ -460,25 +460,25 @@ a_CT_Scale2D =
   element sx { a_CT_Ratio },
   element sy { a_CT_Ratio }
 a_CT_Transform2D =
-  
+
   ## default value: 0
   attribute rot { a_ST_Angle }?,
-  
+
   ## default value: false
   attribute flipH { xsd:boolean }?,
-  
+
   ## default value: false
   attribute flipV { xsd:boolean }?,
   element off { a_CT_Point2D }?,
   element ext { a_CT_PositiveSize2D }?
 a_CT_GroupTransform2D =
-  
+
   ## default value: 0
   attribute rot { a_ST_Angle }?,
-  
+
   ## default value: false
   attribute flipH { xsd:boolean }?,
-  
+
   ## default value: false
   attribute flipV { xsd:boolean }?,
   element off { a_CT_Point2D }?,
@@ -498,16 +498,16 @@ a_CT_SphereCoords =
   attribute lon { a_ST_PositiveFixedAngle },
   attribute rev { a_ST_PositiveFixedAngle }
 a_CT_RelativeRect =
-  
+
   ## default value: 0%
   attribute l { a_ST_Percentage }?,
-  
+
   ## default value: 0%
   attribute t { a_ST_Percentage }?,
-  
+
   ## default value: 0%
   attribute r { a_ST_Percentage }?,
-  
+
   ## default value: 0%
   attribute b { a_ST_Percentage }?
 a_ST_RectAlignment =
@@ -543,47 +543,47 @@ a_CT_Hyperlink =
   attribute action { xsd:string }?,
   attribute tgtFrame { xsd:string }?,
   attribute tooltip { xsd:string }?,
-  
+
   ## default value: true
   attribute history { xsd:boolean }?,
-  
+
   ## default value: false
   attribute highlightClick { xsd:boolean }?,
-  
+
   ## default value: false
   attribute endSnd { xsd:boolean }?,
   element snd { a_CT_EmbeddedWAVAudioFile }?,
   element extLst { a_CT_OfficeArtExtensionList }?
 a_ST_DrawingElementId = xsd:unsignedInt
 a_AG_Locking =
-  
+
   ## default value: false
   attribute noGrp { xsd:boolean }?,
-  
+
   ## default value: false
   attribute noSelect { xsd:boolean }?,
-  
+
   ## default value: false
   attribute noRot { xsd:boolean }?,
-  
+
   ## default value: false
   attribute noChangeAspect { xsd:boolean }?,
-  
+
   ## default value: false
   attribute noMove { xsd:boolean }?,
-  
+
   ## default value: false
   attribute noResize { xsd:boolean }?,
-  
+
   ## default value: false
   attribute noEditPoints { xsd:boolean }?,
-  
+
   ## default value: false
   attribute noAdjustHandles { xsd:boolean }?,
-  
+
   ## default value: false
   attribute noChangeArrowheads { xsd:boolean }?,
-  
+
   ## default value: false
   attribute noChangeShapeType { xsd:boolean }?
 a_CT_ConnectorLocking =
@@ -591,56 +591,56 @@ a_CT_ConnectorLocking =
   element extLst { a_CT_OfficeArtExtensionList }?
 a_CT_ShapeLocking =
   a_AG_Locking,
-  
+
   ## default value: false
   attribute noTextEdit { xsd:boolean }?,
   element extLst { a_CT_OfficeArtExtensionList }?
 a_CT_PictureLocking =
   a_AG_Locking,
-  
+
   ## default value: false
   attribute noCrop { xsd:boolean }?,
   element extLst { a_CT_OfficeArtExtensionList }?
 a_CT_GroupLocking =
-  
+
   ## default value: false
   attribute noGrp { xsd:boolean }?,
-  
+
   ## default value: false
   attribute noUngrp { xsd:boolean }?,
-  
+
   ## default value: false
   attribute noSelect { xsd:boolean }?,
-  
+
   ## default value: false
   attribute noRot { xsd:boolean }?,
-  
+
   ## default value: false
   attribute noChangeAspect { xsd:boolean }?,
-  
+
   ## default value: false
   attribute noMove { xsd:boolean }?,
-  
+
   ## default value: false
   attribute noResize { xsd:boolean }?,
   element extLst { a_CT_OfficeArtExtensionList }?
 a_CT_GraphicalObjectFrameLocking =
-  
+
   ## default value: false
   attribute noGrp { xsd:boolean }?,
-  
+
   ## default value: false
   attribute noDrilldown { xsd:boolean }?,
-  
+
   ## default value: false
   attribute noSelect { xsd:boolean }?,
-  
+
   ## default value: false
   attribute noChangeAspect { xsd:boolean }?,
-  
+
   ## default value: false
   attribute noMove { xsd:boolean }?,
-  
+
   ## default value: false
   attribute noResize { xsd:boolean }?,
   element extLst { a_CT_OfficeArtExtensionList }?
@@ -651,7 +651,7 @@ a_CT_NonVisualDrawingProps =
   attribute id { a_ST_DrawingElementId },
   attribute name { xsd:string },
   attribute descr { xsd:string }?,
-  
+
   ## default value: false
   attribute hidden { xsd:boolean }?,
   attribute title { xsd:string }?,
@@ -659,7 +659,7 @@ a_CT_NonVisualDrawingProps =
   element hlinkHover { a_CT_Hyperlink }?,
   element extLst { a_CT_OfficeArtExtensionList }?
 a_CT_NonVisualDrawingShapeProps =
-  
+
   ## default value: false
   attribute txBox { xsd:boolean }?,
   element spLocks { a_CT_ShapeLocking }?,
@@ -670,7 +670,7 @@ a_CT_NonVisualConnectorProperties =
   element endCxn { a_CT_Connection }?,
   element extLst { a_CT_OfficeArtExtensionList }?
 a_CT_NonVisualPictureProperties =
-  
+
   ## default value: true
   attribute preferRelativeResize { xsd:boolean }?,
   element picLocks { a_CT_PictureLocking }?,
@@ -682,7 +682,7 @@ a_CT_NonVisualGraphicFrameProperties =
   element graphicFrameLocks { a_CT_GraphicalObjectFrameLocking }?,
   element extLst { a_CT_OfficeArtExtensionList }?
 a_CT_NonVisualContentPartProperties =
-  
+
   ## default value: true
   attribute isComment { xsd:boolean }?,
   element cpLocks { a_CT_ContentPartLocking }?,
@@ -706,17 +706,17 @@ a_ST_ChartBuildStep =
   | "gridLegend"
 a_ST_DgmBuildStep = "sp" | "bg"
 a_CT_AnimationDgmElement =
-  
+
   ## default value: {00000000-0000-0000-0000-000000000000}
   attribute id { s_ST_Guid }?,
-  
+
   ## default value: sp
   attribute bldStep { a_ST_DgmBuildStep }?
 a_CT_AnimationChartElement =
-  
+
   ## default value: -1
   attribute seriesIdx { xsd:int }?,
-  
+
   ## default value: -1
   attribute categoryIdx { xsd:int }?,
   attribute bldStep { a_ST_ChartBuildStep }
@@ -728,10 +728,10 @@ a_ST_AnimationDgmOnlyBuildType = "one" | "lvlOne" | "lvlAtOnce"
 a_ST_AnimationDgmBuildType =
   a_ST_AnimationBuildType | a_ST_AnimationDgmOnlyBuildType
 a_CT_AnimationDgmBuildProperties =
-  
+
   ## default value: allAtOnce
   attribute bld { a_ST_AnimationDgmBuildType }?,
-  
+
   ## default value: false
   attribute rev { xsd:boolean }?
 a_ST_AnimationChartOnlyBuildType =
@@ -739,10 +739,10 @@ a_ST_AnimationChartOnlyBuildType =
 a_ST_AnimationChartBuildType =
   a_ST_AnimationBuildType | a_ST_AnimationChartOnlyBuildType
 a_CT_AnimationChartBuildProperties =
-  
+
   ## default value: allAtOnce
   attribute bld { a_ST_AnimationChartBuildType }?,
-  
+
   ## default value: true
   attribute animBg { xsd:boolean }?
 a_CT_AnimationGraphicalObjectBuildProperties =
@@ -872,7 +872,7 @@ a_ST_FOVAngle = xsd:int { minInclusive = "0" maxInclusive = "10800000" }
 a_CT_Camera =
   attribute prst { a_ST_PresetCameraType },
   attribute fov { a_ST_FOVAngle }?,
-  
+
   ## default value: 100%
   attribute zoom { a_ST_PositivePercentage }?,
   element rot { a_CT_SphereCoords }?
@@ -934,13 +934,13 @@ a_ST_BevelPresetType =
   | "hardEdge"
   | "artDeco"
 a_CT_Bevel =
-  
+
   ## default value: 76200
   attribute w { a_ST_PositiveCoordinate }?,
-  
+
   ## default value: 76200
   attribute h { a_ST_PositiveCoordinate }?,
-  
+
   ## default value: circle
   attribute prst { a_ST_BevelPresetType }?
 a_ST_PresetMaterialType =
@@ -960,16 +960,16 @@ a_ST_PresetMaterialType =
   | "flat"
   | "softmetal"
 a_CT_Shape3D =
-  
+
   ## default value: 0
   attribute z { a_ST_Coordinate }?,
-  
+
   ## default value: 0
   attribute extrusionH { a_ST_PositiveCoordinate }?,
-  
+
   ## default value: 0
   attribute contourW { a_ST_PositiveCoordinate }?,
-  
+
   ## default value: warmMatte
   attribute prstMaterial { a_ST_PresetMaterialType }?,
   element bevelT { a_CT_Bevel }?,
@@ -978,7 +978,7 @@ a_CT_Shape3D =
   element contourClr { a_CT_Color }?,
   element extLst { a_CT_OfficeArtExtensionList }?
 a_CT_FlatText =
-  
+
   ## default value: 0
   attribute z { a_ST_Coordinate }?
 a_EG_Text3D =
@@ -990,24 +990,24 @@ a_CT_AlphaCeilingEffect = empty
 a_CT_AlphaFloorEffect = empty
 a_CT_AlphaInverseEffect = a_EG_ColorChoice?
 a_CT_AlphaModulateFixedEffect =
-  
+
   ## default value: 100%
   attribute amt { a_ST_PositivePercentage }?
 a_CT_AlphaOutsetEffect =
-  
+
   ## default value: 0
   attribute rad { a_ST_Coordinate }?
 a_CT_AlphaReplaceEffect = attribute a { a_ST_PositiveFixedPercentage }
 a_CT_BiLevelEffect = attribute thresh { a_ST_PositiveFixedPercentage }
 a_CT_BlurEffect =
-  
+
   ## default value: 0
   attribute rad { a_ST_PositiveCoordinate }?,
-  
+
   ## default value: true
   attribute grow { xsd:boolean }?
 a_CT_ColorChangeEffect =
-  
+
   ## default value: true
   attribute useA { xsd:boolean }?,
   element clrFrom { a_CT_Color },
@@ -1015,65 +1015,65 @@ a_CT_ColorChangeEffect =
 a_CT_ColorReplaceEffect = a_EG_ColorChoice
 a_CT_DuotoneEffect = a_EG_ColorChoice+
 a_CT_GlowEffect =
-  
+
   ## default value: 0
   attribute rad { a_ST_PositiveCoordinate }?,
   a_EG_ColorChoice
 a_CT_GrayscaleEffect = empty
 a_CT_HSLEffect =
-  
+
   ## default value: 0
   attribute hue { a_ST_PositiveFixedAngle }?,
-  
+
   ## default value: 0%
   attribute sat { a_ST_FixedPercentage }?,
-  
+
   ## default value: 0%
   attribute lum { a_ST_FixedPercentage }?
 a_CT_InnerShadowEffect =
-  
+
   ## default value: 0
   attribute blurRad { a_ST_PositiveCoordinate }?,
-  
+
   ## default value: 0
   attribute dist { a_ST_PositiveCoordinate }?,
-  
+
   ## default value: 0
   attribute dir { a_ST_PositiveFixedAngle }?,
   a_EG_ColorChoice
 a_CT_LuminanceEffect =
-  
+
   ## default value: 0%
   attribute bright { a_ST_FixedPercentage }?,
-  
+
   ## default value: 0%
   attribute contrast { a_ST_FixedPercentage }?
 a_CT_OuterShadowEffect =
-  
+
   ## default value: 0
   attribute blurRad { a_ST_PositiveCoordinate }?,
-  
+
   ## default value: 0
   attribute dist { a_ST_PositiveCoordinate }?,
-  
+
   ## default value: 0
   attribute dir { a_ST_PositiveFixedAngle }?,
-  
+
   ## default value: 100%
   attribute sx { a_ST_Percentage }?,
-  
+
   ## default value: 100%
   attribute sy { a_ST_Percentage }?,
-  
+
   ## default value: 0
   attribute kx { a_ST_FixedAngle }?,
-  
+
   ## default value: 0
   attribute ky { a_ST_FixedAngle }?,
-  
+
   ## default value: b
   attribute algn { a_ST_RectAlignment }?,
-  
+
   ## default value: true
   attribute rotWithShape { xsd:boolean }?,
   a_EG_ColorChoice
@@ -1100,88 +1100,88 @@ a_ST_PresetShadowVal =
   | "shdw20"
 a_CT_PresetShadowEffect =
   attribute prst { a_ST_PresetShadowVal },
-  
+
   ## default value: 0
   attribute dist { a_ST_PositiveCoordinate }?,
-  
+
   ## default value: 0
   attribute dir { a_ST_PositiveFixedAngle }?,
   a_EG_ColorChoice
 a_CT_ReflectionEffect =
-  
+
   ## default value: 0
   attribute blurRad { a_ST_PositiveCoordinate }?,
-  
+
   ## default value: 100%
   attribute stA { a_ST_PositiveFixedPercentage }?,
-  
+
   ## default value: 0%
   attribute stPos { a_ST_PositiveFixedPercentage }?,
-  
+
   ## default value: 0%
   attribute endA { a_ST_PositiveFixedPercentage }?,
-  
+
   ## default value: 100%
   attribute endPos { a_ST_PositiveFixedPercentage }?,
-  
+
   ## default value: 0
   attribute dist { a_ST_PositiveCoordinate }?,
-  
+
   ## default value: 0
   attribute dir { a_ST_PositiveFixedAngle }?,
-  
+
   ## default value: 5400000
   attribute fadeDir { a_ST_PositiveFixedAngle }?,
-  
+
   ## default value: 100%
   attribute sx { a_ST_Percentage }?,
-  
+
   ## default value: 100%
   attribute sy { a_ST_Percentage }?,
-  
+
   ## default value: 0
   attribute kx { a_ST_FixedAngle }?,
-  
+
   ## default value: 0
   attribute ky { a_ST_FixedAngle }?,
-  
+
   ## default value: b
   attribute algn { a_ST_RectAlignment }?,
-  
+
   ## default value: true
   attribute rotWithShape { xsd:boolean }?
 a_CT_RelativeOffsetEffect =
-  
+
   ## default value: 0%
   attribute tx { a_ST_Percentage }?,
-  
+
   ## default value: 0%
   attribute ty { a_ST_Percentage }?
 a_CT_SoftEdgesEffect = attribute rad { a_ST_PositiveCoordinate }
 a_CT_TintEffect =
-  
+
   ## default value: 0
   attribute hue { a_ST_PositiveFixedAngle }?,
-  
+
   ## default value: 0%
   attribute amt { a_ST_FixedPercentage }?
 a_CT_TransformEffect =
-  
+
   ## default value: 100%
   attribute sx { a_ST_Percentage }?,
-  
+
   ## default value: 100%
   attribute sy { a_ST_Percentage }?,
-  
+
   ## default value: 0
   attribute kx { a_ST_FixedAngle }?,
-  
+
   ## default value: 0
   attribute ky { a_ST_FixedAngle }?,
-  
+
   ## default value: 0
   attribute tx { a_ST_Coordinate }?,
-  
+
   ## default value: 0
   attribute ty { a_ST_Coordinate }?
 a_CT_NoFillProperties = empty
@@ -1202,7 +1202,7 @@ a_CT_GradientStop =
   a_EG_ColorChoice
 a_CT_GradientStopList = element gs { a_CT_GradientStop }+
 a_CT_GradientFillProperties =
-  
+
   ## default value: none
   attribute flip { a_ST_TileFlipMode }?,
   attribute rotWithShape { xsd:boolean }?,
@@ -1214,7 +1214,7 @@ a_CT_TileInfoProperties =
   attribute ty { a_ST_Coordinate }?,
   attribute sx { a_ST_Percentage }?,
   attribute sy { a_ST_Percentage }?,
-  
+
   ## default value: none
   attribute flip { a_ST_TileFlipMode }?,
   attribute algn { a_ST_RectAlignment }?
@@ -1225,7 +1225,7 @@ a_EG_FillModeProperties =
 a_ST_BlipCompression = "email" | "screen" | "print" | "hqprint" | "none"
 a_CT_Blip =
   a_AG_Blob,
-  
+
   ## default value: none
   attribute cstate { a_ST_BlipCompression }?,
   (element alphaBiLevel { a_CT_AlphaBiLevelEffect }
@@ -1359,7 +1359,7 @@ a_EG_Effect =
   | element xfrm { a_CT_TransformEffect }
 a_ST_EffectContainerType = "sib" | "tree"
 a_CT_EffectContainer =
-  
+
   ## default value: sib
   attribute type { a_ST_EffectContainerType }?,
   attribute name { xsd:token }?,
@@ -1667,19 +1667,19 @@ a_CT_Path2DClose = empty
 a_ST_PathFillMode =
   "none" | "norm" | "lighten" | "lightenLess" | "darken" | "darkenLess"
 a_CT_Path2D =
-  
+
   ## default value: 0
   attribute w { a_ST_PositiveCoordinate }?,
-  
+
   ## default value: 0
   attribute h { a_ST_PositiveCoordinate }?,
-  
+
   ## default value: norm
   attribute fill { a_ST_PathFillMode }?,
-  
+
   ## default value: true
   attribute stroke { xsd:boolean }?,
-  
+
   ## default value: true
   attribute extrusionOk { xsd:boolean }?,
   (element close { a_CT_Path2DClose }
@@ -1713,7 +1713,7 @@ a_ST_LineEndType =
 a_ST_LineEndWidth = "sm" | "med" | "lg"
 a_ST_LineEndLength = "sm" | "med" | "lg"
 a_CT_LineEndProperties =
-  
+
   ## default value: none
   attribute type { a_ST_LineEndType }?,
   attribute w { a_ST_LineEndWidth }?,
@@ -1849,28 +1849,28 @@ a_theme = element theme { a_CT_OfficeStyleSheet }
 a_themeOverride = element themeOverride { a_CT_BaseStylesOverride }
 a_themeManager = element themeManager { a_CT_EmptyElement }
 a_CT_TableCellProperties =
-  
+
   ## default value: 91440
   attribute marL { a_ST_Coordinate32 }?,
-  
+
   ## default value: 91440
   attribute marR { a_ST_Coordinate32 }?,
-  
+
   ## default value: 45720
   attribute marT { a_ST_Coordinate32 }?,
-  
+
   ## default value: 45720
   attribute marB { a_ST_Coordinate32 }?,
-  
+
   ## default value: horz
   attribute vert { a_ST_TextVerticalType }?,
-  
+
   ## default value: t
   attribute anchor { a_ST_TextAnchoringType }?,
-  
+
   ## default value: false
   attribute anchorCtr { xsd:boolean }?,
-  
+
   ## default value: clip
   attribute horzOverflow { a_ST_TextHorzOverflowType }?,
   element lnL { a_CT_LineProperties }?,
@@ -1889,16 +1889,16 @@ a_CT_TableCol =
   element extLst { a_CT_OfficeArtExtensionList }?
 a_CT_TableGrid = element gridCol { a_CT_TableCol }*
 a_CT_TableCell =
-  
+
   ## default value: 1
   attribute rowSpan { xsd:int }?,
-  
+
   ## default value: 1
   attribute gridSpan { xsd:int }?,
-  
+
   ## default value: false
   attribute hMerge { xsd:boolean }?,
-  
+
   ## default value: false
   attribute vMerge { xsd:boolean }?,
   attribute id { xsd:string }?,
@@ -1910,25 +1910,25 @@ a_CT_TableRow =
   element tc { a_CT_TableCell }*,
   element extLst { a_CT_OfficeArtExtensionList }?
 a_CT_TableProperties =
-  
+
   ## default value: false
   attribute rtl { xsd:boolean }?,
-  
+
   ## default value: false
   attribute firstRow { xsd:boolean }?,
-  
+
   ## default value: false
   attribute firstCol { xsd:boolean }?,
-  
+
   ## default value: false
   attribute lastRow { xsd:boolean }?,
-  
+
   ## default value: false
   attribute lastCol { xsd:boolean }?,
-  
+
   ## default value: false
   attribute bandRow { xsd:boolean }?,
-  
+
   ## default value: false
   attribute bandCol { xsd:boolean }?,
   a_EG_FillProperties?,
@@ -1942,7 +1942,7 @@ a_CT_Table =
   element tr { a_CT_TableRow }*
 a_tbl = element tbl { a_CT_Table }
 a_CT_Cell3D =
-  
+
   ## default value: plastic
   attribute prstMaterial { a_ST_PresetMaterialType }?,
   element bevel { a_CT_Bevel },
@@ -1962,10 +1962,10 @@ a_EG_ThemeableFontStyles =
   | element fontRef { a_CT_FontReference }
 a_ST_OnOffStyleType = "on" | "off" | "def"
 a_CT_TableStyleTextStyle =
-  
+
   ## default value: def
   attribute b { a_ST_OnOffStyleType }?,
-  
+
   ## default value: def
   attribute i { a_ST_OnOffStyleType }?,
   a_EG_ThemeableFontStyles?,
@@ -2047,10 +2047,10 @@ a_ST_TextFontScalePercentOrPercentString =
 a_ST_TextFontScalePercent =
   xsd:int { minInclusive = "1000" maxInclusive = "100000" }
 a_CT_TextNormalAutofit =
-  
+
   ## default value: 100%
   attribute fontScale { a_ST_TextFontScalePercentOrPercentString }?,
-  
+
   ## default value: 0%
   attribute lnSpcReduction { a_ST_TextSpacingPercentOrPercentString }?
 a_CT_TextShapeAutofit = empty
@@ -2077,7 +2077,7 @@ a_CT_TextBodyProperties =
   attribute anchor { a_ST_TextAnchoringType }?,
   attribute anchorCtr { xsd:boolean }?,
   attribute forceAA { xsd:boolean }?,
-  
+
   ## default value: false
   attribute upright { xsd:boolean }?,
   attribute compatLnSpc { xsd:boolean }?,
@@ -2160,7 +2160,7 @@ a_EG_TextBulletTypeface =
   | element buFont { a_CT_TextFont }
 a_CT_TextAutonumberBullet =
   attribute type { a_ST_TextAutonumberScheme },
-  
+
   ## default value: 1
   attribute startAt { a_ST_TextBulletStartAtNum }?
 a_CT_TextCharBullet = attribute char { xsd:string }
@@ -2179,7 +2179,7 @@ a_ST_TextNonNegativePoint =
 a_ST_TextFontSize =
   xsd:int { minInclusive = "100" maxInclusive = "400000" }
 a_ST_TextTypeface = xsd:string
-a_ST_PitchFamily = 
+a_ST_PitchFamily =
  xsd:byte "00" | xsd:byte "01" | xsd:byte "02" | xsd:byte "16" |
  xsd:byte "17" | xsd:byte "18" | xsd:byte "32" | xsd:byte "33" |
  xsd:byte "34" | xsd:byte "48" | xsd:byte "49" | xsd:byte "50" |
@@ -2188,10 +2188,10 @@ a_ST_PitchFamily =
 a_CT_TextFont =
   attribute typeface { a_ST_TextTypeface },
   attribute panose { s_ST_Panose }?,
-  
+
   ## default value: 0
   attribute pitchFamily { a_ST_PitchFamily }?,
-  
+
   ## default value: 1
   attribute charset { xsd:byte }?
 a_ST_TextUnderlineType =
@@ -2239,16 +2239,16 @@ a_CT_TextCharacterProperties =
   attribute normalizeH { xsd:boolean }?,
   attribute baseline { a_ST_Percentage }?,
   attribute noProof { xsd:boolean }?,
-  
+
   ## default value: true
   attribute dirty { xsd:boolean }?,
-  
+
   ## default value: false
   attribute err { xsd:boolean }?,
-  
+
   ## default value: true
   attribute smtClean { xsd:boolean }?,
-  
+
   ## default value: 0
   attribute smtId { xsd:unsignedInt }?,
   attribute bmk { xsd:string }?,
@@ -2267,7 +2267,7 @@ a_CT_TextCharacterProperties =
   element rtl { a_CT_Boolean }?,
   element extLst { a_CT_OfficeArtExtensionList }?
 a_CT_Boolean =
-  
+
   ## default value: 0
   attribute val { s_ST_OnOff }?
 a_ST_TextSpacingPoint =

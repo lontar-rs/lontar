@@ -112,7 +112,7 @@ wp_CT_Anchor =
   a_graphic
 wp_CT_TxbxContent = w_EG_BlockLevelElts+
 wp_CT_TextboxInfo =
-  
+
   ## default value: 0
   attribute id { xsd:unsignedShort }?,
   element txbxContent { wp_CT_TxbxContent },
@@ -122,7 +122,7 @@ wp_CT_LinkedTextboxInformation =
   attribute seq { xsd:unsignedShort },
   element extLst { a_CT_OfficeArtExtensionList }?
 wp_CT_WordprocessingShape =
-  
+
   ## default value: false
   attribute normalEastAsianFlow { xsd:boolean }?,
   element cNvPr { a_CT_NonVisualDrawingProps }?,

@@ -153,7 +153,7 @@ hello_world.pptx (ZIP archive)
           <a:chExt cx="9144000" cy="6858000"/>
         </a:xfrm>
       </p:grpSpPr>
-      
+
       <!-- Title shape -->
       <p:sp>
         <p:nvSpPr>
@@ -242,7 +242,7 @@ hello_world.pptx (ZIP archive)
           <a:chExt cx="9144000" cy="6858000"/>
         </a:xfrm>
       </p:grpSpPr>
-      
+
       <!-- Title placeholder -->
       <p:sp>
         <p:nvSpPr>

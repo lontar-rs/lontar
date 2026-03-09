@@ -1,4 +1,4 @@
---- 
+---
 description: Stage, commit and push
 ---
 1. Stage all

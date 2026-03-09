@@ -1288,7 +1288,7 @@ w_CT_SdtDate =
   element calendar { w_CT_CalendarType }?
 w_CT_SdtComboBox =
   attribute w:lastValue { s_ST_String }?,
-  ## default value: 
+  ## default value:
   element listItem { w_CT_SdtListItem }*
 w_CT_SdtDocPart =
   element docPartGallery { w_CT_String }?,
@@ -1296,7 +1296,7 @@ w_CT_SdtDocPart =
   element docPartUnique { w_CT_OnOff }?
 w_CT_SdtDropDownList =
   attribute w:lastValue { s_ST_String }?,
-  ## default value: 
+  ## default value:
   element listItem { w_CT_SdtListItem }*
 w_CT_Placeholder = element docPart { w_CT_String }
 w_CT_SdtText = attribute w:multiLine { s_ST_OnOff }?

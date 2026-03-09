@@ -15,4 +15,3 @@ This directory provides shared bibliography inputs for citation tests across bac
 
 ## Suggested Test Document
 Use `tests/fixtures/reference_docs/citations.md` as the source document; backends should render citations per their conventions using `sample.bib` or `sample.json`.
-

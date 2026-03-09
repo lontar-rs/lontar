@@ -42,7 +42,7 @@ vml-main =
  | v_rect
  | v_roundrect
 
-vml-officeDrawing = 
+vml-officeDrawing =
   o_shapedefaults
   | o_shapelayout
   | o_signatureline
@@ -74,4 +74,3 @@ vml-wordprocessingDrawing =
 vml-spreadsheetDrawing = x_ClientData
 
 vml-presentationDrawing = pvml_iscomment | pvml_textdata
-
