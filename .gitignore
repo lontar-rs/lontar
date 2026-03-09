@@ -15,8 +15,10 @@ Cargo.lock
 .DS_Store
 Thumbs.db
 
-# Test outputs
+# Test outputs - ignore generated files in output directory
 tests/fixtures/output/
+
+# Ignore binary document outputs globally (common practice for Rust projects)
 *.docx
 *.pptx
 *.xlsx
@@ -25,11 +27,11 @@ tests/fixtures/output/
 *.odp
 *.ods
 
-# But keep reference docs for analysis
-!tests/fixtures/reference_docs/*.docx
-!tests/fixtures/reference_docs/*.pptx
-!tests/fixtures/reference_docs/*.xlsx
-!tests/fixtures/reference_docs/*.pdf
+# Explicitly allow reference documents for testing
+!tests/fixtures/reference_docs/**/*.docx
+!tests/fixtures/reference_docs/**/*.pptx
+!tests/fixtures/reference_docs/**/*.xlsx
+!tests/fixtures/reference_docs/**/*.pdf
 
 # Python (for reference doc generation tools)
 __pycache__/
