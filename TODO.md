@@ -91,7 +91,7 @@ Detailed task breakdown by phase. Check the box when complete.
 - [x] Generate reference documents (via python-docx) containing multi-script text — verify they open correctly
 - [x] Generate reference presentations (via python-pptx) containing multi-script text — verify they open correctly
 - [x] Generate reference LaTeX documents containing multi-script text — verify they compile with XeLaTeX
-- [ ] Document expected shaping behavior for each script (which conjuncts should form, which reorderings should occur)
+- [x] Document expected shaping behavior for each script (which conjuncts should form, which reorderings should occur)
 
 ### Tooling Setup
 - [ ] Initialize Cargo workspace
