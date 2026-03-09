@@ -87,7 +87,7 @@ Detailed task breakdown by phase. Check the box when complete.
   - [x] Tibetan: stacking consonants
   - [x] African: Ethiopic, Tifinagh
   - [x] Mixed-script paragraphs: Latin + Balinese, Arabic + English, CJK + Latin
-- [ ] Collect test fonts: Noto Sans families for each script category
+- [x] Collect test fonts: Noto Sans families for each script category
 - [ ] Generate reference documents (via python-docx) containing multi-script text — verify they open correctly
 - [ ] Generate reference presentations (via python-pptx) containing multi-script text — verify they open correctly
 - [ ] Generate reference LaTeX documents containing multi-script text — verify they compile with XeLaTeX
