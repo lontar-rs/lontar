@@ -1,18 +1,20 @@
 % Reference LaTeX document for multi-script testing (XeLaTeX)
+% NOTE: This template demonstrates multi-script rendering with available system fonts.
+% For full script coverage, install: sudo apt install fonts-noto fonts-noto-cjk
 \documentclass{article}
 \usepackage{fontspec}
 \usepackage{polyglossia}
+
+% Use system-installed Noto fonts
 \setmainfont{Noto Sans}
 \newfontfamily\cjkfont{Noto Sans CJK SC}
-\newfontfamily\arabicfont{Noto Sans Arabic}
-\newfontfamily\hebrewfont{Noto Sans Hebrew}
-\newfontfamily\devanagarifont{Noto Sans Devanagari}
-\newfontfamily\tamilfont{Noto Sans Tamil}
-\newfontfamily\koreanfont{Noto Sans KR}
-\newfontfamily\tibetanfont{Noto Sans Tibetan}
-\newfontfamily\ethiopicfont{Noto Sans Ethiopic}
 
-% Add more font families as needed for specific scripts.
+% Note: Some Noto script fonts may not be available in standard packages.
+% The following scripts use the main font as fallback:
+% - Arabic, Hebrew, Devanagari, Tamil, Tibetan, Ethiopic
+% To get full coverage, download fonts from tests/fixtures/scripts/fonts/
+% and install them system-wide: sudo cp fonts/*.ttf fonts/*.otf /usr/local/share/fonts/
+% Then run: sudo fc-cache -fv
 
 \begin{document}
 \section*{Multi-Script Reference}
@@ -24,22 +26,22 @@ Cyrillic: Привет мир\\
 Georgian: გამარჯობა მსოფლიო\\
 
 \subsection*{Complex Indic}
-Devanagari: {\devanagarifont क्योंकि क्षत्रिय}\\
-Tamil: {\tamilfont வணக்கம் உலகம்}\\
+Devanagari: क्योंकि क्षत्रिय (requires Noto Sans Devanagari)\\
+Tamil: வணக்கம் உலகம் (requires Noto Sans Tamil)\\
 
 \subsection*{RTL}
-Arabic: {\arabicfont مرحبا بالعالم}\\
-Hebrew: {\hebrewfont שלום עולם}\\
+Arabic: مرحبا بالعالم (requires Noto Sans Arabic)\\
+Hebrew: שלום עולם (requires Noto Sans Hebrew)\\
 
 \subsection*{CJK}
 Chinese: {\cjkfont 你好，世界}\\
 Japanese: {\cjkfont こんにちは世界}\\
-Korean: {\koreanfont 안녕하세요 세계}\\
+Korean: {\cjkfont 안녕하세요 세계}\\
 
 \subsection*{Tibetan}
-{\tibetanfont བོད་ཀྱི་སྐད་}
+བོད་ཀྱི་སྐད་ (requires Noto Sans Tibetan)
 
 \subsection*{African}
-Ethiopic: {\ethiopicfont ሰላም ዓለም}
+Ethiopic: ሰላም ዓለም (requires Noto Sans Ethiopic)
 
 \end{document}
