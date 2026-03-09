@@ -39,6 +39,12 @@ __pycache__/
 .venv/
 venv/
 
+# LaTeX
+*.aux
+*.log
+*.out
+*.synctex.gz
+
 # Coverage
 lcov.info
 coverage/

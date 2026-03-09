@@ -94,12 +94,12 @@ Detailed task breakdown by phase. Check the box when complete.
 - [x] Document expected shaping behavior for each script (which conjuncts should form, which reorderings should occur)
 
 ### Tooling Setup
-- [ ] Initialize Cargo workspace
-- [ ] Set up CI (GitHub Actions): clippy, fmt, test, miri
-- [ ] Configure code coverage (cargo-llvm-cov)
-- [ ] Set up benchmarks (criterion)
-- [ ] Create issue templates for bug reports and feature requests
-- [ ] Set up dependabot for dependency updates
+- [x] Initialize Cargo workspace
+- [x] Set up CI (GitHub Actions): clippy, fmt, test, miri
+- [x] Configure code coverage (cargo-llvm-cov)
+- [x] Set up benchmarks (criterion)
+- [x] Create issue templates for bug reports and feature requests
+- [x] Set up dependabot for dependency updates
 
 ### Text Shaping Research
 - [ ] Evaluate `rustybuzz` API and capabilities
