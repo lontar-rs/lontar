@@ -8,6 +8,8 @@
 //! - **Semantic**: Preserves meaning (not just formatting)
 
 use std::collections::HashMap;
+use serde_json::Value;
+use thiserror::Error;
 
 /// A complete Lontar document.
 #[derive(Debug, Clone)]
@@ -395,6 +397,20 @@ pub struct BibliographyStore {
     pub style: BibliographyStyle,
 }
 
+#[derive(Debug, Error, Clone, PartialEq, Eq)]
+pub enum BibliographyError {
+    #[error("invalid BibTeX entry")]
+    InvalidBibtex,
+    #[error("missing BibTeX key")]
+    MissingBibtexKey,
+    #[error("invalid CSL-JSON")]
+    InvalidCslJson,
+    #[error("missing CSL-JSON id")]
+    MissingCslId,
+    #[error("citation key not found: {0}")]
+    MissingEntry(String),
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum BibliographyStyle {
     Numeric,
@@ -456,6 +472,247 @@ impl BibliographyStore {
     pub fn contains(&self, key: &str) -> bool {
         self.entries.contains_key(key)
     }
+
+    /// Load entries from a BibTeX string.
+    pub fn load_bibtex(&mut self, input: &str) -> Result<(), BibliographyError> {
+        for entry in parse_bibtex_entries(input)? {
+            self.add_entry(entry);
+        }
+        Ok(())
+    }
+
+    /// Load entries from a CSL-JSON string.
+    pub fn load_csl_json(&mut self, input: &str) -> Result<(), BibliographyError> {
+        for entry in parse_csl_json(input)? {
+            self.add_entry(entry);
+        }
+        Ok(())
+    }
+
+    /// Render a citation for the given keys using the configured bibliography style.
+    pub fn render_citation(
+        &self,
+        keys: &[&str],
+        mode: CitationMode,
+    ) -> Result<String, BibliographyError> {
+        match self.style {
+            BibliographyStyle::Numeric | BibliographyStyle::Vancouver | BibliographyStyle::Superscript => {
+                let numbers: Vec<String> = keys
+                    .iter()
+                    .enumerate()
+                    .map(|(i, key)| {
+                        if self.contains(key) {
+                            // Use 1-based numbering in order of appearance.
+                            (i + 1).to_string()
+                        } else {
+                            key.to_string()
+                        }
+                    })
+                    .collect();
+                let body = numbers.join(", ");
+                let rendered = if matches!(self.style, BibliographyStyle::Superscript) {
+                    format!("^{body}^")
+                } else if matches!(mode, CitationMode::Narrative) {
+                    format!("{body}")
+                } else {
+                    format!("[{body}]")
+                };
+                // validate all keys exist
+                for key in keys {
+                    if !self.contains(key) {
+                        return Err(BibliographyError::MissingEntry((*key).to_string()));
+                    }
+                }
+                Ok(rendered)
+            }
+            BibliographyStyle::AuthorYear | BibliographyStyle::APA7 | BibliographyStyle::Named => {
+                let mut parts = Vec::new();
+                for key in keys {
+                    let entry = self
+                        .get(key)
+                        .ok_or_else(|| BibliographyError::MissingEntry((*key).to_string()))?;
+                    parts.push(format_author_year(entry));
+                }
+                let body = parts.join("; ");
+                let rendered = match mode {
+                    CitationMode::Narrative => body.clone(),
+                    CitationMode::YearOnly => format!("({})", extract_year(&body)),
+                    CitationMode::SuppressAuthor => format!("({})", extract_year(&body)),
+                    _ => format!("({})", body),
+                };
+                Ok(rendered)
+            }
+        }
+    }
+}
+
+fn format_author_year(entry: &BibEntry) -> String {
+    let author = entry
+        .authors
+        .get(0)
+        .map(|a| a.family.as_str())
+        .unwrap_or("Anon");
+    let year = entry
+        .fields
+        .get("year")
+        .or_else(|| entry.fields.get("issued"))
+        .map(String::as_str)
+        .unwrap_or("n.d.");
+    format!("{author} {year}")
+}
+
+fn extract_year(text: &str) -> String {
+    text.split_whitespace()
+        .find(|s| s.chars().all(|c| c.is_ascii_digit()))
+        .unwrap_or("n.d.")
+        .to_string()
+}
+
+fn parse_bibtex_entries(input: &str) -> Result<Vec<BibEntry>, BibliographyError> {
+    let mut entries = Vec::new();
+    for chunk in input.split('@') {
+        let trimmed = chunk.trim();
+        if trimmed.is_empty() {
+            continue;
+        }
+
+        let mut parts = trimmed.splitn(2, '{');
+        let kind_str = parts.next().ok_or(BibliographyError::InvalidBibtex)?;
+        let rest = parts.next().ok_or(BibliographyError::InvalidBibtex)?;
+
+        let mut key_and_body = rest.splitn(2, ',');
+        let key = key_and_body
+            .next()
+            .map(str::trim)
+            .filter(|s| !s.is_empty())
+            .ok_or(BibliographyError::MissingBibtexKey)?;
+        let body = key_and_body.next().unwrap_or("");
+
+        let fields_str = body.rsplitn(2, '}').last().unwrap_or("");
+        let mut fields = HashMap::new();
+        let mut authors = Vec::new();
+
+        for field in fields_str.split(',') {
+            let mut kv = field.splitn(2, '=');
+            if let (Some(k), Some(v)) = (kv.next(), kv.next()) {
+                let key_trim = k.trim().to_lowercase();
+                let value_trim = v.trim().trim_matches('{').trim_matches('}').trim_matches('"');
+                if key_trim == "author" {
+                    for name in value_trim.split(" and ") {
+                        let parts: Vec<_> = name.trim().split_whitespace().collect();
+                        if parts.is_empty() {
+                            continue;
+                        }
+                        let family = parts.last().unwrap().to_string();
+                        let given = if parts.len() > 1 {
+                            Some(parts[..parts.len() - 1].join(" "))
+                        } else {
+                            None
+                        };
+                        authors.push(BibAuthor {
+                            given,
+                            family,
+                            literal: None,
+                        });
+                    }
+                } else {
+                    fields.insert(key_trim, value_trim.to_string());
+                }
+            }
+        }
+
+        let entry = BibEntry {
+            key: key.to_string(),
+            kind: map_bibtex_kind(kind_str),
+            fields,
+            authors,
+        };
+
+        entries.push(entry);
+    }
+
+    Ok(entries)
+}
+
+fn map_bibtex_kind(kind: &str) -> BibEntryKind {
+    match kind.to_lowercase().as_str() {
+        "article" => BibEntryKind::Article,
+        "book" => BibEntryKind::Book,
+        "inproceedings" | "conference" => BibEntryKind::InProceedings,
+        "incollection" => BibEntryKind::InCollection,
+        "phdthesis" | "mastersthesis" | "thesis" => BibEntryKind::Thesis,
+        "techreport" => BibEntryKind::TechReport,
+        "misc" => BibEntryKind::Misc,
+        "online" | "webpage" => BibEntryKind::WebPage,
+        _ => BibEntryKind::Misc,
+    }
+}
+
+fn parse_csl_json(input: &str) -> Result<Vec<BibEntry>, BibliographyError> {
+    let value: Value = serde_json::from_str(input).map_err(|_| BibliographyError::InvalidCslJson)?;
+    let items = match value {
+        Value::Array(arr) => arr,
+        Value::Object(_) => vec![value],
+        _ => return Err(BibliographyError::InvalidCslJson),
+    };
+
+    let mut entries = Vec::new();
+    for item in items {
+        let obj = item.as_object().ok_or(BibliographyError::InvalidCslJson)?;
+        let id = obj
+            .get("id")
+            .and_then(|v| v.as_str())
+            .filter(|s| !s.is_empty())
+            .ok_or(BibliographyError::MissingCslId)?;
+
+        let mut fields = HashMap::new();
+        let mut authors = Vec::new();
+
+        if let Some(title) = obj.get("title").and_then(|v| v.as_str()) {
+            fields.insert("title".to_string(), title.to_string());
+        }
+        if let Some(container) = obj.get("container-title").and_then(|v| v.as_str()) {
+            fields.insert("container-title".to_string(), container.to_string());
+        }
+        if let Some(issued) = obj.get("issued").and_then(|v| v.as_str()) {
+            fields.insert("issued".to_string(), issued.to_string());
+        }
+
+        if let Some(author_array) = obj.get("author").and_then(|v| v.as_array()) {
+            for a in author_array {
+                if let Some(aobj) = a.as_object() {
+                    let given = aobj.get("given").and_then(|v| v.as_str()).map(|s| s.to_string());
+                    let family = aobj
+                        .get("family")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("")
+                        .to_string();
+                    let literal = aobj
+                        .get("literal")
+                        .and_then(|v| v.as_str())
+                        .map(|s| s.to_string());
+                    if !family.is_empty() || literal.is_some() {
+                        authors.push(BibAuthor {
+                            given,
+                            family,
+                            literal,
+                        });
+                    }
+                }
+            }
+        }
+
+        let entry = BibEntry {
+            key: id.to_string(),
+            kind: BibEntryKind::Article,
+            fields,
+            authors,
+        };
+
+        entries.push(entry);
+    }
+
+    Ok(entries)
 }
 
 /// Resource store for images and binary assets.

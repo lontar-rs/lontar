@@ -145,9 +145,9 @@ Detailed task breakdown by phase. Check the box when complete.
 - [x] Define `BibliographyStyle` enum (Numeric, AuthorYear, Vancouver, Superscript, Apa7, Named)
 - [x] Define `CitationMode` enum (Parenthetical, Narrative, YearOnly, SuppressAuthor, Full)
 - [x] Define `CrossRefKind` enum (Auto, Number, Page, Title)
-- [ ] Implement `BibliographyStore::load_bibtex()` — parse .bib files
-- [ ] Implement `BibliographyStore::load_csl_json()` — parse CSL-JSON
-- [ ] Implement citation resolution: given citation keys + style → rendered text
+- [x] Implement `BibliographyStore::load_bibtex()` — parse .bib files
+- [x] Implement `BibliographyStore::load_csl_json()` — parse CSL-JSON
+- [x] Implement citation resolution: given citation keys + style → rendered text
 - [ ] Implement cross-reference resolution: given label → computed number/text
 - [ ] Implement label uniqueness validation in `DocumentBuilder`
 - [x] Implement `Document` struct with root node (including `bibliography` field)
