@@ -6,6 +6,7 @@
 //! equations, and bibliographies.
 
 pub mod ast;
+pub mod writer;
 
 pub use ast::{
     Alignment, BibAuthor, BibEntry, BibEntryKind, BibliographyStore, BibliographyStyle, Block,
