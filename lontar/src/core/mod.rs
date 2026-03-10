@@ -7,14 +7,16 @@
 
 pub mod ast;
 pub mod writer;
+pub mod error;
 
 pub use ast::{
     Alignment, BibAuthor, BibEntry, BibEntryKind, BibliographyError, BibliographyStore,
-    BibliographyStyle, Block, CitationMode, Color, CrossRefKind, Document, DocumentMetadata,
-    FontStyle, FontWeight, Inline, ListItem, Margins, PageOrientation, PageSetup, ParagraphStyle,
-    Resource, ResourceStore, Script, StyleSheet, TableCell, TableRow, TableStyle, TextStyle,
-    ChartKind, ChartData, ChartSeries,
+    BibliographyStyle, Block, ChartData, ChartKind, ChartSeries, CitationMode, Color, CrossRefError,
+    CrossRefKind, CrossRefRegistry, Document, DocumentMetadata, FontStyle, FontWeight, Inline,
+    ListItem, Margins, PageOrientation, PageSetup, ParagraphStyle, Resource, ResourceStore, Script,
+    StyleSheet, TableCell, TableRow, TableStyle, TextStyle,
 };
+pub use error::LontarError;
 
 /// Builder for constructing documents ergonomically.
 #[derive(Debug, Default)]
@@ -25,6 +27,7 @@ pub struct DocumentBuilder {
     content: Vec<Block>,
     bibliography: Option<BibliographyStore>,
     resources: ResourceStore,
+    crossrefs: CrossRefRegistry,
 }
 
 impl DocumentBuilder {
@@ -57,6 +60,17 @@ impl DocumentBuilder {
         self
     }
 
+    /// Register a cross-reference label, returning its assigned number.
+    pub fn register_label(mut self, label: impl Into<String>) -> Result<Self, CrossRefError> {
+        self.crossrefs.register(label)?;
+        Ok(self)
+    }
+
+    /// Resolve a cross-reference label to its assigned number.
+    pub fn resolve_label(&self, label: &str) -> Result<String, CrossRefError> {
+        self.crossrefs.resolve(label)
+    }
+
     /// Build the document.
     pub fn build(self) -> Document {
         Document {
@@ -66,6 +80,7 @@ impl DocumentBuilder {
             content: self.content,
             bibliography: self.bibliography,
             resources: self.resources,
+            crossrefs: self.crossrefs,
         }
     }
 }

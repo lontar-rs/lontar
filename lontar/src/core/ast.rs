@@ -20,6 +20,47 @@ pub struct Document {
     pub content: Vec<Block>,
     pub bibliography: Option<BibliographyStore>,
     pub resources: ResourceStore,
+    pub crossrefs: CrossRefRegistry,
+}
+
+#[derive(Debug, Error, Clone, PartialEq, Eq)]
+pub enum CrossRefError {
+    #[error("duplicate cross-reference label: {0}")]
+    DuplicateLabel(String),
+    #[error("unknown cross-reference label: {0}")]
+    UnknownLabel(String),
+}
+
+/// Registry for cross-references to enforce uniqueness and provide resolution.
+#[derive(Debug, Clone, Default)]
+pub struct CrossRefRegistry {
+    labels: HashMap<String, usize>,
+}
+
+impl CrossRefRegistry {
+    /// Register a label and assign a sequential number (1-based). Errors on duplicates.
+    pub fn register(&mut self, label: impl Into<String>) -> Result<usize, CrossRefError> {
+        let label = label.into();
+        if self.labels.contains_key(&label) {
+            return Err(CrossRefError::DuplicateLabel(label));
+        }
+        let number = self.labels.len() + 1;
+        self.labels.insert(label, number);
+        Ok(number)
+    }
+
+    /// Resolve a label to its number as string.
+    pub fn resolve(&self, label: &str) -> Result<String, CrossRefError> {
+        self.labels
+            .get(label)
+            .map(|n| n.to_string())
+            .ok_or_else(|| CrossRefError::UnknownLabel(label.to_string()))
+    }
+
+    /// Number of registered labels.
+    pub fn len(&self) -> usize {
+        self.labels.len()
+    }
 }
 
 /// Chart kinds supported by the AST.

@@ -148,13 +148,13 @@ Detailed task breakdown by phase. Check the box when complete.
 - [x] Implement `BibliographyStore::load_bibtex()` — parse .bib files
 - [x] Implement `BibliographyStore::load_csl_json()` — parse CSL-JSON
 - [x] Implement citation resolution: given citation keys + style → rendered text
-- [ ] Implement cross-reference resolution: given label → computed number/text
-- [ ] Implement label uniqueness validation in `DocumentBuilder`
+- [x] Implement cross-reference resolution: given label → computed number/text
+- [x] Implement label uniqueness validation in `DocumentBuilder`
 - [x] Implement `Document` struct with root node (including `bibliography` field)
 - [x] Implement `DocumentBuilder` (ergonomic builder API, with `.cite()`, `.crossref()`, `.bib_entry()`)
 - [x] Implement `DocumentWriter` trait
 - [x] Implement `WriteReport` for feature degradation reporting
-- [ ] Implement `LontarError` error types (including `CitationNotFound`, `Bibliography`)
+- [x] Implement `LontarError` error types (including `CitationNotFound`, `Bibliography`)
 - [x] Implement style cascade resolution (default → named → paragraph → run)
 - [x] Write unit tests for AST construction
 - [x] Write unit tests for style resolution
