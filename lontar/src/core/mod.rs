@@ -6,17 +6,18 @@
 //! equations, and bibliographies.
 
 pub mod ast;
-pub mod writer;
 pub mod error;
+pub mod writer;
 
 pub use ast::{
     Alignment, BibAuthor, BibEntry, BibEntryKind, BibliographyError, BibliographyStore,
-    BibliographyStyle, Block, ChartData, ChartKind, ChartSeries, CitationMode, Color, CrossRefError,
-    CrossRefKind, CrossRefRegistry, Document, DocumentMetadata, FontStyle, FontWeight, Inline,
-    ListItem, Margins, PageOrientation, PageSetup, ParagraphStyle, Resource, ResourceStore, Script,
-    StyleSheet, TableCell, TableRow, TableStyle, TextStyle,
+    BibliographyStyle, Block, ChartData, ChartKind, ChartSeries, CitationMode, Color,
+    CrossRefError, CrossRefKind, CrossRefRegistry, Document, DocumentMetadata, FontStyle,
+    FontWeight, Inline, ListItem, Margins, PageOrientation, PageSetup, ParagraphStyle, Resource,
+    ResourceStore, Script, StyleSheet, TableCell, TableRow, TableStyle, TextStyle,
 };
 pub use error::LontarError;
+pub use writer::{DocumentWriter, WriteError, WriteReport, WriteResult};
 
 /// Builder for constructing documents ergonomically.
 #[derive(Debug, Default)]

@@ -106,30 +106,18 @@ mod tests {
 
         // First 5 chars (Hello) should be LTR (level 0)
         for i in 0..5 {
-            assert!(
-                levels[i].is_ltr(),
-                "Character at index {} should be LTR",
-                i
-            );
+            assert!(levels[i].is_ltr(), "Character at index {} should be LTR", i);
         }
 
         // Space at index 5 should be neutral
         // Arabic chars at indices 6-11 should be RTL (level 1)
         for i in 6..12 {
-            assert!(
-                levels[i].is_rtl(),
-                "Character at index {} should be RTL",
-                i
-            );
+            assert!(levels[i].is_rtl(), "Character at index {} should be RTL", i);
         }
 
         // Last 6 chars (World) should be LTR
         for i in 13..19 {
-            assert!(
-                levels[i].is_ltr(),
-                "Character at index {} should be LTR",
-                i
-            );
+            assert!(levels[i].is_ltr(), "Character at index {} should be LTR", i);
         }
     }
 
@@ -215,11 +203,7 @@ mod tests {
             "Arabic",
             "Second run should be Arabic"
         );
-        assert_eq!(
-            format!("{:?}", runs[2].0),
-            "Han",
-            "Third run should be Han"
-        );
+        assert_eq!(format!("{:?}", runs[2].0), "Han", "Third run should be Han");
     }
 
     /// Test font slot mapping for scripts
@@ -231,10 +215,7 @@ mod tests {
         assert_eq!(script_to_font_slot(Script::Latin), FontSlot::Ascii);
 
         // Arabic should map to complex script slot
-        assert_eq!(
-            script_to_font_slot(Script::Arabic),
-            FontSlot::ComplexScript
-        );
+        assert_eq!(script_to_font_slot(Script::Arabic), FontSlot::ComplexScript);
 
         // Han should map to east asia slot
         assert_eq!(script_to_font_slot(Script::Han), FontSlot::EastAsia);

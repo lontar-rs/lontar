@@ -206,7 +206,7 @@ fn format_apa7(entry: &CslEntry) -> String {
     let authors = format_authors_apa7(&entry.author);
     let year = extract_year(&entry.issued);
     let title = entry.title.as_ref().unwrap_or(&"Untitled".to_string());
-    
+
     match entry.entry_type.as_str() {
         "article-journal" => {
             let journal = entry.container_title.as_ref().unwrap_or(&"Unknown".to_string());
@@ -214,9 +214,9 @@ fn format_apa7(entry: &CslEntry) -> String {
             let issue = entry.issue.map(|i| format!("({})", i)).unwrap_or_default();
             let page = entry.page.as_ref().unwrap_or(&"".to_string());
             let doi = entry.doi.as_ref().map(|d| format!(". https://doi.org/{}", d)).unwrap_or_default();
-            
+
             format!(
-                "{}. ({}). {}. {} {}{}, {}{}", 
+                "{}. ({}). {}. {} {}{}, {}{}",
                 authors, year, title, journal, volume, issue, page, doi
             )
         }
@@ -228,7 +228,7 @@ fn format_apa7(entry: &CslEntry) -> String {
             let book_title = entry.container_title.as_ref().unwrap_or(&"Unknown".to_string());
             let publisher = entry.publisher.as_ref().unwrap_or(&"Unknown".to_string());
             let page = entry.page.as_ref().unwrap_or(&"".to_string());
-            
+
             format!(
                 "{}. ({}). {}. In {}. {} (pp. {}).",
                 authors, year, title, book_title, publisher, page
@@ -254,7 +254,7 @@ fn format_authors_apa7(authors: &Option<Vec<CslPerson>>) -> String {
                     }
                 })
                 .collect();
-            
+
             if names.len() == 1 {
                 names[0].clone()
             } else if names.len() == 2 {
@@ -277,7 +277,7 @@ fn format_authors_apa7(authors: &Option<Vec<CslPerson>>) -> String {
 fn format_vancouver(entry: &CslEntry) -> String {
     let authors = format_authors_vancouver(&entry.author);
     let title = entry.title.as_ref().unwrap_or(&"Untitled".to_string());
-    
+
     match entry.entry_type.as_str() {
         "article-journal" => {
             let journal = entry.container_title.as_ref().unwrap_or(&"Unknown".to_string());
@@ -286,7 +286,7 @@ fn format_vancouver(entry: &CslEntry) -> String {
             let volume = entry.volume.map(|v| v.to_string()).unwrap_or_default();
             let issue = entry.issue.map(|i| format!("({})", i)).unwrap_or_default();
             let page = entry.page.as_ref().unwrap_or(&"".to_string());
-            
+
             format!(
                 "{}. {}. {}. {};{}{}:{}.",
                 authors, title, journal_abbr, year, volume, issue, page
@@ -295,7 +295,7 @@ fn format_vancouver(entry: &CslEntry) -> String {
         "book" => {
             let publisher = entry.publisher.as_ref().unwrap_or(&"Unknown".to_string());
             let year = extract_year(&entry.issued);
-            
+
             format!("{}. {}. {}; {}.", authors, title, publisher, year)
         }
         _ => format!("{}. {}.", authors, title),
@@ -317,7 +317,7 @@ fn format_authors_vancouver(authors: &Option<Vec<CslPerson>>) -> String {
                     }
                 })
                 .collect();
-            
+
             if names.len() <= 6 {
                 names.join(", ")
             } else {
@@ -371,7 +371,7 @@ pub fn resolve_citations(
 ) -> Result<Vec<Block>> {
     let mut resolved = Vec::new();
     let mut citation_count = 0;
-    
+
     for block in content {
         match block {
             Block::Paragraph(para) => {
@@ -387,7 +387,7 @@ pub fn resolve_citations(
             _ => resolved.push(block.clone()),
         }
     }
-    
+
     Ok(resolved)
 }
 ```
@@ -406,17 +406,17 @@ pub fn generate_bibliography(
             (e.id.clone(), formatted)
         })
         .collect();
-    
+
     if config.sort_bibliography {
         formatted.sort_by(|a, b| a.1.cmp(&b.1));
     }
-    
+
     let mut inlines = Vec::new();
     for (_, text) in formatted {
         inlines.push(Inline::Text(text));
         inlines.push(Inline::LineBreak);
     }
-    
+
     Block::Section {
         title: config.bibliography_title.clone(),
         content: vec![Block::Paragraph(Paragraph { inlines })],

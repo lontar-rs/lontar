@@ -164,15 +164,15 @@ pub fn layout_paragraph(
 ) -> ParagraphLayout {
     let breaker = LineBreaker::new(text);
     let breaks: Vec<usize> = breaker.collect();
-    
+
     let mut lines = Vec::new();
     let mut current_line = String::new();
     let mut prev_break = 0;
-    
+
     for break_pos in breaks {
         let segment = &text[prev_break..break_pos];
         let segment_width = measure_text(segment, font);
-        
+
         if (current_line.len() as f32 + segment_width) > max_width {
             // Start new line
             lines.push(current_line.clone());
@@ -180,14 +180,14 @@ pub fn layout_paragraph(
         } else {
             current_line.push_str(segment);
         }
-        
+
         prev_break = break_pos;
     }
-    
+
     if !current_line.is_empty() {
         lines.push(current_line);
     }
-    
+
     ParagraphLayout {
         text: text.to_string(),
         lines,
@@ -205,7 +205,7 @@ pub fn generate_docx_paragraphs(
     font: &Font,
 ) -> Vec<DocxParagraph> {
     let layout = layout_paragraph(text, max_width, font);
-    
+
     layout.lines
         .iter()
         .map(|line| {
@@ -228,29 +228,29 @@ pub fn wrap_text_for_pdf(
 ) -> Vec<String> {
     let breaker = LineBreaker::new(text);
     let breaks: Vec<usize> = breaker.collect();
-    
+
     let mut lines = Vec::new();
     let mut current_line = String::new();
     let mut prev_break = 0;
-    
+
     for break_pos in breaks {
         let segment = &text[prev_break..break_pos];
         let segment_width = font.measure_text(segment);
-        
+
         if (current_line.len() as f32 + segment_width) > max_width {
             lines.push(current_line.trim_end().to_string());
             current_line = segment.to_string();
         } else {
             current_line.push_str(segment);
         }
-        
+
         prev_break = break_pos;
     }
-    
+
     if !current_line.is_empty() {
         lines.push(current_line.trim_end().to_string());
     }
-    
+
     lines
 }
 ```
@@ -309,13 +309,13 @@ for break_pos in breaks {
 for line in lines {
     // Step 3a: Detect script runs
     let script_runs = detect_script_runs(line);
-    
+
     // Step 3b: Shape each script run
     for script_run in script_runs {
         let mut buffer = UnicodeBuffer::new();
         buffer.push_str(&script_run.text);
         buffer.set_script(script_run.script);
-        
+
         let output = shape(&face, &[], buffer);
         // Process shaped glyphs...
     }

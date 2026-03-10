@@ -179,9 +179,9 @@ pub fn shape_run(text: &str, script: Script, language: Language, font: &Font) ->
     buffer.push_str(text);
     buffer.set_script(script);
     buffer.set_language(language);
-    
+
     let output = rustybuzz::shape(font, &[], buffer);
-    
+
     ShapedRun {
         text: text.to_string(),
         script,
@@ -198,11 +198,11 @@ pub fn shape_run(text: &str, script: Script, language: Language, font: &Font) ->
 ```rust
 pub fn shaped_run_to_docx_runs(shaped: &ShapedRun) -> Vec<DocxRun> {
     let mut runs = Vec::new();
-    
+
     for (glyph_info, glyph_pos) in shaped.glyphs.iter().zip(&shaped.positions) {
         let char_index = glyph_info.cluster as usize;
         let char = shaped.text.chars().nth(char_index).unwrap();
-        
+
         let run = DocxRun {
             text: char.to_string(),
             font: shaped.font.name.clone(),
@@ -211,7 +211,7 @@ pub fn shaped_run_to_docx_runs(shaped: &ShapedRun) -> Vec<DocxRun> {
         };
         runs.push(run);
     }
-    
+
     runs
 }
 ```
@@ -222,7 +222,7 @@ pub fn shaped_run_to_docx_runs(shaped: &ShapedRun) -> Vec<DocxRun> {
 pub fn shaped_run_to_pdf_glyphs(shaped: &ShapedRun) -> Vec<PdfGlyph> {
     let mut glyphs = Vec::new();
     let mut x_pos = 0;
-    
+
     for (glyph_info, glyph_pos) in shaped.glyphs.iter().zip(&shaped.positions) {
         let glyph = PdfGlyph {
             glyph_id: glyph_info.codepoint,
@@ -233,7 +233,7 @@ pub fn shaped_run_to_pdf_glyphs(shaped: &ShapedRun) -> Vec<PdfGlyph> {
         glyphs.push(glyph);
         x_pos += glyph_pos.x_advance;
     }
-    
+
     glyphs
 }
 ```

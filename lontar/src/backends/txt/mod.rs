@@ -2,9 +2,7 @@
 //!
 //! Converts Lontar AST to plain ASCII text with minimal formatting.
 
-use crate::core::{
-    Block, CitationMode, Document, DocumentWriter, Inline, WriteError, WriteReport, WriteResult,
-};
+use crate::core::{Block, Document, DocumentWriter, Inline, WriteError, WriteReport, WriteResult};
 use std::io::Write;
 
 /// Plain text writer that outputs ASCII text.
@@ -46,10 +44,11 @@ impl<W: Write> PlainTextWriter<W> {
                 })?;
 
                 let heading_text = self.inline_sequence_to_string(content)?;
-                writeln!(self.output, "{}", underline.repeat(heading_text.len()))
-                    .map_err(|e| WriteError::IoError {
+                writeln!(self.output, "{}", underline.repeat(heading_text.len())).map_err(|e| {
+                    WriteError::IoError {
                         message: e.to_string(),
-                    })?;
+                    }
+                })?;
                 writeln!(self.output).map_err(|e| WriteError::IoError {
                     message: e.to_string(),
                 })?;
@@ -74,7 +73,7 @@ impl<W: Write> PlainTextWriter<W> {
                         for block in &cell.content {
                             if let Block::Paragraph { content, .. } = block {
                                 let text = self.inline_sequence_to_string(content)?;
-                                write!(self.output, "{}", text).map_err(|e| WriteError::IoError {
+                                write!(self.output, "{text}").map_err(|e| WriteError::IoError {
                                     message: e.to_string(),
                                 })?;
                             }
@@ -88,6 +87,14 @@ impl<W: Write> PlainTextWriter<W> {
                     message: e.to_string(),
                 })?;
             }
+            Block::Chart { .. } => {
+                writeln!(self.output, "[Chart omitted]").map_err(|e| WriteError::IoError {
+                    message: e.to_string(),
+                })?;
+                writeln!(self.output).map_err(|e| WriteError::IoError {
+                    message: e.to_string(),
+                })?;
+            }
             Block::List { items, ordered, .. } => {
                 for (i, item) in items.iter().enumerate() {
                     let indent = "  ".repeat(item.level as usize);
@@ -96,7 +103,7 @@ impl<W: Write> PlainTextWriter<W> {
                     } else {
                         "* ".to_string()
                     };
-                    write!(self.output, "{}{}", indent, marker).map_err(|e| WriteError::IoError {
+                    write!(self.output, "{indent}{marker}").map_err(|e| WriteError::IoError {
                         message: e.to_string(),
                     })?;
                     for block in &item.content {
@@ -108,14 +115,12 @@ impl<W: Write> PlainTextWriter<W> {
                 })?;
             }
             Block::CodeBlock {
-                code,
-                language: _,
-                ..
+                code, language: _, ..
             } => {
                 writeln!(self.output, "[CODE]").map_err(|e| WriteError::IoError {
                     message: e.to_string(),
                 })?;
-                write!(self.output, "{}", code).map_err(|e| WriteError::IoError {
+                write!(self.output, "{code}").map_err(|e| WriteError::IoError {
                     message: e.to_string(),
                 })?;
                 writeln!(self.output, "[/CODE]").map_err(|e| WriteError::IoError {
@@ -152,13 +157,9 @@ impl<W: Write> PlainTextWriter<W> {
                     message: e.to_string(),
                 })?;
             }
-            Block::Image {
-                resource_id,
-                alt_text,
-                ..
-            } => {
+            Block::Image { alt_text, .. } => {
                 let alt = alt_text.as_deref().unwrap_or("image");
-                writeln!(self.output, "[Image: {}]", alt).map_err(|e| WriteError::IoError {
+                writeln!(self.output, "[Image: {alt}]").map_err(|e| WriteError::IoError {
                     message: e.to_string(),
                 })?;
                 writeln!(self.output).map_err(|e| WriteError::IoError {
@@ -166,22 +167,17 @@ impl<W: Write> PlainTextWriter<W> {
                 })?;
             }
             Block::Equation {
-                content,
-                display,
-                ..
+                content, display, ..
             } => {
                 if *display {
                     writeln!(self.output, "[Equation]").map_err(|e| WriteError::IoError {
                         message: e.to_string(),
                     })?;
-                    writeln!(self.output, "{}", content).map_err(|e| WriteError::IoError {
-                        message: e.to_string(),
-                    })?;
-                    writeln!(self.output, "[/Equation]").map_err(|e| WriteError::IoError {
+                    writeln!(self.output, "{content}").map_err(|e| WriteError::IoError {
                         message: e.to_string(),
                     })?;
                 } else {
-                    write!(self.output, "[{}]", content).map_err(|e| WriteError::IoError {
+                    write!(self.output, "[{content}]").map_err(|e| WriteError::IoError {
                         message: e.to_string(),
                     })?;
                 }
@@ -191,7 +187,7 @@ impl<W: Write> PlainTextWriter<W> {
             }
             Block::Section { title, content, .. } => {
                 if let Some(t) = title {
-                    writeln!(self.output, "\n{}", t).map_err(|e| WriteError::IoError {
+                    writeln!(self.output, "\n{t}").map_err(|e| WriteError::IoError {
                         message: e.to_string(),
                     })?;
                     writeln!(self.output, "{}", "-".repeat(t.len())).map_err(|e| {
@@ -209,7 +205,7 @@ impl<W: Write> PlainTextWriter<W> {
             }
             Block::Bibliography { title, .. } => {
                 if let Some(t) = title {
-                    writeln!(self.output, "\n{}", t).map_err(|e| WriteError::IoError {
+                    writeln!(self.output, "\n{t}").map_err(|e| WriteError::IoError {
                         message: e.to_string(),
                     })?;
                     writeln!(self.output, "{}", "-".repeat(t.len())).map_err(|e| {
@@ -257,8 +253,8 @@ impl<W: Write> PlainTextWriter<W> {
             Inline::Superscript(content) => self.inline_sequence_to_string(content),
             Inline::Link { text, .. } => self.inline_sequence_to_string(text),
             Inline::Image { alt_text, .. } => Ok(alt_text.as_ref().cloned().unwrap_or_default()),
-            Inline::Citation { key, .. } => Ok(format!("[{}]", key)),
-            Inline::CrossRef { label, .. } => Ok(format!("[{}]", label)),
+            Inline::Citation { key, .. } => Ok(format!("[{key}]")),
+            Inline::CrossRef { label, .. } => Ok(format!("[{label}]")),
             Inline::Styled { content, .. } => self.inline_sequence_to_string(content),
         }
     }
@@ -267,7 +263,7 @@ impl<W: Write> PlainTextWriter<W> {
     fn write_inline(&mut self, inline: &Inline) -> WriteResult<()> {
         match inline {
             Inline::Text(text) => {
-                write!(self.output, "{}", text).map_err(|e| WriteError::IoError {
+                write!(self.output, "{text}").map_err(|e| WriteError::IoError {
                     message: e.to_string(),
                 })?;
                 self.current_line_length += text.len();
@@ -291,7 +287,7 @@ impl<W: Write> PlainTextWriter<W> {
                 self.write_inline_sequence(content)?;
             }
             Inline::Code(code) => {
-                write!(self.output, "{}", code).map_err(|e| WriteError::IoError {
+                write!(self.output, "{code}").map_err(|e| WriteError::IoError {
                     message: e.to_string(),
                 })?;
                 self.current_line_length += code.len();
@@ -310,20 +306,20 @@ impl<W: Write> PlainTextWriter<W> {
             }
             Inline::Image { alt_text, .. } => {
                 if let Some(alt) = alt_text {
-                    write!(self.output, "[{}]", alt).map_err(|e| WriteError::IoError {
+                    write!(self.output, "[{alt}]").map_err(|e| WriteError::IoError {
                         message: e.to_string(),
                     })?;
                     self.current_line_length += alt.len() + 2;
                 }
             }
             Inline::Citation { key, .. } => {
-                write!(self.output, "[{}]", key).map_err(|e| WriteError::IoError {
+                write!(self.output, "[{key}]").map_err(|e| WriteError::IoError {
                     message: e.to_string(),
                 })?;
                 self.current_line_length += key.len() + 2;
             }
             Inline::CrossRef { label, .. } => {
-                write!(self.output, "[{}]", label).map_err(|e| WriteError::IoError {
+                write!(self.output, "[{label}]").map_err(|e| WriteError::IoError {
                     message: e.to_string(),
                 })?;
                 self.current_line_length += label.len() + 2;
@@ -357,7 +353,7 @@ impl<W: Write> DocumentWriter for PlainTextWriter<W> {
 
         // Write title if present
         if let Some(title) = &document.metadata.title {
-            writeln!(self.output, "{}", title).map_err(|e| WriteError::IoError {
+            writeln!(self.output, "{title}").map_err(|e| WriteError::IoError {
                 message: e.to_string(),
             })?;
             writeln!(self.output, "{}", "=".repeat(title.len())).map_err(|e| {
@@ -372,7 +368,7 @@ impl<W: Write> DocumentWriter for PlainTextWriter<W> {
 
         // Write author if present
         if let Some(author) = &document.metadata.author {
-            writeln!(self.output, "By: {}", author).map_err(|e| WriteError::IoError {
+            writeln!(self.output, "By: {author}").map_err(|e| WriteError::IoError {
                 message: e.to_string(),
             })?;
             writeln!(self.output).map_err(|e| WriteError::IoError {

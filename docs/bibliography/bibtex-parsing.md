@@ -70,7 +70,7 @@ let bibtex = Bibtex::parse(bibtex_str)?;
 for entry in bibtex.entries() {
     println!("Key: {}", entry.key());
     println!("Type: {}", entry.entry_type());
-    
+
     for (field, value) in entry.fields() {
         println!("  {}: {}", field, value);
     }
@@ -100,7 +100,7 @@ let bibliography = Bibliography::parse(&bibtex_str)?;
 for entry in bibliography.entries() {
     println!("Key: {}", entry.key);
     println!("Type: {}", entry.entry_type);
-    
+
     for (field, value) in &entry.fields {
         println!("  {}: {}", field, value);
     }
@@ -133,7 +133,7 @@ for entry in bibliography.entries() {
             let title = entry.title()?;
             let journal = entry.journal()?;
             let year = entry.year()?;
-            
+
             println!("{} ({}). {}. {}", author, year, title, journal);
         }
         _ => {}
@@ -168,21 +168,21 @@ pub struct BibliographyEntry {
 pub fn parse_bibtex_file(path: &str) -> Result<Vec<BibliographyEntry>> {
     let content = std::fs::read_to_string(path)?;
     let bibtex = Bibtex::parse(&content)?;
-    
+
     let mut entries = Vec::new();
     for entry in bibtex.entries() {
         let mut fields = HashMap::new();
         for (field, value) in entry.fields() {
             fields.insert(field.to_string(), value.to_string());
         }
-        
+
         entries.push(BibliographyEntry {
             key: entry.key().to_string(),
             entry_type: entry.entry_type().to_string(),
             fields,
         });
     }
-    
+
     Ok(entries)
 }
 ```
@@ -209,7 +209,7 @@ fn format_apa(entry: &BibliographyEntry) -> String {
     let author = entry.fields.get("author").unwrap_or(&"Unknown".to_string());
     let year = entry.fields.get("year").unwrap_or(&"n.d.".to_string());
     let title = entry.fields.get("title").unwrap_or(&"Untitled".to_string());
-    
+
     format!("{} ({}). {}.", author, year, title)
 }
 ```
@@ -262,7 +262,7 @@ pub fn load_document_with_bibliography(
 ) -> Result<Document> {
     let content = parse_document(doc_path)?;
     let bibliography = parse_bibtex_file(bib_path)?;
-    
+
     Ok(Document {
         content,
         bibliography: Some(bibliography),
@@ -278,7 +278,7 @@ pub fn resolve_citations(
     bibliography: &[BibliographyEntry],
 ) -> Result<Vec<Block>> {
     let mut resolved = Vec::new();
-    
+
     for block in content {
         match block {
             Block::Paragraph(para) => {
@@ -288,7 +288,7 @@ pub fn resolve_citations(
             _ => resolved.push(block.clone()),
         }
     }
-    
+
     Ok(resolved)
 }
 
@@ -297,7 +297,7 @@ fn resolve_citations_in_paragraph(
     bibliography: &[BibliographyEntry],
 ) -> Result<Paragraph> {
     let mut resolved_inlines = Vec::new();
-    
+
     for inline in &para.inlines {
         match inline {
             Inline::Citation(key) => {
@@ -312,7 +312,7 @@ fn resolve_citations_in_paragraph(
             _ => resolved_inlines.push(inline.clone()),
         }
     }
-    
+
     Ok(Paragraph {
         inlines: resolved_inlines,
     })
@@ -327,7 +327,7 @@ pub fn generate_bibliography_section(
     style: CitationStyle,
 ) -> Block {
     let mut entries = Vec::new();
-    
+
     // Sort entries by author and year
     let mut sorted = bibliography.to_vec();
     sorted.sort_by(|a, b| {
@@ -335,12 +335,12 @@ pub fn generate_bibliography_section(
         let b_author = b.fields.get("author").unwrap_or(&"".to_string());
         a_author.cmp(b_author)
     });
-    
+
     for entry in sorted {
         let formatted = format_citation(&entry, style);
         entries.push(Inline::Text(formatted));
     }
-    
+
     Block::Section {
         title: "Bibliography".to_string(),
         content: vec![Block::Paragraph(Paragraph {

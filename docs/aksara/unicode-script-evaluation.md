@@ -30,7 +30,7 @@ pub enum Script {
     // Latin scripts
     Latin,
     LatinExtended,
-    
+
     // RTL scripts
     Arabic,
     Hebrew,
@@ -39,7 +39,7 @@ pub enum Script {
     NKo,
     Samaritan,
     Mandaic,
-    
+
     // Indic scripts
     Devanagari,
     Bengali,
@@ -51,20 +51,20 @@ pub enum Script {
     Kannada,
     Malayalam,
     Sinhala,
-    
+
     // Southeast Asian scripts
     Thai,
     Lao,
     Tibetan,
     Myanmar,
     Khmer,
-    
+
     // East Asian scripts
     Han,           // CJK
     Hiragana,      // Japanese
     Katakana,      // Japanese
     Hangul,        // Korean
-    
+
     // Other scripts
     Balinese,
     Javanese,
@@ -76,7 +76,7 @@ pub enum Script {
     Greek,
     Georgian,
     Armenian,
-    
+
     // Special
     Common,        // Punctuation, numbers, symbols
     Inherited,     // Combining marks
@@ -150,15 +150,15 @@ pub fn detect_script_runs(text: &str) -> Vec<ScriptRun> {
     let mut runs = Vec::new();
     let mut current_script = Script::Unknown;
     let mut current_start = 0;
-    
+
     for (i, ch) in text.char_indices() {
         let script = Script::script(ch);
-        
+
         // Skip Common script (spaces, punctuation)
         if script == Script::Common {
             continue;
         }
-        
+
         if script != current_script {
             // Start new run
             if current_script != Script::Unknown {
@@ -173,7 +173,7 @@ pub fn detect_script_runs(text: &str) -> Vec<ScriptRun> {
             current_start = i;
         }
     }
-    
+
     // Add final run
     if current_script != Script::Unknown {
         let run_text = text[current_start..].to_string();
@@ -183,7 +183,7 @@ pub fn detect_script_runs(text: &str) -> Vec<ScriptRun> {
             range: current_start..text.len(),
         });
     }
-    
+
     runs
 }
 ```
@@ -342,7 +342,7 @@ for run in runs {
     let font_name = select_font_for_script(run.script);
     let font_data = load_font(font_name);
     let face = Face::from_slice(&font_data, 0)?;
-    
+
     // Determine if shaping is needed
     if requires_shaping(run.script) {
         // Shape the text
@@ -350,19 +350,19 @@ for run in runs {
         buffer.push_str(&run.text);
         buffer.set_script(run.script);
         buffer.set_language(script_to_language_tag(run.script));
-        
+
         let output = shape(&face, &[], buffer);
-        
+
         // Get font slot for OOXML
         let slot = script_to_font_slot(run.script);
-        
+
         // Generate DOCX run properties
         let rpr = DocxRunProperties {
             font: font_name,
             slot,
             language: script_to_language_tag(run.script),
         };
-        
+
         // Process shaped glyphs...
     } else {
         // Simple script (Latin), no shaping needed

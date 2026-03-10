@@ -27,14 +27,14 @@ Savings: 90%
 ```rust
 pub fn collect_used_glyphs(text: &str, font: &Font) -> HashSet<u32> {
     let mut glyphs = HashSet::new();
-    
+
     for ch in text.chars() {
         // Get glyph ID for character
         if let Some(glyph_id) = font.glyph_id(ch) {
             glyphs.insert(glyph_id);
         }
     }
-    
+
     glyphs
 }
 ```
@@ -50,7 +50,7 @@ pub fn collect_dependent_glyphs(
 ) -> HashSet<u32> {
     let mut all_glyphs = glyph_ids.clone();
     let mut queue: Vec<u32> = glyph_ids.iter().copied().collect();
-    
+
     while let Some(glyph_id) = queue.pop() {
         // Get composite glyph components
         if let Some(components) = font.glyph_components(glyph_id) {
@@ -62,7 +62,7 @@ pub fn collect_dependent_glyphs(
             }
         }
     }
-    
+
     all_glyphs
 }
 ```
@@ -76,22 +76,22 @@ pub fn subset_font(
 ) -> Result<Vec<u8>> {
     // Parse original font
     let font = Font::from_bytes(font_data)?;
-    
+
     // Create new font with only subset glyphs
     let mut subset = Font::new();
-    
+
     // Copy font metadata
     subset.copy_metadata(&font);
-    
+
     // Copy glyph tables
     for glyph_id in glyph_ids {
         let glyph_data = font.glyph_data(*glyph_id)?;
         subset.add_glyph(*glyph_id, glyph_data);
     }
-    
+
     // Update font tables (cmap, hmtx, loca, etc.)
     subset.rebuild_tables()?;
-    
+
     // Serialize to bytes
     subset.to_bytes()
 }
@@ -148,13 +148,13 @@ pub fn subset_font_with_fonttools(
         .map(|g| format!("gid{}", g))
         .collect::<Vec<_>>()
         .join(",");
-    
+
     Command::new("fonttools")
         .args(&["subset", input_path])
         .arg(format!("--glyphs={}", glyph_list))
         .arg(format!("--output-file={}", output_path))
         .output()?;
-    
+
     Ok(())
 }
 ```
@@ -184,12 +184,12 @@ use uuid::Uuid;
 pub fn obfuscate_font(font_data: &[u8], guid: &Uuid) -> Vec<u8> {
     let mut obfuscated = font_data.to_vec();
     let guid_bytes = guid.as_bytes();
-    
+
     // XOR first 32 bytes with GUID (repeated)
     for i in 0..32.min(obfuscated.len()) {
         obfuscated[i] ^= guid_bytes[i % 16];
     }
-    
+
     obfuscated
 }
 
@@ -219,11 +219,11 @@ use ttf_parser::Face;
 
 pub fn check_embedding_permission(font_data: &[u8]) -> Result<EmbeddingPermission> {
     let face = Face::parse(font_data, 0)?;
-    
+
     // Get OS/2 table
     let os2 = face.os2()?;
     let fs_type = os2.fs_type();
-    
+
     match fs_type {
         0 => Ok(EmbeddingPermission::Installable),      // Full embedding allowed
         2 => Ok(EmbeddingPermission::Restricted),       // No embedding
@@ -256,24 +256,24 @@ pub struct ShapedDocument {
 pub fn shape_document(doc: &Document) -> Result<ShapedDocument> {
     let mut used_glyphs: HashMap<String, HashSet<u32>> = HashMap::new();
     let mut shaped_runs = Vec::new();
-    
+
     for block in &doc.content {
         for inline in block.inlines() {
             let shaped = shape_inline(inline)?;
-            
+
             // Collect glyphs
             let entry = used_glyphs
                 .entry(shaped.font.name.clone())
                 .or_insert_with(HashSet::new);
-            
+
             for glyph_info in &shaped.glyphs {
                 entry.insert(glyph_info.codepoint);
             }
-            
+
             shaped_runs.push(shaped);
         }
     }
-    
+
     Ok(ShapedDocument {
         text: doc.to_string(),
         shaped_runs,
@@ -292,7 +292,7 @@ pub fn embed_fonts_in_docx(
     for (font_name, glyph_ids) in &shaped_doc.used_glyphs {
         // Load original font
         let font_data = load_font(font_name)?;
-        
+
         // Check embedding permission
         match check_embedding_permission(&font_data)? {
             EmbeddingPermission::Restricted => {
@@ -301,18 +301,18 @@ pub fn embed_fonts_in_docx(
             }
             _ => {}
         }
-        
+
         // Subset font
         let subset_data = subset_font(&font_data, glyph_ids)?;
-        
+
         // Obfuscate
         let guid = Uuid::new_v4();
         let obfuscated = obfuscate_font(&subset_data, &guid);
-        
+
         // Embed in DOCX
         docx.add_embedded_font(font_name, &obfuscated, &guid)?;
     }
-    
+
     Ok(())
 }
 ```
@@ -338,7 +338,7 @@ pub fn compute_metrics(
 ) -> SubsettingMetrics {
     let compression_ratio =
         (subset_data.len() as f32) / (original_data.len() as f32);
-    
+
     SubsettingMetrics {
         font_name: font_name.to_string(),
         original_size: original_data.len(),
@@ -369,14 +369,14 @@ pub fn subset_font_mvp(
         .map(|c| format!("U+{:04X}", *c as u32))
         .collect::<Vec<_>>()
         .join(",");
-    
+
     // Call fonttools
     Command::new("fonttools")
         .args(&["subset", font_path])
         .arg(format!("--unicodes={}", char_list))
         .arg(format!("--output-file={}", output_path))
         .output()?;
-    
+
     Ok(())
 }
 ```
@@ -391,7 +391,7 @@ pub fn subset_font_rust(
     text: &str,
 ) -> Result<Vec<u8>> {
     let face = Face::parse(font_data, 0)?;
-    
+
     // Collect glyphs
     let mut glyph_ids = HashSet::new();
     for ch in text.chars() {
@@ -399,10 +399,10 @@ pub fn subset_font_rust(
             glyph_ids.insert(glyph_id);
         }
     }
-    
+
     // Collect dependent glyphs
     let all_glyphs = collect_dependent_glyphs(&glyph_ids, &face);
-    
+
     // Create subset (custom implementation)
     subset_font_impl(font_data, &all_glyphs)
 }

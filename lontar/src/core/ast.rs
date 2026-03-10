@@ -7,8 +7,8 @@
 //! - **Backend-agnostic**: No assumptions about output format
 //! - **Semantic**: Preserves meaning (not just formatting)
 
-use std::collections::HashMap;
 use serde_json::Value;
+use std::collections::HashMap;
 use thiserror::Error;
 
 /// A complete Lontar document.
@@ -60,6 +60,11 @@ impl CrossRefRegistry {
     /// Number of registered labels.
     pub fn len(&self) -> usize {
         self.labels.len()
+    }
+
+    /// Check if registry is empty.
+    pub fn is_empty(&self) -> bool {
+        self.labels.is_empty()
     }
 }
 
@@ -129,7 +134,7 @@ impl Default for PageSetup {
             page_width: 612.0,  // Letter: 8.5"
             page_height: 792.0, // Letter: 11"
             margins: Margins {
-                top: 72.0,    // 1"
+                top: 72.0, // 1"
                 bottom: 72.0,
                 left: 72.0,
                 right: 72.0,
@@ -421,11 +426,7 @@ impl StyleSheet {
     /// Resolve a table style by name, falling back to defaults.
     pub fn resolve_table_style(&self, name: Option<&str>) -> TableStyle {
         match name {
-            Some(n) => self
-                .table_styles
-                .get(n)
-                .cloned()
-                .unwrap_or_default(),
+            Some(n) => self.table_styles.get(n).cloned().unwrap_or_default(),
             None => TableStyle::default(),
         }
     }
@@ -537,7 +538,9 @@ impl BibliographyStore {
         mode: CitationMode,
     ) -> Result<String, BibliographyError> {
         match self.style {
-            BibliographyStyle::Numeric | BibliographyStyle::Vancouver | BibliographyStyle::Superscript => {
+            BibliographyStyle::Numeric
+            | BibliographyStyle::Vancouver
+            | BibliographyStyle::Superscript => {
                 let numbers: Vec<String> = keys
                     .iter()
                     .enumerate()
@@ -554,7 +557,7 @@ impl BibliographyStore {
                 let rendered = if matches!(self.style, BibliographyStyle::Superscript) {
                     format!("^{body}^")
                 } else if matches!(mode, CitationMode::Narrative) {
-                    format!("{body}")
+                    body.clone()
                 } else {
                     format!("[{body}]")
                 };
@@ -577,9 +580,15 @@ impl BibliographyStore {
                 let body = parts.join("; ");
                 let rendered = match mode {
                     CitationMode::Narrative => body.clone(),
-                    CitationMode::YearOnly => format!("({})", extract_year(&body)),
-                    CitationMode::SuppressAuthor => format!("({})", extract_year(&body)),
-                    _ => format!("({})", body),
+                    CitationMode::YearOnly => {
+                        let year = extract_year(&body);
+                        format!("({year})")
+                    }
+                    CitationMode::SuppressAuthor => {
+                        let year = extract_year(&body);
+                        format!("({year})")
+                    }
+                    _ => format!("({body})"),
                 };
                 Ok(rendered)
             }
@@ -590,7 +599,7 @@ impl BibliographyStore {
 fn format_author_year(entry: &BibEntry) -> String {
     let author = entry
         .authors
-        .get(0)
+        .first()
         .map(|a| a.family.as_str())
         .unwrap_or("Anon");
     let year = entry
@@ -637,10 +646,14 @@ fn parse_bibtex_entries(input: &str) -> Result<Vec<BibEntry>, BibliographyError>
             let mut kv = field.splitn(2, '=');
             if let (Some(k), Some(v)) = (kv.next(), kv.next()) {
                 let key_trim = k.trim().to_lowercase();
-                let value_trim = v.trim().trim_matches('{').trim_matches('}').trim_matches('"');
+                let value_trim = v
+                    .trim()
+                    .trim_matches('{')
+                    .trim_matches('}')
+                    .trim_matches('"');
                 if key_trim == "author" {
                     for name in value_trim.split(" and ") {
-                        let parts: Vec<_> = name.trim().split_whitespace().collect();
+                        let parts: Vec<_> = name.split_whitespace().collect();
                         if parts.is_empty() {
                             continue;
                         }
@@ -690,7 +703,8 @@ fn map_bibtex_kind(kind: &str) -> BibEntryKind {
 }
 
 fn parse_csl_json(input: &str) -> Result<Vec<BibEntry>, BibliographyError> {
-    let value: Value = serde_json::from_str(input).map_err(|_| BibliographyError::InvalidCslJson)?;
+    let value: Value =
+        serde_json::from_str(input).map_err(|_| BibliographyError::InvalidCslJson)?;
     let items = match value {
         Value::Array(arr) => arr,
         Value::Object(_) => vec![value],
@@ -722,7 +736,10 @@ fn parse_csl_json(input: &str) -> Result<Vec<BibEntry>, BibliographyError> {
         if let Some(author_array) = obj.get("author").and_then(|v| v.as_array()) {
             for a in author_array {
                 if let Some(aobj) = a.as_object() {
-                    let given = aobj.get("given").and_then(|v| v.as_str()).map(|s| s.to_string());
+                    let given = aobj
+                        .get("given")
+                        .and_then(|v| v.as_str())
+                        .map(|s| s.to_string());
                     let family = aobj
                         .get("family")
                         .and_then(|v| v.as_str())

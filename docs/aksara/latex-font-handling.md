@@ -117,26 +117,26 @@ pub fn generate_fontspec_preamble(scripts: &[Script]) -> String {
 
 "#,
     );
-    
+
     // Set main font
     preamble.push_str(&format!(
         r#"\setmainfont{{{}}}"#,
         select_font_for_script(Script::Latin)
     ));
     preamble.push('\n');
-    
+
     // Define font families for each script
     for script in scripts {
         let font_name = select_font_for_script(*script);
         let family_name = script_to_font_family_name(*script);
-        
+
         preamble.push_str(&format!(
             r#"\newfontfamily\{}{{{}}}"#,
             family_name, font_name
         ));
         preamble.push('\n');
     }
-    
+
     preamble
 }
 
@@ -169,20 +169,20 @@ fn script_to_font_family_name(script: Script) -> String {
 ```rust
 pub fn generate_latex_text(script_runs: &[ScriptRun]) -> String {
     let mut latex = String::new();
-    
+
     for run in script_runs {
         let font_family = script_to_font_family_name(run.script);
-        
+
         // Escape special LaTeX characters
         let escaped_text = escape_latex(&run.text);
-        
+
         // Wrap in font family command
         latex.push_str(&format!(
             r#"{{\{}{}}}"#,
             font_family, escaped_text
         ));
     }
-    
+
     latex
 }
 
@@ -211,24 +211,24 @@ fn escape_latex(text: &str) -> String {
 ```rust
 pub fn generate_latex_bidi_text(script_runs: &[ScriptRun]) -> String {
     let mut latex = String::new();
-    
+
     for run in script_runs {
         let font_family = script_to_font_family_name(run.script);
         let escaped_text = escape_latex(&run.text);
-        
+
         // Use \textlr or \textrl based on direction
         let direction = if is_rtl_script(run.script) {
             "rl"
         } else {
             "lr"
         };
-        
+
         latex.push_str(&format!(
             r#"\text{{{}}}{{\{}{}}}"#,
             direction, font_family, escaped_text
         ));
     }
-    
+
     latex
 }
 
@@ -250,11 +250,11 @@ For complex scripts, XeLaTeX/LuaLaTeX automatically apply shaping via HarfBuzz:
 ```rust
 pub fn generate_latex_complex_script_text(script_runs: &[ScriptRun]) -> String {
     let mut latex = String::new();
-    
+
     for run in script_runs {
         let font_family = script_to_font_family_name(run.script);
         let escaped_text = escape_latex(&run.text);
-        
+
         // For complex scripts, add shaping hints
         if requires_shaping(run.script) {
             // XeLaTeX/LuaLaTeX will automatically apply HarfBuzz shaping
@@ -269,7 +269,7 @@ pub fn generate_latex_complex_script_text(script_runs: &[ScriptRun]) -> String {
             ));
         }
     }
-    
+
     latex
 }
 
@@ -298,19 +298,19 @@ fn requires_shaping(script: Script) -> bool {
 ```rust
 pub fn generate_latex_language_tags(script_runs: &[ScriptRun]) -> String {
     let mut latex = String::new();
-    
+
     for run in script_runs {
         let lang = script_to_language_tag(run.script);
         let font_family = script_to_font_family_name(run.script);
         let escaped_text = escape_latex(&run.text);
-        
+
         // Use polyglossia for language-specific rules
         latex.push_str(&format!(
             r#"\text{{{}}}{{\{}{}}}"#,
             lang, font_family, escaped_text
         ));
     }
-    
+
     latex
 }
 
@@ -343,14 +343,14 @@ fn script_to_language_tag(script: Script) -> &'static str {
 ```rust
 pub fn generate_latex_with_features(script_runs: &[ScriptRun]) -> String {
     let mut latex = String::new();
-    
+
     for run in script_runs {
         let font_family = script_to_font_family_name(run.script);
         let escaped_text = escape_latex(&run.text);
-        
+
         // Add OpenType features for specific scripts
         let features = get_opentype_features(run.script);
-        
+
         if !features.is_empty() {
             latex.push_str(&format!(
                 r#"{{\{}{{{}}}{}}}"#,
@@ -363,7 +363,7 @@ pub fn generate_latex_with_features(script_runs: &[ScriptRun]) -> String {
             ));
         }
     }
-    
+
     latex
 }
 
@@ -391,10 +391,10 @@ pub fn generate_latex_document(
     // Step 1: BiDi reordering
     let bidi = BidiInfo::new(content, Some(Level::ltr()));
     let visual_text = bidi.reorder_visual();
-    
+
     // Step 2: Detect script runs
     let script_runs = detect_script_runs(&visual_text);
-    
+
     // Step 3: Collect unique scripts
     let scripts: Vec<Script> = script_runs
         .iter()
@@ -402,21 +402,21 @@ pub fn generate_latex_document(
         .collect::<std::collections::HashSet<_>>()
         .into_iter()
         .collect();
-    
+
     // Step 4: Generate preamble
     let mut latex = generate_fontspec_preamble(&scripts);
     latex.push_str("\n\\begin{document}\n\n");
-    
+
     // Step 5: Add title
     latex.push_str(&format!(r#"\title{{{}}}"#, escape_latex(title)));
     latex.push_str("\n\\maketitle\n\n");
-    
+
     // Step 6: Add content
     latex.push_str(&generate_latex_bidi_text(&script_runs));
-    
+
     // Step 7: Close document
     latex.push_str("\n\n\\end{document}\n");
-    
+
     Ok(latex)
 }
 ```

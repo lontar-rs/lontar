@@ -10,6 +10,7 @@ use std::io::Write;
 /// HTML writer that outputs semantic HTML5.
 pub struct HtmlWriter<W: Write> {
     output: W,
+    #[allow(dead_code)]
     in_paragraph: bool,
 }
 
@@ -26,12 +27,12 @@ impl<W: Write> HtmlWriter<W> {
     fn write_block(&mut self, block: &Block) -> WriteResult<()> {
         match block {
             Block::Heading { level, content, .. } => {
-                let tag = format!("h{}", level);
-                write!(self.output, "<{}>", tag).map_err(|e| WriteError::IoError {
+                let tag = format!("h{level}");
+                write!(self.output, "<{tag}>").map_err(|e| WriteError::IoError {
                     message: e.to_string(),
                 })?;
                 self.write_inline_sequence(content)?;
-                writeln!(self.output, "</{}>", tag).map_err(|e| WriteError::IoError {
+                writeln!(self.output, "</{tag}>").map_err(|e| WriteError::IoError {
                     message: e.to_string(),
                 })?;
             }
@@ -54,13 +55,13 @@ impl<W: Write> HtmlWriter<W> {
                     })?;
                     let tag = if row.is_header { "th" } else { "td" };
                     for cell in &row.cells {
-                        write!(self.output, "    <{}>", tag).map_err(|e| WriteError::IoError {
+                        write!(self.output, "    <{tag}>").map_err(|e| WriteError::IoError {
                             message: e.to_string(),
                         })?;
                         for block in &cell.content {
                             self.write_block(block)?;
                         }
-                        writeln!(self.output, "</{}>", tag).map_err(|e| WriteError::IoError {
+                        writeln!(self.output, "</{tag}>").map_err(|e| WriteError::IoError {
                             message: e.to_string(),
                         })?;
                     }
@@ -74,7 +75,7 @@ impl<W: Write> HtmlWriter<W> {
             }
             Block::List { items, ordered, .. } => {
                 let tag = if *ordered { "ol" } else { "ul" };
-                writeln!(self.output, "<{}>", tag).map_err(|e| WriteError::IoError {
+                writeln!(self.output, "<{tag}>").map_err(|e| WriteError::IoError {
                     message: e.to_string(),
                 })?;
                 for item in items {
@@ -88,20 +89,17 @@ impl<W: Write> HtmlWriter<W> {
                         message: e.to_string(),
                     })?;
                 }
-                writeln!(self.output, "</{}>", tag).map_err(|e| WriteError::IoError {
+                writeln!(self.output, "</{tag}>").map_err(|e| WriteError::IoError {
                     message: e.to_string(),
                 })?;
             }
-            Block::CodeBlock {
-                code,
-                language,
-                ..
-            } => {
+            Block::CodeBlock { code, language, .. } => {
                 if let Some(lang) = language {
-                    writeln!(self.output, "<pre><code class=\"language-{}\">", lang)
-                        .map_err(|e| WriteError::IoError {
+                    writeln!(self.output, "<pre><code class=\"language-{lang}\">").map_err(
+                        |e| WriteError::IoError {
                             message: e.to_string(),
-                        })?;
+                        },
+                    )?;
                 } else {
                     writeln!(self.output, "<pre><code>").map_err(|e| WriteError::IoError {
                         message: e.to_string(),
@@ -130,6 +128,16 @@ impl<W: Write> HtmlWriter<W> {
                     message: e.to_string(),
                 })?;
             }
+            Block::Chart { .. } => {
+                // Charts not rendered in HTML backend yet.
+                writeln!(
+                    self.output,
+                    "<div class=\"chart-placeholder\">[Chart omitted]</div>"
+                )
+                .map_err(|e| WriteError::IoError {
+                    message: e.to_string(),
+                })?;
+            }
             Block::Image {
                 resource_id,
                 alt_text,
@@ -138,15 +146,15 @@ impl<W: Write> HtmlWriter<W> {
                 ..
             } => {
                 let alt = alt_text.as_deref().unwrap_or("");
-                let mut img_tag = format!("<img src=\"{}\" alt=\"{}\"", resource_id, alt);
+                let mut img_tag = format!("<img src=\"{resource_id}\" alt=\"{alt}\"");
                 if let Some(w) = width {
-                    img_tag.push_str(&format!(" width=\"{}\"", w));
+                    img_tag.push_str(&format!(" width=\"{w}\""));
                 }
                 if let Some(h) = height {
-                    img_tag.push_str(&format!(" height=\"{}\"", h));
+                    img_tag.push_str(&format!(" height=\"{h}\""));
                 }
-                img_tag.push_str(">");
-                writeln!(self.output, "{}", img_tag).map_err(|e| WriteError::IoError {
+                img_tag.push('>');
+                writeln!(self.output, "{img_tag}").map_err(|e| WriteError::IoError {
                     message: e.to_string(),
                 })?;
             }
@@ -162,23 +170,25 @@ impl<W: Write> HtmlWriter<W> {
                             message: e.to_string(),
                         }
                     })?;
-                    writeln!(self.output, "$${}$$", content).map_err(|e| WriteError::IoError {
+                    writeln!(self.output, "$${content}$$").map_err(|e| WriteError::IoError {
                         message: e.to_string(),
                     })?;
                     if let Some(lbl) = label {
-                        writeln!(self.output, "<span class=\"label\">({})</span>", lbl)
-                            .map_err(|e| WriteError::IoError {
+                        writeln!(self.output, "<span class=\"label\">({lbl})</span>",).map_err(
+                            |e| WriteError::IoError {
                                 message: e.to_string(),
-                            })?;
+                            },
+                        )?;
                     }
                     writeln!(self.output, "</div>").map_err(|e| WriteError::IoError {
                         message: e.to_string(),
                     })?;
                 } else {
-                    write!(self.output, "<span class=\"equation\">${}$</span>", content)
-                        .map_err(|e| WriteError::IoError {
+                    write!(self.output, "<span class=\"equation\">${content}$</span>").map_err(
+                        |e| WriteError::IoError {
                             message: e.to_string(),
-                        })?;
+                        },
+                    )?;
                 }
             }
             Block::Section { title, content, .. } => {
@@ -303,10 +313,15 @@ impl<W: Write> HtmlWriter<W> {
                     .as_ref()
                     .map(|t| format!(" title=\"{}\"", html_escape(t)))
                     .unwrap_or_default();
-                write!(self.output, "<a href=\"{}\"{}> ", html_escape(url), title_attr)
-                    .map_err(|e| WriteError::IoError {
-                        message: e.to_string(),
-                    })?;
+                write!(
+                    self.output,
+                    "<a href=\"{}\"{}> ",
+                    html_escape(url),
+                    title_attr
+                )
+                .map_err(|e| WriteError::IoError {
+                    message: e.to_string(),
+                })?;
                 self.write_inline_sequence(text)?;
                 write!(self.output, "</a>").map_err(|e| WriteError::IoError {
                     message: e.to_string(),
@@ -333,7 +348,12 @@ impl<W: Write> HtmlWriter<W> {
                     message: e.to_string(),
                 })?;
             }
-            Inline::Citation { key, mode, prefix, suffix } => {
+            Inline::Citation {
+                key,
+                mode,
+                prefix,
+                suffix,
+            } => {
                 let prefix_text = prefix.as_deref().unwrap_or("");
                 let suffix_text = suffix.as_deref().unwrap_or("");
                 let class = match mode {
@@ -406,7 +426,11 @@ impl<W: Write> DocumentWriter for HtmlWriter<W> {
         writeln!(self.output, "  <meta charset=\"UTF-8\">").map_err(|e| WriteError::IoError {
             message: e.to_string(),
         })?;
-        writeln!(self.output, "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">").map_err(|e| WriteError::IoError {
+        writeln!(
+            self.output,
+            "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
+        )
+        .map_err(|e| WriteError::IoError {
             message: e.to_string(),
         })?;
 
@@ -419,10 +443,14 @@ impl<W: Write> DocumentWriter for HtmlWriter<W> {
         }
 
         if let Some(lang) = &document.metadata.language {
-            writeln!(self.output, "  <meta name=\"language\" content=\"{}\">", html_escape(lang))
-                .map_err(|e| WriteError::IoError {
-                    message: e.to_string(),
-                })?;
+            writeln!(
+                self.output,
+                "  <meta name=\"language\" content=\"{}\">",
+                html_escape(lang)
+            )
+            .map_err(|e| WriteError::IoError {
+                message: e.to_string(),
+            })?;
         }
 
         writeln!(self.output, "</head>").map_err(|e| WriteError::IoError {
@@ -443,10 +471,14 @@ impl<W: Write> DocumentWriter for HtmlWriter<W> {
 
         // Write author if present
         if let Some(author) = &document.metadata.author {
-            writeln!(self.output, "<p class=\"author\">By: {}</p>", html_escape(author))
-                .map_err(|e| WriteError::IoError {
-                    message: e.to_string(),
-                })?;
+            writeln!(
+                self.output,
+                "<p class=\"author\">By: {}</p>",
+                html_escape(author)
+            )
+            .map_err(|e| WriteError::IoError {
+                message: e.to_string(),
+            })?;
         }
 
         // Write content

@@ -132,7 +132,7 @@ for entry in entries {
     println!("ID: {}", entry.id);
     println!("Type: {}", entry.entry_type);
     println!("Title: {:?}", entry.title);
-    
+
     if let Some(authors) = &entry.author {
         for author in authors {
             let name = format!(
@@ -174,7 +174,7 @@ pub fn load_document_with_csl_json(
 ) -> Result<Document> {
     let content = parse_document(doc_path)?;
     let entries = parse_csl_json_file(bib_path)?;
-    
+
     Ok(Document {
         content,
         bibliography: Some(Bibliography::from_csl(entries)),
@@ -205,13 +205,13 @@ fn format_apa(entry: &CslEntry) -> String {
     let authors = format_authors_apa(&entry.author);
     let year = extract_year(&entry.issued);
     let title = entry.title.as_ref().unwrap_or(&"Untitled".to_string());
-    
+
     match entry.entry_type.as_str() {
         "article-journal" => {
             let journal = entry.container_title.as_ref().unwrap_or(&"Unknown".to_string());
             let volume = entry.volume.map(|v| v.to_string()).unwrap_or_default();
             let page = entry.page.as_ref().unwrap_or(&"".to_string());
-            
+
             format!(
                 "{}. ({}). {}. {} {}, {}.",
                 authors, year, title, journal, volume, page
@@ -240,7 +240,7 @@ fn format_authors_apa(authors: &Option<Vec<CslPerson>>) -> String {
                     }
                 })
                 .collect();
-            
+
             if names.len() == 1 {
                 names[0].clone()
             } else if names.len() == 2 {
@@ -283,16 +283,16 @@ pub fn generate_bibliography_section(
             (e.id.clone(), formatted)
         })
         .collect();
-    
+
     // Sort alphabetically by author
     formatted_entries.sort_by(|a, b| a.1.cmp(&b.1));
-    
+
     let mut inlines = Vec::new();
     for (_, formatted) in formatted_entries {
         inlines.push(Inline::Text(formatted));
         inlines.push(Inline::LineBreak);
     }
-    
+
     Block::Section {
         title: "Bibliography".to_string(),
         content: vec![Block::Paragraph(Paragraph { inlines })],
@@ -367,13 +367,13 @@ pub fn format_citations_with_pandoc(
         .stdin(std::process::Stdio::piped())
         .stdout(std::process::Stdio::piped())
         .spawn()?;
-    
+
     {
         let stdin = child.stdin.as_mut().unwrap();
         use std::io::Write;
         stdin.write_all(text.as_bytes())?;
     }
-    
+
     let output = child.wait_with_output()?;
     Ok(String::from_utf8(output.stdout)?)
 }

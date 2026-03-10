@@ -23,36 +23,26 @@ pub enum WriteError {
         supported: Vec<String>,
     },
     /// Cross-reference label not found
-    CrossRefNotFound {
-        label: String,
-    },
+    CrossRefNotFound { label: String },
     /// Resource (image, etc.) not found
-    ResourceNotFound {
-        id: String,
-    },
+    ResourceNotFound { id: String },
     /// Feature not supported by backend
-    FeatureNotSupported {
-        feature: String,
-        backend: String,
-    },
+    FeatureNotSupported { feature: String, backend: String },
     /// Invalid document structure
-    InvalidDocument {
-        reason: String,
-    },
+    InvalidDocument { reason: String },
     /// I/O error
-    IoError {
-        message: String,
-    },
+    IoError { message: String },
     /// Other error
-    Other {
-        message: String,
-    },
+    Other { message: String },
 }
 
 impl fmt::Display for WriteError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            WriteError::CitationNotFound { key, available_keys } => {
+            WriteError::CitationNotFound {
+                key,
+                available_keys,
+            } => {
                 write!(
                     f,
                     "Citation key '{}' not found. Available keys: {}",
@@ -69,22 +59,22 @@ impl fmt::Display for WriteError {
                 )
             }
             WriteError::CrossRefNotFound { label } => {
-                write!(f, "Cross-reference label '{}' not found", label)
+                write!(f, "Cross-reference label '{label}' not found")
             }
             WriteError::ResourceNotFound { id } => {
-                write!(f, "Resource '{}' not found", id)
+                write!(f, "Resource '{id}' not found")
             }
             WriteError::FeatureNotSupported { feature, backend } => {
-                write!(f, "{} backend does not support: {}", backend, feature)
+                write!(f, "{backend} backend does not support: {feature}")
             }
             WriteError::InvalidDocument { reason } => {
-                write!(f, "Invalid document: {}", reason)
+                write!(f, "Invalid document: {reason}")
             }
             WriteError::IoError { message } => {
-                write!(f, "I/O error: {}", message)
+                write!(f, "I/O error: {message}")
             }
             WriteError::Other { message } => {
-                write!(f, "{}", message)
+                write!(f, "{message}")
             }
         }
     }

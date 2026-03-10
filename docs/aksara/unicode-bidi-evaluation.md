@@ -141,13 +141,13 @@ pub struct BidiRun {
 pub fn detect_bidi_runs(text: &str) -> Vec<BidiRun> {
     let bidi = BidiInfo::new(text, Some(Level::ltr()));
     let para_level = Level::ltr();
-    
+
     bidi.visual_runs(para_level)
         .iter()
         .map(|(range, direction)| {
             let run_text = text[range.clone()].to_string();
             let level = bidi.levels()[range.start];
-            
+
             BidiRun {
                 text: run_text,
                 range: range.clone(),
@@ -164,12 +164,12 @@ pub fn detect_bidi_runs(text: &str) -> Vec<BidiRun> {
 ```rust
 pub fn generate_docx_rpr(bidi_run: &BidiRun) -> DocxRunProperties {
     let mut rpr = DocxRunProperties::new();
-    
+
     // Set RTL flag if direction is RTL
     if matches!(bidi_run.direction, Direction::Rtl) {
         rpr.set_rtl(true);
     }
-    
+
     rpr
 }
 ```
@@ -232,7 +232,7 @@ for script_run in script_runs {
     let mut buffer = UnicodeBuffer::new();
     buffer.push_str(&script_run.text);
     buffer.set_script(script_run.script);
-    
+
     let output = shape(&face, &[], buffer);
     // Process shaped glyphs...
 }

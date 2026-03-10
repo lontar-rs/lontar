@@ -48,7 +48,7 @@ pub fn embed_font_in_pdf(
 ) -> Result<PdfFont> {
     // Load font
     let font_data = load_font(font_name)?;
-    
+
     // Check embedding permission
     match check_embedding_permission(&font_data)? {
         EmbeddingPermission::Restricted => {
@@ -56,17 +56,17 @@ pub fn embed_font_in_pdf(
         }
         _ => {}
     }
-    
+
     // Subset font (collect used glyphs first)
     let used_glyphs = collect_used_glyphs_from_document(pdf);
     let subset_data = subset_font(&font_data, &used_glyphs)?;
-    
+
     // Create font dictionary
     let font_dict = create_font_dict(font_name, &subset_data)?;
-    
+
     // Add to PDF
     let font_dict_ref = pdf.add_object(font_dict);
-    
+
     Ok(PdfFont {
         name: font_name.to_string(),
         font_data,
@@ -101,7 +101,7 @@ fn create_font_dict(font_name: &str, font_data: &[u8]) -> Result<String> {
 "#,
         font_name, font_name
     );
-    
+
     Ok(font_stream)
 }
 ```
@@ -131,25 +131,25 @@ begincmap
 endcodespacerange
 "#,
     );
-    
+
     // Add glyph to Unicode mappings
     let mut count = 0;
     cmap.push_str("1 beginbfchar\n");
-    
+
     for (glyph_id, codepoint) in glyph_map {
         cmap.push_str(&format!(
             "<{:04X}> <{:04X}>\n",
             glyph_id, codepoint
         ));
         count += 1;
-        
+
         if count >= 100 {
             cmap.push_str("endbfchar\n");
             cmap.push_str("1 beginbfchar\n");
             count = 0;
         }
     }
-    
+
     cmap.push_str("endbfchar\n");
     cmap.push_str(
         r#"endcmap
@@ -157,7 +157,7 @@ CMapName currentdict /CMap defineresource pop
 end
 end"#,
     );
-    
+
     cmap
 }
 ```
@@ -181,24 +181,24 @@ pub fn calculate_glyph_positions(
     let mut glyphs = Vec::new();
     let mut x_pos = 0.0;
     let mut y_pos = 0.0;
-    
+
     for shaped_run in shaped_runs {
         for (glyph_info, glyph_pos) in shaped_run.glyphs.iter().zip(&shaped_run.positions) {
             // Convert from font units to PDF units
             let scale = font_size / 1000.0;  // Assuming 1000 units per em
-            
+
             let glyph = PdfGlyph {
                 glyph_id: glyph_info.codepoint,
                 x: x_pos + (glyph_pos.x_offset as f32 * scale),
                 y: y_pos + (glyph_pos.y_offset as f32 * scale),
                 advance: glyph_pos.x_advance as f32 * scale,
             };
-            
+
             glyphs.push(glyph);
             x_pos += glyph.advance;
         }
     }
-    
+
     glyphs
 }
 ```
@@ -218,7 +218,7 @@ pub fn generate_pdf_text_object(
         "BT\n/F1 {} Tf\n{} {} Td\n",
         font_size, x, y
     );
-    
+
     // Add glyph positioning
     obj.push_str("(");
     for glyph in glyphs {
@@ -226,9 +226,9 @@ pub fn generate_pdf_text_object(
         obj.push_str(&format!("<{:04X}>", glyph.glyph_id));
     }
     obj.push_str(") Tj\n");
-    
+
     obj.push_str("ET\n");
-    
+
     obj
 }
 ```
@@ -256,14 +256,14 @@ pub fn reorder_glyphs_for_pdf(
         // Reverse glyph order for RTL
         let mut reversed = glyphs.to_vec();
         reversed.reverse();
-        
+
         // Recalculate positions
         let mut x_pos = 0.0;
         for glyph in &mut reversed {
             x_pos += glyph.advance;
             glyph.x = x_pos;
         }
-        
+
         reversed
     } else {
         glyphs.to_vec()
@@ -287,7 +287,7 @@ pub fn generate_pdf_text_with_offsets(
         "BT\n/F1 {} Tf\n{} {} Td\n",
         font_size, x, y
     );
-    
+
     // Add glyphs with positioning
     for glyph in glyphs {
         // Position glyph
@@ -295,13 +295,13 @@ pub fn generate_pdf_text_with_offsets(
             "{} {} Td\n",
             glyph.x, glyph.y
         ));
-        
+
         // Show glyph
         obj.push_str(&format!("<{:04X}> Tj\n", glyph.glyph_id));
     }
-    
+
     obj.push_str("ET\n");
-    
+
     obj
 }
 ```
@@ -317,16 +317,16 @@ pub fn wrap_text_for_pdf(
 ) -> Vec<String> {
     let breaker = LineBreaker::new(text);
     let breaks: Vec<usize> = breaker.collect();
-    
+
     let mut lines = Vec::new();
     let mut current_line = String::new();
     let mut current_width = 0.0;
     let mut prev_break = 0;
-    
+
     for break_pos in breaks {
         let segment = &text[prev_break..break_pos];
         let segment_width = measure_text_width(segment, font, font_size);
-        
+
         if (current_width + segment_width) > max_width {
             // Start new line
             lines.push(current_line.trim_end().to_string());
@@ -336,14 +336,14 @@ pub fn wrap_text_for_pdf(
             current_line.push_str(segment);
             current_width += segment_width;
         }
-        
+
         prev_break = break_pos;
     }
-    
+
     if !current_line.is_empty() {
         lines.push(current_line);
     }
-    
+
     lines
 }
 
@@ -374,24 +374,24 @@ pub fn generate_pdf_paragraph(
     // Step 1: BiDi reordering
     let bidi = BidiInfo::new(text, Some(Level::ltr()));
     let visual_text = bidi.reorder_visual();
-    
+
     // Step 2: Line wrapping
     let lines = wrap_text_for_pdf(&visual_text, max_width, &font, font_size);
-    
+
     // Step 3: Generate PDF objects
     let mut pdf_content = String::new();
     let mut current_y = y;
-    
+
     for line in lines {
         // Detect script runs
         let script_runs = detect_script_runs(&line);
-        
+
         // Shape text
         let shaped_runs = shape_script_runs(&script_runs)?;
-        
+
         // Calculate glyph positions
         let glyphs = calculate_glyph_positions(&shaped_runs, font_size);
-        
+
         // Generate PDF text object
         let text_obj = generate_pdf_text_with_offsets(
             &glyphs,
@@ -400,11 +400,11 @@ pub fn generate_pdf_paragraph(
             x,
             current_y,
         );
-        
+
         pdf_content.push_str(&text_obj);
         current_y -= (font_size * 1.2);  // Line spacing
     }
-    
+
     Ok(pdf_content)
 }
 ```
