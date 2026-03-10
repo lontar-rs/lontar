@@ -20,6 +20,30 @@ pub struct Document {
     pub resources: ResourceStore,
 }
 
+/// Chart kinds supported by the AST.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ChartKind {
+    Bar,
+    Line,
+    Pie,
+    Scatter,
+    Area,
+}
+
+/// Chart data representation (categories + series values).
+#[derive(Debug, Clone)]
+pub struct ChartData {
+    pub categories: Vec<String>,
+    pub series: Vec<ChartSeries>,
+}
+
+/// A single chart series.
+#[derive(Debug, Clone)]
+pub struct ChartSeries {
+    pub name: String,
+    pub values: Vec<f64>,
+}
+
 /// Document metadata (title, author, creation date, etc.).
 #[derive(Debug, Clone, Default)]
 pub struct DocumentMetadata {
@@ -86,6 +110,12 @@ pub enum Block {
     },
     Table {
         rows: Vec<TableRow>,
+        style: Option<String>,
+    },
+    Chart {
+        title: Option<String>,
+        kind: ChartKind,
+        data: ChartData,
         style: Option<String>,
     },
     List {

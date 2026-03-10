@@ -12,7 +12,7 @@ pub use ast::{
     Alignment, BibAuthor, BibEntry, BibEntryKind, BibliographyStore, BibliographyStyle, Block,
     CitationMode, Color, CrossRefKind, Document, DocumentMetadata, FontStyle, FontWeight, Inline,
     ListItem, Margins, PageOrientation, PageSetup, ParagraphStyle, Resource, ResourceStore, Script,
-    StyleSheet, TableCell, TableRow, TableStyle, TextStyle,
+    StyleSheet, TableCell, TableRow, TableStyle, TextStyle, ChartKind, ChartData, ChartSeries,
 };
 
 /// Builder for constructing documents ergonomically.

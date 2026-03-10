@@ -107,7 +107,7 @@ Detailed task breakdown by phase. Check the box when complete.
 - [x] Evaluate `unicode-linebreak` for line break opportunities
 - [x] Evaluate `unicode-script` for script run detection
 - [x] Research font subsetting approaches in Rust
-- [ ] Collect test fonts: Noto Sans Balinese, Noto Sans Devanagari, Noto Sans Arabic, Noto Sans CJK
+- [x] Collect test fonts: Noto Sans Balinese, Noto Sans Devanagari, Noto Sans Arabic, Noto Sans CJK
 - [x] Create test strings for each script category (simple LTR, complex Indic, SE Asian, RTL, CJK)
 - [x] Document how DOCX/PPTX handle font embedding and language tagging
 - [x] Document how PDF embeds fonts and stores positioned glyphs
@@ -130,41 +130,41 @@ Detailed task breakdown by phase. Check the box when complete.
 **Goal:** Prove the unified AST works with the simplest possible outputs.
 
 ### lontar-core
-- [ ] Define `Block` enum with all variants (including `Equation`, `Bibliography`)
-- [ ] Define `Inline` enum with all variants (including `Citation`, `CrossRef`)
-- [ ] Define `TextStyle` struct
-- [ ] Define `ParagraphStyle` struct
-- [ ] Define `TableStyle` struct
-- [ ] Define `ChartKind` and `ChartData` types
-- [ ] Define `PageSetup` and `Margins`
-- [ ] Define `StyleSheet` with cascading resolution
-- [ ] Define `DocumentMetadata`
-- [ ] Define `ResourceStore` for images and binary assets
-- [ ] Define `BibliographyStore` with `BibEntry` and `BibAuthor`
-- [ ] Define `BibEntryKind` enum
-- [ ] Define `BibliographyStyle` enum (Numeric, AuthorYear, Vancouver, Superscript, Apa7, Named)
-- [ ] Define `CitationMode` enum (Parenthetical, Narrative, YearOnly, SuppressAuthor, Full)
-- [ ] Define `CrossRefKind` enum (Auto, Number, Page, Title)
+- [x] Define `Block` enum with all variants (including `Equation`, `Bibliography`)
+- [x] Define `Inline` enum with all variants (including `Citation`, `CrossRef`)
+- [x] Define `TextStyle` struct
+- [x] Define `ParagraphStyle` struct
+- [x] Define `TableStyle` struct
+- [x] Define `ChartKind` and `ChartData` types
+- [x] Define `PageSetup` and `Margins`
+- [x] Define `StyleSheet` with cascading resolution
+- [x] Define `DocumentMetadata`
+- [x] Define `ResourceStore` for images and binary assets
+- [x] Define `BibliographyStore` with `BibEntry` and `BibAuthor`
+- [x] Define `BibEntryKind` enum
+- [x] Define `BibliographyStyle` enum (Numeric, AuthorYear, Vancouver, Superscript, Apa7, Named)
+- [x] Define `CitationMode` enum (Parenthetical, Narrative, YearOnly, SuppressAuthor, Full)
+- [x] Define `CrossRefKind` enum (Auto, Number, Page, Title)
 - [ ] Implement `BibliographyStore::load_bibtex()` — parse .bib files
 - [ ] Implement `BibliographyStore::load_csl_json()` — parse CSL-JSON
 - [ ] Implement citation resolution: given citation keys + style → rendered text
 - [ ] Implement cross-reference resolution: given label → computed number/text
 - [ ] Implement label uniqueness validation in `DocumentBuilder`
-- [ ] Implement `Document` struct with root node (including `bibliography` field)
-- [ ] Implement `DocumentBuilder` (ergonomic builder API, with `.cite()`, `.crossref()`, `.bib_entry()`)
-- [ ] Implement `DocumentWriter` trait
-- [ ] Implement `WriteReport` for feature degradation reporting
+- [x] Implement `Document` struct with root node (including `bibliography` field)
+- [x] Implement `DocumentBuilder` (ergonomic builder API, with `.cite()`, `.crossref()`, `.bib_entry()`)
+- [x] Implement `DocumentWriter` trait
+- [x] Implement `WriteReport` for feature degradation reporting
 - [ ] Implement `LontarError` error types (including `CitationNotFound`, `Bibliography`)
-- [ ] Implement style cascade resolution (default → named → paragraph → run)
-- [ ] Write unit tests for AST construction
-- [ ] Write unit tests for style resolution
+- [x] Implement style cascade resolution (default → named → paragraph → run)
+- [x] Write unit tests for AST construction
+- [x] Write unit tests for style resolution
 - [ ] Write unit tests for citation resolution (all modes × all styles)
 - [ ] Write unit tests for cross-reference resolution
 - [ ] Write unit tests for BibTeX parsing
 - [ ] Write documentation for all public types
 
 ### lontar-md (Markdown Backend)
-- [ ] Implement `MarkdownWriter` for `DocumentWriter` trait
+- [x] Implement `MarkdownWriter` for `DocumentWriter` trait
 - [ ] Handle: headings, paragraphs, bold/italic/code text
 - [ ] Handle: tables (GitHub-flavored Markdown)
 - [ ] Handle: ordered and unordered lists
