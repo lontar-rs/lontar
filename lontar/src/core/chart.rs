@@ -133,10 +133,8 @@ mod tests {
 
     #[test]
     fn test_chart_series_creation() {
-        let series = ChartSeries {
-            name: "Revenue".to_string(),
-            values: vec![100.0, 200.0, 150.0, 300.0],
-        };
+        let series =
+            ChartSeries { name: "Revenue".to_string(), values: vec![100.0, 200.0, 150.0, 300.0] };
 
         assert_eq!(series.name, "Revenue");
         assert_eq!(series.values.len(), 4);
@@ -169,18 +167,9 @@ mod tests {
         let data = ChartData {
             categories: vec!["Jan".to_string(), "Feb".to_string(), "Mar".to_string()],
             series: vec![
-                ChartSeries {
-                    name: "Revenue".to_string(),
-                    values: vec![1000.0, 1200.0, 1100.0],
-                },
-                ChartSeries {
-                    name: "Expenses".to_string(),
-                    values: vec![800.0, 900.0, 850.0],
-                },
-                ChartSeries {
-                    name: "Profit".to_string(),
-                    values: vec![200.0, 300.0, 250.0],
-                },
+                ChartSeries { name: "Revenue".to_string(), values: vec![1000.0, 1200.0, 1100.0] },
+                ChartSeries { name: "Expenses".to_string(), values: vec![800.0, 900.0, 850.0] },
+                ChartSeries { name: "Profit".to_string(), values: vec![200.0, 300.0, 250.0] },
             ],
         };
 
@@ -195,10 +184,7 @@ mod tests {
 
     #[test]
     fn test_empty_chart_data() {
-        let data = ChartData {
-            categories: vec![],
-            series: vec![],
-        };
+        let data = ChartData { categories: vec![], series: vec![] };
 
         assert!(data.categories.is_empty());
         assert!(data.series.is_empty());
@@ -208,10 +194,7 @@ mod tests {
     fn test_chart_data_with_empty_categories() {
         let data = ChartData {
             categories: vec![],
-            series: vec![ChartSeries {
-                name: "Empty Series".to_string(),
-                values: vec![],
-            }],
+            series: vec![ChartSeries { name: "Empty Series".to_string(), values: vec![] }],
         };
 
         assert!(data.categories.is_empty());

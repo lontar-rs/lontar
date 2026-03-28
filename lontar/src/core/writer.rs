@@ -13,15 +13,9 @@ pub type WriteResult<T> = Result<T, WriteError>;
 #[derive(Debug, Clone)]
 pub enum WriteError {
     /// Citation key not found in bibliography
-    CitationNotFound {
-        key: String,
-        available_keys: Vec<String>,
-    },
+    CitationNotFound { key: String, available_keys: Vec<String> },
     /// Bibliography style not supported by backend
-    BibliographyStyleNotSupported {
-        style: String,
-        supported: Vec<String>,
-    },
+    BibliographyStyleNotSupported { style: String, supported: Vec<String> },
     /// Cross-reference label not found
     CrossRefNotFound { label: String },
     /// Resource (image, etc.) not found
@@ -39,10 +33,7 @@ pub enum WriteError {
 impl fmt::Display for WriteError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            WriteError::CitationNotFound {
-                key,
-                available_keys,
-            } => {
+            WriteError::CitationNotFound { key, available_keys } => {
                 write!(
                     f,
                     "Citation key '{}' not found. Available keys: {}",

@@ -138,10 +138,7 @@ pub struct BibAuthor {
 
 impl BibliographyStore {
     pub fn new(style: BibliographyStyle) -> Self {
-        Self {
-            entries: HashMap::new(),
-            style,
-        }
+        Self { entries: HashMap::new(), style }
     }
 
     /// Add an entry to the bibliography.
@@ -280,11 +277,7 @@ pub enum CitationMode {
 }
 
 fn format_author_year(entry: &BibEntry) -> String {
-    let author = entry
-        .authors
-        .first()
-        .map(|a| a.family.as_str())
-        .unwrap_or("Anon");
+    let author = entry.authors.first().map(|a| a.family.as_str()).unwrap_or("Anon");
     let year = entry
         .fields
         .get("year")
@@ -329,11 +322,7 @@ fn parse_bibtex_entries(input: &str) -> Result<Vec<BibEntry>, BibliographyError>
             let mut kv = field.splitn(2, '=');
             if let (Some(k), Some(v)) = (kv.next(), kv.next()) {
                 let key_trim = k.trim().to_lowercase();
-                let value_trim = v
-                    .trim()
-                    .trim_matches('{')
-                    .trim_matches('}')
-                    .trim_matches('"');
+                let value_trim = v.trim().trim_matches('{').trim_matches('}').trim_matches('"');
                 if key_trim == "author" {
                     for name in value_trim.split(" and ") {
                         let parts: Vec<_> = name.split_whitespace().collect();
@@ -346,11 +335,7 @@ fn parse_bibtex_entries(input: &str) -> Result<Vec<BibEntry>, BibliographyError>
                         } else {
                             None
                         };
-                        authors.push(BibAuthor {
-                            given,
-                            family,
-                            literal: None,
-                        });
+                        authors.push(BibAuthor { given, family, literal: None });
                     }
                 } else {
                     fields.insert(key_trim, value_trim.to_string());
@@ -358,12 +343,8 @@ fn parse_bibtex_entries(input: &str) -> Result<Vec<BibEntry>, BibliographyError>
             }
         }
 
-        let entry = BibEntry {
-            key: key.to_string(),
-            kind: map_bibtex_kind(kind_str),
-            fields,
-            authors,
-        };
+        let entry =
+            BibEntry { key: key.to_string(), kind: map_bibtex_kind(kind_str), fields, authors };
 
         entries.push(entry);
     }
@@ -419,36 +400,19 @@ fn parse_csl_json(input: &str) -> Result<Vec<BibEntry>, BibliographyError> {
         if let Some(author_array) = obj.get("author").and_then(|v| v.as_array()) {
             for a in author_array {
                 if let Some(aobj) = a.as_object() {
-                    let given = aobj
-                        .get("given")
-                        .and_then(|v| v.as_str())
-                        .map(|s| s.to_string());
-                    let family = aobj
-                        .get("family")
-                        .and_then(|v| v.as_str())
-                        .unwrap_or("")
-                        .to_string();
-                    let literal = aobj
-                        .get("literal")
-                        .and_then(|v| v.as_str())
-                        .map(|s| s.to_string());
+                    let given = aobj.get("given").and_then(|v| v.as_str()).map(|s| s.to_string());
+                    let family =
+                        aobj.get("family").and_then(|v| v.as_str()).unwrap_or("").to_string();
+                    let literal =
+                        aobj.get("literal").and_then(|v| v.as_str()).map(|s| s.to_string());
                     if !family.is_empty() || literal.is_some() {
-                        authors.push(BibAuthor {
-                            given,
-                            family,
-                            literal,
-                        });
+                        authors.push(BibAuthor { given, family, literal });
                     }
                 }
             }
         }
 
-        let entry = BibEntry {
-            key: id.to_string(),
-            kind: BibEntryKind::Article,
-            fields,
-            authors,
-        };
+        let entry = BibEntry { key: id.to_string(), kind: BibEntryKind::Article, fields, authors };
 
         entries.push(entry);
     }
@@ -503,14 +467,8 @@ mod tests {
         let entry = bib.get("smith2024").unwrap();
         assert_eq!(entry.key, "smith2024");
         assert_eq!(entry.kind, BibEntryKind::Article);
-        assert_eq!(
-            entry.fields.get("title"),
-            Some(&"A Simple Article Title".to_string())
-        );
-        assert_eq!(
-            entry.fields.get("journal"),
-            Some(&"Journal of Testing".to_string())
-        );
+        assert_eq!(entry.fields.get("title"), Some(&"A Simple Article Title".to_string()));
+        assert_eq!(entry.fields.get("journal"), Some(&"Journal of Testing".to_string()));
         assert_eq!(entry.fields.get("year"), Some(&"2024".to_string()));
         assert_eq!(entry.authors.len(), 1);
         assert_eq!(entry.authors[0].given, Some("John".to_string()));
@@ -536,10 +494,7 @@ mod tests {
         assert!(bib.contains("doe2023"));
         let entry = bib.get("doe2023").unwrap();
         assert_eq!(entry.kind, BibEntryKind::Book);
-        assert_eq!(
-            entry.fields.get("publisher"),
-            Some(&"Academic Press".to_string())
-        );
+        assert_eq!(entry.fields.get("publisher"), Some(&"Academic Press".to_string()));
         assert_eq!(entry.fields.get("edition"), Some(&"2nd".to_string()));
         assert_eq!(entry.authors.len(), 2);
         assert_eq!(entry.authors[0].family, "Doe");
@@ -586,10 +541,7 @@ mod tests {
 
         let entry = bib.get("brown2022").unwrap();
         assert_eq!(entry.kind, BibEntryKind::Thesis);
-        assert_eq!(
-            entry.fields.get("school"),
-            Some(&"University of Testing".to_string())
-        );
+        assert_eq!(entry.fields.get("school"), Some(&"University of Testing".to_string()));
     }
 
     #[test]
@@ -609,10 +561,7 @@ mod tests {
 
         let entry = bib.get("webpage2024").unwrap();
         assert_eq!(entry.kind, BibEntryKind::Misc);
-        assert_eq!(
-            entry.fields.get("note"),
-            Some(&"Accessed: 2024-01-01".to_string())
-        );
+        assert_eq!(entry.fields.get("note"), Some(&"Accessed: 2024-01-01".to_string()));
     }
 
     #[test]
@@ -632,10 +581,7 @@ mod tests {
 
         let entry = bib.get("miller2023").unwrap();
         assert_eq!(entry.kind, BibEntryKind::TechReport);
-        assert_eq!(
-            entry.fields.get("institution"),
-            Some(&"Research Institute".to_string())
-        );
+        assert_eq!(entry.fields.get("institution"), Some(&"Research Institute".to_string()));
         assert_eq!(entry.fields.get("number"), Some(&"TR-2023-42".to_string()));
     }
 
@@ -671,10 +617,7 @@ mod tests {
 
         assert_eq!(bib.get("first2024").unwrap().kind, BibEntryKind::Article);
         assert_eq!(bib.get("second2023").unwrap().kind, BibEntryKind::Book);
-        assert_eq!(
-            bib.get("third2022").unwrap().kind,
-            BibEntryKind::InProceedings
-        );
+        assert_eq!(bib.get("third2022").unwrap().kind, BibEntryKind::InProceedings);
     }
 
     #[test]
@@ -722,14 +665,8 @@ mod tests {
         bib.load_bibtex(bibtex).unwrap();
 
         let entry = bib.get("quoted2024").unwrap();
-        assert_eq!(
-            entry.fields.get("title"),
-            Some(&"Title with quotes".to_string())
-        );
-        assert_eq!(
-            entry.fields.get("journal"),
-            Some(&"Journal Name".to_string())
-        );
+        assert_eq!(entry.fields.get("title"), Some(&"Title with quotes".to_string()));
+        assert_eq!(entry.fields.get("journal"), Some(&"Journal Name".to_string()));
         assert_eq!(entry.fields.get("year"), Some(&"2024".to_string()));
         // Author field is parsed specially, check the authors list
         assert_eq!(entry.authors.len(), 1);
@@ -752,14 +689,8 @@ mod tests {
         bib.load_bibtex(bibtex).unwrap();
 
         let entry = bib.get("mixed2024").unwrap();
-        assert_eq!(
-            entry.fields.get("title"),
-            Some(&"Title with braces".to_string())
-        );
-        assert_eq!(
-            entry.fields.get("journal"),
-            Some(&"Journal with braces".to_string())
-        );
+        assert_eq!(entry.fields.get("title"), Some(&"Title with braces".to_string()));
+        assert_eq!(entry.fields.get("journal"), Some(&"Journal with braces".to_string()));
         assert_eq!(entry.fields.get("year"), Some(&"2024".to_string()));
         // Author field is parsed specially, check the authors list
         assert_eq!(entry.authors.len(), 1);
@@ -876,10 +807,7 @@ mod tests {
         bib.load_bibtex(bibtex).unwrap();
 
         let entry = bib.get("whitespace2024").unwrap();
-        assert_eq!(
-            entry.fields.get("title"),
-            Some(&"Title with spaces".to_string())
-        );
+        assert_eq!(entry.fields.get("title"), Some(&"Title with spaces".to_string()));
         // Author field is parsed specially, so check the authors list
         assert_eq!(entry.authors.len(), 1);
         assert_eq!(entry.authors[0].family, "spaces");
@@ -911,15 +839,9 @@ mod tests {
 
         bib.load_bibtex(bibtex).unwrap();
 
-        assert_eq!(
-            bib.get("uppercase2024").unwrap().kind,
-            BibEntryKind::Article
-        );
+        assert_eq!(bib.get("uppercase2024").unwrap().kind, BibEntryKind::Article);
         assert_eq!(bib.get("mixedcase2024").unwrap().kind, BibEntryKind::Book);
-        assert_eq!(
-            bib.get("lowercase2024").unwrap().kind,
-            BibEntryKind::InProceedings
-        );
+        assert_eq!(bib.get("lowercase2024").unwrap().kind, BibEntryKind::InProceedings);
     }
 
     #[test]

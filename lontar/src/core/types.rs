@@ -116,7 +116,7 @@ pub struct DocumentMetadata {
 /// # Fields
 ///
 /// * `page_width` - Page width in points
-/// * `page_height` - Page height in points  
+/// * `page_height` - Page height in points
 /// * `margins` - Page margins (top, bottom, left, right)
 /// * `orientation` - Portrait or landscape orientation
 ///
@@ -377,30 +377,11 @@ pub enum Inline {
     Strikethrough(Vec<Inline>),
     Subscript(Vec<Inline>),
     Superscript(Vec<Inline>),
-    Link {
-        text: Vec<Inline>,
-        url: String,
-        title: Option<String>,
-    },
-    Image {
-        resource_id: String,
-        alt_text: Option<String>,
-        title: Option<String>,
-    },
-    Citation {
-        key: String,
-        mode: CitationMode,
-        prefix: Option<String>,
-        suffix: Option<String>,
-    },
-    CrossRef {
-        label: String,
-        kind: CrossRefKind,
-    },
-    Styled {
-        content: Vec<Inline>,
-        style: String,
-    },
+    Link { text: Vec<Inline>, url: String, title: Option<String> },
+    Image { resource_id: String, alt_text: Option<String>, title: Option<String> },
+    Citation { key: String, mode: CitationMode, prefix: Option<String>, suffix: Option<String> },
+    CrossRef { label: String, kind: CrossRefKind },
+    Styled { content: Vec<Inline>, style: String },
 }
 
 /// Resource store for images and binary assets.
@@ -422,14 +403,7 @@ pub struct Resource {
 impl ResourceStore {
     /// Add a resource (image, etc.).
     pub fn add_resource(&mut self, id: String, mime_type: String, data: Vec<u8>) {
-        self.resources.insert(
-            id.clone(),
-            Resource {
-                id,
-                mime_type,
-                data,
-            },
-        );
+        self.resources.insert(id.clone(), Resource { id, mime_type, data });
     }
 
     /// Get a resource by ID.
@@ -474,11 +448,7 @@ mod tests {
     #[test]
     fn test_resource_store() {
         let mut store = ResourceStore::default();
-        store.add_resource(
-            "image1".to_string(),
-            "image/png".to_string(),
-            vec![1, 2, 3, 4],
-        );
+        store.add_resource("image1".to_string(), "image/png".to_string(), vec![1, 2, 3, 4]);
 
         assert!(store.contains("image1"));
         assert_eq!(store.get("image1").unwrap().mime_type, "image/png");
@@ -506,12 +476,7 @@ mod tests {
 
     #[test]
     fn test_margins_creation() {
-        let margins = Margins {
-            top: 36.0,
-            bottom: 36.0,
-            left: 54.0,
-            right: 54.0,
-        };
+        let margins = Margins { top: 36.0, bottom: 36.0, left: 54.0, right: 54.0 };
 
         assert_eq!(margins.top, 36.0);
         assert_eq!(margins.bottom, 36.0);
@@ -522,11 +487,7 @@ mod tests {
     #[test]
     fn test_table_row_creation() {
         let row = TableRow {
-            cells: vec![TableCell {
-                content: vec![],
-                colspan: 1,
-                rowspan: 1,
-            }],
+            cells: vec![TableCell { content: vec![], colspan: 1, rowspan: 1 }],
             is_header: true,
         };
 
@@ -538,10 +499,7 @@ mod tests {
 
     #[test]
     fn test_list_item_creation() {
-        let item = ListItem {
-            content: vec![],
-            level: 2,
-        };
+        let item = ListItem { content: vec![], level: 2 };
 
         assert_eq!(item.level, 2);
         assert!(item.content.is_empty());

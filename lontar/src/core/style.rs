@@ -132,11 +132,9 @@ impl StyleSheet {
     /// Resolve a text style by name, falling back to defaults.
     pub fn resolve_text_style(&self, name: Option<&str>) -> TextStyle {
         match name {
-            Some(n) => self
-                .text_styles
-                .get(n)
-                .cloned()
-                .unwrap_or_else(|| self.default_text.clone()),
+            Some(n) => {
+                self.text_styles.get(n).cloned().unwrap_or_else(|| self.default_text.clone())
+            }
             None => self.default_text.clone(),
         }
     }
@@ -175,11 +173,7 @@ impl Color {
 
     /// Create a white color.
     pub fn white() -> Self {
-        Self {
-            r: 255,
-            g: 255,
-            b: 255,
-        }
+        Self { r: 255, g: 255, b: 255 }
     }
 
     /// Create a red color.
@@ -260,19 +254,13 @@ mod tests {
         // Add custom text style
         stylesheet.text_styles.insert(
             "emphasis".to_string(),
-            TextStyle {
-                font_style: Some(FontStyle::Italic),
-                ..Default::default()
-            },
+            TextStyle { font_style: Some(FontStyle::Italic), ..Default::default() },
         );
 
         // Add custom paragraph style
         stylesheet.paragraph_styles.insert(
             "centered".to_string(),
-            ParagraphStyle {
-                alignment: Some(Alignment::Center),
-                ..Default::default()
-            },
+            ParagraphStyle { alignment: Some(Alignment::Center), ..Default::default() },
         );
 
         // Test text style resolution
@@ -346,12 +334,8 @@ mod tests {
 
     #[test]
     fn test_alignment_variants() {
-        let alignments = vec![
-            Alignment::Left,
-            Alignment::Center,
-            Alignment::Right,
-            Alignment::Justify,
-        ];
+        let alignments =
+            vec![Alignment::Left, Alignment::Center, Alignment::Right, Alignment::Justify];
 
         // Test that all alignments are distinct
         for (i, align1) in alignments.iter().enumerate() {

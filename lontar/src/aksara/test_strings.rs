@@ -227,11 +227,7 @@ mod tests {
     fn test_strings_are_valid() {
         for test_str in TEST_STRINGS {
             // Verify text is not empty
-            assert!(
-                !test_str.text.is_empty(),
-                "Text is empty for {}",
-                test_str.script
-            );
+            assert!(!test_str.text.is_empty(), "Text is empty for {}", test_str.script);
 
             // Verify script name is provided
             assert!(!test_str.script.is_empty(), "Script name is empty");
@@ -269,21 +265,16 @@ mod tests {
 
         for script in scripts {
             let count = TEST_STRINGS.iter().filter(|s| s.script == script).count();
-            println!("{}: {} test strings", script, count);
+            println!("{script}: {count} test strings");
         }
     }
 
     #[test]
     fn test_balinese_strings() {
-        let balinese_strings: Vec<_> = TEST_STRINGS
-            .iter()
-            .filter(|s| s.script == "Balinese")
-            .collect();
+        let balinese_strings: Vec<_> =
+            TEST_STRINGS.iter().filter(|s| s.script == "Balinese").collect();
 
-        assert!(
-            !balinese_strings.is_empty(),
-            "No Balinese test strings found"
-        );
+        assert!(!balinese_strings.is_empty(), "No Balinese test strings found");
 
         for test_str in balinese_strings {
             println!("Balinese: {} ({})", test_str.text, test_str.description);
@@ -292,15 +283,10 @@ mod tests {
 
     #[test]
     fn test_mixed_script_strings() {
-        let mixed_strings: Vec<_> = TEST_STRINGS
-            .iter()
-            .filter(|s| s.script.contains("Mixed"))
-            .collect();
+        let mixed_strings: Vec<_> =
+            TEST_STRINGS.iter().filter(|s| s.script.contains("Mixed")).collect();
 
-        assert!(
-            !mixed_strings.is_empty(),
-            "No mixed script test strings found"
-        );
+        assert!(!mixed_strings.is_empty(), "No mixed script test strings found");
 
         for test_str in mixed_strings {
             println!("Mixed: {} ({})", test_str.text, test_str.description);

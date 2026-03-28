@@ -5,11 +5,11 @@
 
 #![allow(unused_imports)]
 
-use std::collections::HashMap;
 use super::types::{
-    BibliographyStore, BibliographyStyle, BibEntry, BibEntryKind, 
-    BibAuthor, CitationMode, BibliographyError
+    BibAuthor, BibEntry, BibEntryKind, BibliographyError, BibliographyStore, BibliographyStyle,
+    CitationMode,
 };
+use std::collections::HashMap;
 
 #[test]
 fn test_citation_resolution_numeric_style() {
@@ -49,15 +49,11 @@ fn test_citation_resolution_numeric_style() {
     });
 
     // Test parenthetical mode
-    let result = bib
-        .render_citation(&["smith2024"], CitationMode::Parenthetical)
-        .unwrap();
+    let result = bib.render_citation(&["smith2024"], CitationMode::Parenthetical).unwrap();
     assert_eq!(result, "[1]");
 
     // Test narrative mode
-    let result = bib
-        .render_citation(&["smith2024"], CitationMode::Narrative)
-        .unwrap();
+    let result = bib.render_citation(&["smith2024"], CitationMode::Narrative).unwrap();
     assert_eq!(result, "1");
 
     // Test multiple citations
@@ -67,9 +63,7 @@ fn test_citation_resolution_numeric_style() {
     assert_eq!(result, "[1, 2]");
 
     // Test year-only mode (should behave like parenthetical for numeric styles)
-    let result = bib
-        .render_citation(&["smith2024"], CitationMode::YearOnly)
-        .unwrap();
+    let result = bib.render_citation(&["smith2024"], CitationMode::YearOnly).unwrap();
     assert_eq!(result, "[1]");
 }
 
@@ -93,14 +87,10 @@ fn test_citation_resolution_vancouver_style() {
         }],
     });
 
-    let result = bib
-        .render_citation(&["johnson2024"], CitationMode::Parenthetical)
-        .unwrap();
+    let result = bib.render_citation(&["johnson2024"], CitationMode::Parenthetical).unwrap();
     assert_eq!(result, "[1]");
 
-    let result = bib
-        .render_citation(&["johnson2024"], CitationMode::Narrative)
-        .unwrap();
+    let result = bib.render_citation(&["johnson2024"], CitationMode::Narrative).unwrap();
     assert_eq!(result, "1");
 }
 
@@ -124,19 +114,13 @@ fn test_citation_resolution_superscript_style() {
         }],
     });
 
-    let result = bib
-        .render_citation(&["wilson2024"], CitationMode::Parenthetical)
-        .unwrap();
+    let result = bib.render_citation(&["wilson2024"], CitationMode::Parenthetical).unwrap();
     assert_eq!(result, "^1^");
 
-    let result = bib
-        .render_citation(&["wilson2024"], CitationMode::Narrative)
-        .unwrap();
+    let result = bib.render_citation(&["wilson2024"], CitationMode::Narrative).unwrap();
     assert_eq!(result, "^1^"); // Narrative mode still uses superscript formatting
 
-    let result = bib
-        .render_citation(&["wilson2024"], CitationMode::YearOnly)
-        .unwrap();
+    let result = bib.render_citation(&["wilson2024"], CitationMode::YearOnly).unwrap();
     assert_eq!(result, "^1^");
 }
 
@@ -161,33 +145,23 @@ fn test_citation_resolution_author_year_style() {
     });
 
     // Test parenthetical mode
-    let result = bib
-        .render_citation(&["brown2024"], CitationMode::Parenthetical)
-        .unwrap();
+    let result = bib.render_citation(&["brown2024"], CitationMode::Parenthetical).unwrap();
     assert_eq!(result, "(Brown 2024)");
 
     // Test narrative mode
-    let result = bib
-        .render_citation(&["brown2024"], CitationMode::Narrative)
-        .unwrap();
+    let result = bib.render_citation(&["brown2024"], CitationMode::Narrative).unwrap();
     assert_eq!(result, "Brown 2024");
 
     // Test year-only mode
-    let result = bib
-        .render_citation(&["brown2024"], CitationMode::YearOnly)
-        .unwrap();
+    let result = bib.render_citation(&["brown2024"], CitationMode::YearOnly).unwrap();
     assert_eq!(result, "(2024)");
 
     // Test suppress author mode
-    let result = bib
-        .render_citation(&["brown2024"], CitationMode::SuppressAuthor)
-        .unwrap();
+    let result = bib.render_citation(&["brown2024"], CitationMode::SuppressAuthor).unwrap();
     assert_eq!(result, "(2024)");
 
     // Test full mode (should behave like parenthetical)
-    let result = bib
-        .render_citation(&["brown2024"], CitationMode::Full)
-        .unwrap();
+    let result = bib.render_citation(&["brown2024"], CitationMode::Full).unwrap();
     assert_eq!(result, "(Brown 2024)");
 }
 
@@ -211,19 +185,13 @@ fn test_citation_resolution_apa7_style() {
         }],
     });
 
-    let result = bib
-        .render_citation(&["davis2024"], CitationMode::Parenthetical)
-        .unwrap();
+    let result = bib.render_citation(&["davis2024"], CitationMode::Parenthetical).unwrap();
     assert_eq!(result, "(Davis 2024)");
 
-    let result = bib
-        .render_citation(&["davis2024"], CitationMode::Narrative)
-        .unwrap();
+    let result = bib.render_citation(&["davis2024"], CitationMode::Narrative).unwrap();
     assert_eq!(result, "Davis 2024");
 
-    let result = bib
-        .render_citation(&["davis2024"], CitationMode::YearOnly)
-        .unwrap();
+    let result = bib.render_citation(&["davis2024"], CitationMode::YearOnly).unwrap();
     assert_eq!(result, "(2024)");
 }
 
@@ -247,14 +215,10 @@ fn test_citation_resolution_named_style() {
         }],
     });
 
-    let result = bib
-        .render_citation(&["miller2024"], CitationMode::Parenthetical)
-        .unwrap();
+    let result = bib.render_citation(&["miller2024"], CitationMode::Parenthetical).unwrap();
     assert_eq!(result, "(Miller 2024)");
 
-    let result = bib
-        .render_citation(&["miller2024"], CitationMode::Narrative)
-        .unwrap();
+    let result = bib.render_citation(&["miller2024"], CitationMode::Narrative).unwrap();
     assert_eq!(result, "Miller 2024");
 }
 
@@ -297,9 +261,7 @@ fn test_citation_resolution_multiple_keys_author_year() {
         .unwrap();
     assert_eq!(result, "(Author 2023; Author 2024)");
 
-    let result = bib
-        .render_citation(&["author1", "author2"], CitationMode::Narrative)
-        .unwrap();
+    let result = bib.render_citation(&["author1", "author2"], CitationMode::Narrative).unwrap();
     assert_eq!(result, "Author 2023; Author 2024");
 }
 
@@ -309,10 +271,7 @@ fn test_citation_resolution_missing_entry() {
 
     let result = bib.render_citation(&["nonexistent"], CitationMode::Parenthetical);
     assert!(result.is_err());
-    assert_eq!(
-        result.unwrap_err(),
-        BibliographyError::MissingEntry("nonexistent".to_string())
-    );
+    assert_eq!(result.unwrap_err(), BibliographyError::MissingEntry("nonexistent".to_string()));
 }
 
 #[test]
@@ -331,9 +290,7 @@ fn test_citation_resolution_no_authors() {
         authors: vec![], // No authors
     });
 
-    let result = bib
-        .render_citation(&["anon2024"], CitationMode::Parenthetical)
-        .unwrap();
+    let result = bib.render_citation(&["anon2024"], CitationMode::Parenthetical).unwrap();
     assert_eq!(result, "(Anon 2024)");
 }
 
@@ -356,13 +313,9 @@ fn test_citation_resolution_no_year() {
         }],
     });
 
-    let result = bib
-        .render_citation(&["noyear"], CitationMode::Parenthetical)
-        .unwrap();
+    let result = bib.render_citation(&["noyear"], CitationMode::Parenthetical).unwrap();
     assert_eq!(result, "(Author n.d.)");
 
-    let result = bib
-        .render_citation(&["noyear"], CitationMode::YearOnly)
-        .unwrap();
+    let result = bib.render_citation(&["noyear"], CitationMode::YearOnly).unwrap();
     assert_eq!(result, "(n.d.)");
 }

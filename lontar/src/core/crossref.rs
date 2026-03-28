@@ -173,10 +173,7 @@ mod tests {
         // Try to register the same label again
         let result = registry.register("label1");
         assert!(result.is_err());
-        assert_eq!(
-            result.unwrap_err(),
-            CrossRefError::DuplicateLabel("label1".to_string())
-        );
+        assert_eq!(result.unwrap_err(), CrossRefError::DuplicateLabel("label1".to_string()));
     }
 
     #[test]
@@ -186,10 +183,7 @@ mod tests {
         // Try to resolve a label that doesn't exist
         let result = registry.resolve("nonexistent");
         assert!(result.is_err());
-        assert_eq!(
-            result.unwrap_err(),
-            CrossRefError::UnknownLabel("nonexistent".to_string())
-        );
+        assert_eq!(result.unwrap_err(), CrossRefError::UnknownLabel("nonexistent".to_string()));
     }
 
     #[test]
