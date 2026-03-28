@@ -158,10 +158,10 @@ Detailed task breakdown by phase. Check the box when complete.
 - [x] Implement style cascade resolution (default → named → paragraph → run)
 - [x] Write unit tests for AST construction
 - [x] Write unit tests for style resolution
-- [ ] Write unit tests for citation resolution (all modes × all styles)
-- [ ] Write unit tests for cross-reference resolution
-- [ ] Write unit tests for BibTeX parsing
-- [ ] Write documentation for all public types
+- [x] Write unit tests for citation resolution (all modes × all styles)
+- [x] Write unit tests for cross-reference resolution
+- [x] Write unit tests for BibTeX parsing
+- [x] Write documentation for all public types
 
 ### lontar-md (Markdown Backend)
 - [x] Implement `MarkdownWriter` for `DocumentWriter` trait

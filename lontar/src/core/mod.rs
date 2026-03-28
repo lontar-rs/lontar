@@ -6,16 +6,17 @@
 //! equations, and bibliographies.
 
 pub mod ast;
+pub mod bibliography;
+pub mod chart;
+pub mod crossref;
 pub mod error;
+pub mod style;
+pub mod tests;
+pub mod types;
 pub mod writer;
 
-pub use ast::{
-    Alignment, BibAuthor, BibEntry, BibEntryKind, BibliographyError, BibliographyStore,
-    BibliographyStyle, Block, ChartData, ChartKind, ChartSeries, CitationMode, Color,
-    CrossRefError, CrossRefKind, CrossRefRegistry, Document, DocumentMetadata, FontStyle,
-    FontWeight, Inline, ListItem, Margins, PageOrientation, PageSetup, ParagraphStyle, Resource,
-    ResourceStore, Script, StyleSheet, TableCell, TableRow, TableStyle, TextStyle,
-};
+// Re-export all public types for convenience
+pub use ast::*;
 pub use error::LontarError;
 pub use writer::{DocumentWriter, WriteError, WriteReport, WriteResult};
 
