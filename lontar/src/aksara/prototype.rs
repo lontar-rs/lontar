@@ -55,8 +55,8 @@ mod tests {
         let balinese_text = "ᬮᭀᬦ᭄ᬢᬭ᭄";
         let char_count = balinese_text.chars().count();
 
-        // ᬮ ᭀ ᬦ ᭄ ᬢ ᭄
-        assert_eq!(char_count, 6, "Balinese 'lontar' should have 6 characters");
+        // ᬮ ᭀ ᬦ ᭄ ᬢ ᬭ᭄
+        assert_eq!(char_count, 7, "Balinese 'lontar' should have 7 characters");
     }
 
     /// Test mixed script detection
@@ -231,7 +231,6 @@ mod tests {
     #[derive(Debug, PartialEq)]
     enum FontSlot {
         Ascii,
-        HAnsi,
         EastAsia,
         ComplexScript,
     }
@@ -241,9 +240,7 @@ mod tests {
 
         match script {
             Script::Latin => FontSlot::Ascii,
-            Script::Han | Script::Hiragana | Script::Katakana | Script::Hangul => {
-                FontSlot::EastAsia
-            }
+            Script::Han | Script::Hiragana | Script::Katakana | Script::Hangul => FontSlot::EastAsia,
             Script::Arabic
             | Script::Hebrew
             | Script::Devanagari

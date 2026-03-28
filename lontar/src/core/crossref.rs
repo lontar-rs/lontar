@@ -215,7 +215,7 @@ mod tests {
 
         // Verify all labels resolve correctly
         for (i, label) in labels.iter().enumerate() {
-            let resolved = registry.resolve(*label).unwrap();
+            let resolved = registry.resolve(label).unwrap();
             assert_eq!(resolved, (i + 1).to_string());
         }
     }
@@ -242,7 +242,7 @@ mod tests {
         for (i, label) in test_labels.iter().enumerate() {
             let number = registry.register(*label).unwrap();
             assert_eq!(number, i + 1);
-            assert_eq!(registry.resolve(*label).unwrap(), (i + 1).to_string());
+            assert_eq!(registry.resolve(label).unwrap(), (i + 1).to_string());
         }
     }
 
@@ -281,7 +281,7 @@ mod tests {
 
         // Verify resolution
         for (i, label) in special_labels.iter().enumerate() {
-            let resolved = registry.resolve(*label).unwrap();
+            let resolved = registry.resolve(label).unwrap();
             assert_eq!(resolved, (i + 1).to_string());
         }
     }
@@ -317,7 +317,7 @@ mod tests {
 
         // Verify resolution
         for (i, label) in unicode_labels.iter().enumerate() {
-            let resolved = registry.resolve(*label).unwrap();
+            let resolved = registry.resolve(label).unwrap();
             assert_eq!(resolved, (i + 1).to_string());
         }
     }
