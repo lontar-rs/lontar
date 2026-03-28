@@ -14,7 +14,7 @@ repository   = "https://github.com/lontar-rs/lontar"
 lontar = { path = "lontar", version = "0.1.1" }
 
 zip               = "2"
-quick-xml         = { version = "0.37", features = ["serialize"] }
+quick-xml         = { version = "0.39", features = ["serialize"] }
 rustybuzz         = "0.20"
 unicode-bidi      = "0.3"
 unicode-linebreak = "0.1"
