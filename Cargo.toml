@@ -14,13 +14,13 @@ repository   = "https://github.com/lontar-rs/lontar"
 lontar = { path = "lontar", version = "0.1.1" }
 
 zip               = "8"
-quick-xml         = { version = "0.37", features = ["serialize"] }
+quick-xml         = { version = "0.39", features = ["serialize"] }
 rustybuzz         = "0.20"
 unicode-bidi      = "0.3"
 unicode-linebreak = "0.1"
 unicode-script    = "0.5"
-petgraph          = "0.6"
-rust_xlsxwriter   = "0.79"
+petgraph          = "0.8"
+rust_xlsxwriter   = "0.94"
 tera              = "1"
 clap              = { version = "4", features = ["derive"] }
 thiserror         = "2"
