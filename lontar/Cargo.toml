@@ -26,7 +26,7 @@ docx     = ["aksara", "dep:zip", "dep:quick-xml"]
 pptx     = ["aksara", "dep:zip", "dep:quick-xml"]
 pdf      = ["aksara"]
 xlsx     = ["dep:rust_xlsxwriter"]
-md       = []
+md       = ["dep:pulldown-cmark"]
 html     = []
 txt      = []
 template = ["dep:tera"]
@@ -46,6 +46,7 @@ unicode-script    = { workspace = true, optional = true }
 petgraph          = { workspace = true, optional = true }
 rust_xlsxwriter   = { workspace = true, optional = true }
 tera              = { workspace = true, optional = true }
+pulldown-cmark    = { workspace = true, optional = true }
 
 [dev-dependencies]
 serde_json = { workspace = true }

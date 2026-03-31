@@ -165,23 +165,23 @@ Detailed task breakdown by phase. Check the box when complete.
 
 ### lontar-md (Markdown Backend)
 - [x] Implement `MarkdownWriter` for `DocumentWriter` trait
-- [ ] Handle: headings, paragraphs, bold/italic/code text
-- [ ] Handle: tables (GitHub-flavored Markdown)
-- [ ] Handle: ordered and unordered lists
-- [ ] Handle: images (as `![alt](path)`)
-- [ ] Handle: links
-- [ ] Handle: code blocks with language
-- [ ] Handle: block quotes
-- [ ] Handle: horizontal rules
-- [ ] Handle: citations (render as inline text per bibliography style)
-- [ ] Handle: bibliography (render as formatted list)
-- [ ] Handle: cross-references (render as `[Type N](#label)`)
-- [ ] Handle: math (render as `$...$` / `$$...$$`)
-- [ ] Graceful degradation: charts → table fallback
-- [ ] Graceful degradation: page breaks → `---`
-- [ ] Graceful degradation: headers/footers → skip with warning
-- [ ] Write snapshot tests against expected Markdown output
-- [ ] Verify round-trip: AST → MD → parse with pulldown-cmark → compare structure
+- [x] Handle: headings, paragraphs, bold/italic/code text
+- [x] Handle: tables (GitHub-flavored Markdown)
+- [x] Handle: ordered and unordered lists
+- [x] Handle: images (as `![alt](path)`)
+- [x] Handle: links
+- [x] Handle: code blocks with language
+- [x] Handle: block quotes
+- [x] Handle: horizontal rules
+- [x] Handle: citations (render as inline text per bibliography style)
+- [x] Handle: bibliography (render as formatted list)
+- [x] Handle: cross-references (render as `[Type N](#label)`)
+- [x] Handle: math (render as `$...$` / `$$...$$`)
+- [x] Graceful degradation: charts → table fallback
+- [x] Graceful degradation: page breaks → `---` (no PageBreak block type exists)
+- [x] Graceful degradation: headers/footers → skip with warning (no Header/Footer block types exist)
+- [x] Write snapshot tests against expected Markdown output
+- [x] Verify round-trip: AST → MD → parse with pulldown-cmark → compare structure
 
 ### lontar-txt (Plain Text Backend)
 - [ ] Implement `PlainTextWriter` for `DocumentWriter` trait

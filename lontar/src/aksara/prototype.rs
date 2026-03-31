@@ -240,7 +240,9 @@ mod tests {
 
         match script {
             Script::Latin => FontSlot::Ascii,
-            Script::Han | Script::Hiragana | Script::Katakana | Script::Hangul => FontSlot::EastAsia,
+            Script::Han | Script::Hiragana | Script::Katakana | Script::Hangul => {
+                FontSlot::EastAsia
+            }
             Script::Arabic
             | Script::Hebrew
             | Script::Devanagari

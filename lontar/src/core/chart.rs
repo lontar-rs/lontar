@@ -144,7 +144,7 @@ mod tests {
 
     #[test]
     fn test_chart_kinds() {
-        let kinds = vec![
+        let kinds = [
             ChartKind::Bar,
             ChartKind::Line,
             ChartKind::Pie,
